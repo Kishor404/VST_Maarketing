@@ -22,7 +22,7 @@ class LoginView(APIView):
         password = request.data.get('password')
 
         if not phone or not password:
-            return Response({"error": "Phone and password are required"}, status=status.HTTP_400_BAD_REQUEST)
+            return Response({"message": "Phone and password are required"}, status=status.HTTP_400_BAD_REQUEST)
 
         try:
             # Retrieve the customer by phone
@@ -30,12 +30,13 @@ class LoginView(APIView):
             
             # Check if the provided password matches the stored hashed password
             if check_password(password, customer.password):
-                return Response({"message": "Login successful","login":1}, status=status.HTTP_200_OK)
+                serializer = CustomerSerializer(customer)
+                return Response({"message": "Login successful","login":1,"data":serializer.data}, status=status.HTTP_200_OK)
             else:
-                return Response({"error": "Invalid password","login":0}, status=status.HTTP_401_UNAUTHORIZED)
+                return Response({"message": "Invalid password","login":0}, status=status.HTTP_200_OK)
         
         except Customer.DoesNotExist:
-            return Response({"error": "Customer not found","login":0}, status=status.HTTP_404_NOT_FOUND)
+            return Response({"message": "Customer not found","login":0}, status=status.HTTP_200_OK)
 
 class HeadSignupView(APIView):
     def post(self, request):
@@ -64,10 +65,10 @@ class HeadLoginView(APIView):
             if check_password(password, head.password):
                 return Response({"message": "Login successful","login":1}, status=status.HTTP_200_OK)
             else:
-                return Response({"error": "Invalid password","login":0}, status=status.HTTP_401_UNAUTHORIZED)
+                return Response({"error": "Invalid password","login":0}, status=status.HTTP_200_OK)
         
         except Head.DoesNotExist:
-            return Response({"error": "Head not found","login":0}, status=status.HTTP_404_NOT_FOUND)
+            return Response({"error": "Head not found","login":0}, status=status.HTTP_200_OK)
 
 class WorkerSignupView(APIView):
     def post(self, request):
@@ -96,10 +97,10 @@ class WorkerLoginView(APIView):
             if check_password(password, worker.password):
                 return Response({"message": "Login successful","login":1}, status=status.HTTP_200_OK)
             else:
-                return Response({"error": "Invalid password","login":0}, status=status.HTTP_401_UNAUTHORIZED)
+                return Response({"error": "Invalid password","login":0}, status=status.HTTP_200_OK)
         
         except Worker.DoesNotExist:
-            return Response({"error": "Worker not found","login":0}, status=status.HTTP_404_NOT_FOUND)
+            return Response({"error": "Worker not found","login":0}, status=status.HTTP_200_OK)
 
 class AdminSignupView(APIView):
     def post(self, request):
@@ -128,7 +129,7 @@ class AdminLoginView(APIView):
             if check_password(password, admin.password):
                 return Response({"message": "Login successful","login":1}, status=status.HTTP_200_OK)
             else:
-                return Response({"error": "Invalid password","login":0}, status=status.HTTP_401_UNAUTHORIZED)
+                return Response({"error": "Invalid password","login":0}, status=status.HTTP_200_OK)
         
         except Admin.DoesNotExist:
-            return Response({"error": "Admin not found","login":0}, status=status.HTTP_404_NOT_FOUND)
+            return Response({"error": "Admin not found","login":0}, status=status.HTTP_200_OK)
