@@ -21,6 +21,10 @@ class Service(models.Model):
 
     region = models.CharField(max_length=10, choices=REGION_CHOICES, blank=False, null=False)
 
+    available = models.JSONField(blank=False, null=False)
+
+    complaint = models.CharField(max_length=255, choices=REGION_CHOICES, blank=False, null=False, default='Regular Service')
+
     status = models.CharField(max_length=10, choices=STATUS_CHOICES, blank=False, null=False)
 
     created_at = models.DateTimeField(auto_now_add=True)

@@ -1,0 +1,9 @@
+GET http://127.0.0.1:8000/products/
+Content-Type: application/json
+
+###
+
+POST http://127.0.0.1:8000/log/customers/login/
+Content-Type: application/json
+
+{"phone":"1111111111","password":"123"}
