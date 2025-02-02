@@ -1,8 +1,16 @@
 from django.db import models
 
 class Card(models.Model):
+    REGION_CHOICES = [
+        ('IND', 'India'),
+        ('USA', 'United States'),
+        ('AUS', 'Australia'),
+    ]
+
     model = models.CharField(max_length=100)
-    customer_code = models.CharField(unique=True, max_length=100)
+    customer_code = models.CharField(max_length=100)
+    customer_name = models.CharField(max_length=255)
+    region = models.CharField(max_length=255,choices=REGION_CHOICES)
     date_of_installation = models.DateField()
     address = models.TextField()
     warranty_start_date = models.DateField()

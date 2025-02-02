@@ -30,6 +30,8 @@ class CardSerializer(serializers.ModelSerializer):
             'id',
             'model',
             'customer_code',
+            'customer_name',
+            'region',
             'date_of_installation',
             'address',
             'warranty_start_date',

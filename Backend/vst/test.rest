@@ -1,9 +1,56 @@
+### ========= PRODUCT API ============
+
 GET http://127.0.0.1:8000/products/
 Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzM4MjMxMjE1LCJpYXQiOjE3MzgyMjk0MTUsImp0aSI6IjRhMmE4OGNkOWZmNTQ2NzRiZjYzZjIwN2RlOTM3YjJkIiwidXNlcl9pZCI6OH0.1YmMnQrVuJdbcE_Y7I6yXVfTQ0dH82g-5rlC3OVT7aQ
 
-###
+### =========== CUSTOMER LOGIN API =============
 
 POST http://127.0.0.1:8000/log/customers/login/
 Content-Type: application/json
 
+{"phone":"0000000008","password":"123"}
+
+### =========== CUSTOMER SIGNUP API =============
+
+POST http://127.0.0.1:8000/log/customers/signup/
+Content-Type: application/json
+
+{"name":"Customer1","phone":"0000000009","password":"123","region":"IND", "role":"worker"}
+
+### =========== WORKER SIGNUP API =============
+
+GET http://127.0.0.1:8000/log/workers/protected/
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzM4NDA0Njc5LCJpYXQiOjE3Mzg0MDI4NzksImp0aSI6ImRjNzFhMTIzMzQzNjRlMzRiNzE0ZTUxNTg5ZmY3YzA3IiwidXNlcl9pZCI6OX0.Z714lL9SQNFJ8o3GauQrXqKM2Tx0glBXZ5TzR3ODyVI
+
+### =========== WORKER LOGIN API =============
+
+POST http://127.0.0.1:8000/log/Workers/login/
+Content-Type: application/json
+
 {"phone":"1111111111","password":"123"}
+
+### ============ TEST TOKEN API ==========
+
+GET http://127.0.0.1:8000/log/protected/
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzM4MjMxMjE1LCJpYXQiOjE3MzgyMjk0MTUsImp0aSI6IjRhMmE4OGNkOWZmNTQ2NzRiZjYzZjIwN2RlOTM3YjJkIiwidXNlcl9pZCI6OH0.1YmMnQrVuJdbcE_Y7I6yXVfTQ0dH82g-5rlC3OVT7aQ
+
+### ============ REFRESH TOKEN API ===========
+
+POST http://127.0.0.1:8000/log/token/refresh/
+Content-Type: application/json
+
+{"refresh":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTczODgzNTIwNSwiaWF0IjoxNzM4MjMwNDA1LCJqdGkiOiJmYmVlMDkxYjdiYjA0MjgyOWFhYTY1MWI0YmEzZTc0YyIsInVzZXJfaWQiOjh9.01vaHD4z-BksCP86cmUWQwKF5G8Fe-R0pSAhDriWdp0"}
+
+
+### =============== CARD API ============
+
+GET http://127.0.0.1:8000/api/cards/
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzM4MzM4NzYzLCJpYXQiOjE3MzgzMzY5NjMsImp0aSI6IjA3NGRkYWFjMmI5ZDQwMDI5MzdhNThlNzllOWIyNDhmIiwidXNlcl9pZCI6OH0.T02AzFhB4x-ElmSJmp_c2-Nnp_uUftwRuGPSWsCUvYw
+
+
+### ============= SERVICE ENTRIE ON CARD API ==========
+
+GET http://127.0.0.1:8000/api/service-entries/
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzM4MzM4NzYzLCJpYXQiOjE3MzgzMzY5NjMsImp0aSI6IjA3NGRkYWFjMmI5ZDQwMDI5MzdhNThlNzllOWIyNDhmIiwidXNlcl9pZCI6OH0.T02AzFhB4x-ElmSJmp_c2-Nnp_uUftwRuGPSWsCUvYw
