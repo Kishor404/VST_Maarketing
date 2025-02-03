@@ -54,3 +54,19 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiY
 
 GET http://127.0.0.1:8000/api/service-entries/
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzM4MzM4NzYzLCJpYXQiOjE3MzgzMzY5NjMsImp0aSI6IjA3NGRkYWFjMmI5ZDQwMDI5MzdhNThlNzllOWIyNDhmIiwidXNlcl9pZCI6OH0.T02AzFhB4x-ElmSJmp_c2-Nnp_uUftwRuGPSWsCUvYw
+
+
+### ============= SERVICE API ==========
+
+POST http://127.0.0.1:8000/services/
+Content-Type: application/json
+
+{
+    "customer": 7,
+    "worker_id": "1",
+    "available": {
+        "from": "oo"
+    },
+    "complaint": "WL",
+    "status": "NS"
+}
