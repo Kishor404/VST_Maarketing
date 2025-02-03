@@ -7,7 +7,8 @@ class ServiceSerializer(serializers.ModelSerializer):
         model = Service
         fields = [
             'id',
-            'customer_id',
+            'customer',
+            'customer_data',
             'worker_id',
             'available',
             'complaint',
