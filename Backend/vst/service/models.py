@@ -18,7 +18,7 @@ class Service(models.Model):
     ]
 
     customer = models.ForeignKey(User, on_delete=models.CASCADE, related_name="services")
-    worker_id = models.CharField(max_length=255, blank=True)
+    staff = models.ForeignKey(User, on_delete=models.CASCADE, related_name="servicesstaff")
 
     region = models.CharField(max_length=50, blank=False, null=False)  # Removed choices
 
