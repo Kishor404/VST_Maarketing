@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'service_book.dart';
 
 class ServicePage extends StatefulWidget {
   @override
@@ -79,7 +80,13 @@ class _ServicePageState extends State<ServicePage> {
             const SizedBox(height: 10.0),
             ElevatedButton(
               onPressed: () {
-                // Add your onPressed code here!
+                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) =>
+                                        ServiceBook(),
+                                  ),
+                                );
               },
               style: ElevatedButton.styleFrom(
                 backgroundColor: const Color.fromARGB(255, 55, 99, 174),
