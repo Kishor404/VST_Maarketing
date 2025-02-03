@@ -14,9 +14,11 @@ class ProfilePage extends StatefulWidget {
 class _ProfilePageState extends State<ProfilePage> {
   String _phone = '';
   String _name = '';
+  String _customerid = '';
   String _email = '';
   String _address = '';
   String _region = '';
+  String _role = '';
 
   @override
   void initState() {
@@ -29,8 +31,10 @@ class _ProfilePageState extends State<ProfilePage> {
     setState(() {
       _phone = prefs.getString('phone') ?? '9087654321';
       _name = prefs.getString('name') ?? 'User Name';
+      _customerid = prefs.getString('customer_id') ?? 'User Name';
       _email = prefs.getString('email') ?? 'user@vst.com';
       _region = prefs.getString('region') ?? 'Default Region';
+      _role = prefs.getString('role') ?? 'Error';
       _address = "${prefs.getString('address') ?? "00, Unknown"},\n"
           "${prefs.getString('city') ?? "Unavailable"}, ${prefs.getString('state') ?? "Unavailable"}\n"
           "${prefs.getString('postal_code') ?? "000000"}";
@@ -142,6 +146,14 @@ class _ProfilePageState extends State<ProfilePage> {
                     style: TextStyle(
                       fontSize: 24,
                       color: Colors.white,
+                    ),
+                  ),
+                  SizedBox(height: 10),
+                  Text(
+                    '$_role - $_customerid',
+                    style: TextStyle(
+                      fontSize: 16,
+                      color: Colors.white70,
                     ),
                   ),
                   SizedBox(height: 10),
