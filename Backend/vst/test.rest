@@ -58,15 +58,5 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiY
 
 ### ============= SERVICE API ==========
 
-POST http://127.0.0.1:8000/services/
+GET http://127.0.0.1:8000/services/
 Content-Type: application/json
-
-{
-    "customer": 7,
-    "worker_id": "1",
-    "available": {
-        "from": "oo"
-    },
-    "complaint": "WL",
-    "status": "NS"
-}

@@ -30,7 +30,7 @@ class HomePage extends StatelessWidget {
                       color: Colors.grey[300],
                       borderRadius: BorderRadius.circular(10),
                       image: DecorationImage(
-                        image: AssetImage('assets/banners/banner$actualIndex.jpg'), // Replace with your image path
+                        image: NetworkImage('http://127.0.0.1:8000/media/banners/banner$actualIndex.jpg'), // Fetch from URL
                         fit: BoxFit.cover,
                       ),
                     ),

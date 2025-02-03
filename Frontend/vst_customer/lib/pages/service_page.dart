@@ -72,10 +72,10 @@ class _ServicePageState extends State<ServicePage> {
             ),
             const SizedBox(height: 10.0),
             Expanded(
-              child: Image.asset(
-                'assets/service_illus.jpg',
-                fit: BoxFit.contain,
-              ),
+              child: Image.network(
+                  'http://127.0.0.1:8000/media/utils/Service_Illus.jpg',
+                  height: 400,
+                ),
             ),
             const SizedBox(height: 10.0),
             ElevatedButton(

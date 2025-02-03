@@ -7,9 +7,10 @@ class ServiceSerializer(serializers.ModelSerializer):
         fields = [
             'id',
             'customer',
-            'worker_id',
+            'staff',
             'region',
             'available',
+            'description',
             'customer_data',
             'complaint',
             'status',

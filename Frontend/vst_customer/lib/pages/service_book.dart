@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:dio/dio.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class ServiceBook extends StatefulWidget {
   const ServiceBook({Key? key}) : super(key: key);
@@ -13,8 +15,22 @@ class ServiceBookState extends State<ServiceBook> {
   String? selectedComplaint;
   TextEditingController otherComplaintController = TextEditingController();
   TextEditingController complaintDetailsController = TextEditingController();
+  String? _customerId;
 
-  final List<String> complaints = ["General Visit", "Internet Issue", "Slow Speed", "No Connection", "Others"];
+  final List<String> complaints = ["General Visit", "Water Leakage", "Water Taste Bad", "Others"];
+
+  @override
+  void initState() {
+    super.initState();
+    _loadCustomerId();
+  }
+
+  Future<void> _loadCustomerId() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    setState(() {
+      _customerId = prefs.getString('customer_id');
+    });
+  }
 
   Future<void> _selectDate(BuildContext context, bool isFrom) async {
     DateTime initialDate = DateTime.now();
@@ -36,6 +52,63 @@ class ServiceBookState extends State<ServiceBook> {
           toDate = pickedDate;
         }
       });
+    }
+  }
+
+  Future<void> _bookService() async {
+    if (fromDate == null || toDate == null || selectedComplaint == null || _customerId == null) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text("Please fill all required fields")),
+      );
+      return;
+    }
+
+    String complaintText = selectedComplaint == "Others"
+        ? otherComplaintController.text
+        : selectedComplaint ?? "";
+
+    String complaintDescription = complaintDetailsController.text;
+
+    Dio dio = Dio();
+    const String apiUrl = "http://127.0.0.1:8000/services/";
+
+    Map<String, dynamic> requestBody = {
+      "customer": int.parse(_customerId!),
+      "staff": 1,
+      "available": {
+        "from": "${fromDate!.day}/${fromDate!.month}/${fromDate!.year}",
+        "to": "${toDate!.day}/${toDate!.month}/${toDate!.year}"
+      },
+      "description":complaintDescription,
+      "complaint": complaintText,
+      "status": "BD"
+    };
+
+    try {
+      Response response = await dio.post(
+        apiUrl,
+        data: requestBody,
+        options: Options(
+          headers: {
+            "Content-Type": "application/json",
+          },
+        ),
+      );
+
+      if (response.statusCode == 201 || response.statusCode == 200) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text("Service booked successfully!")),
+        );
+        Navigator.pop(context);
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text("Failed to book service")),
+        );
+      }
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text("Error: $e")),
+      );
     }
   }
 
@@ -65,7 +138,7 @@ class ServiceBookState extends State<ServiceBook> {
             children: [
               Center(
                 child: Image.network(
-                  'https://cdn-lmaib.nitrocdn.com/ROdTzxXrreLgSXOSXKZjrLlbRYrVgDKb/assets/images/optimized/rev-66aa50b/openreferences.com/wp-content/uploads/2024/10/Control-horario-1024x1024.jpg',
+                  'http://127.0.0.1:8000/media/utils/Service_Book.jpg',
                   height: 400,
                 ),
               ),
@@ -172,9 +245,7 @@ class ServiceBookState extends State<ServiceBook> {
               SizedBox(
                 width: double.infinity,
                 child: ElevatedButton(
-                  onPressed: () {
-                    // Handle booking logic here
-                  },
+                  onPressed: _bookService,
                   style: ElevatedButton.styleFrom(
                     padding: const EdgeInsets.symmetric(vertical: 15),
                     backgroundColor: const Color.fromARGB(255, 55, 99, 174),

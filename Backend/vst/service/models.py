@@ -2,11 +2,6 @@ from django.db import models
 from user.models import User  # Import User model from the user app
 
 class Service(models.Model):
-    COMPLAINT_CHOICES = [
-        ('GS', 'General Service'),
-        ('WL', 'Water Leakage'),
-        ('WTB', 'Water Taste Bad'),
-    ]
 
     STATUS_CHOICES = [
         ('BD', 'Booked'),
@@ -24,9 +19,11 @@ class Service(models.Model):
 
     available = models.JSONField(blank=False, null=False)
 
+    description = models.JSONField(blank=True, null=True)
+
     customer_data = models.JSONField(blank=False, null=False)
 
-    complaint = models.CharField(max_length=255, choices=COMPLAINT_CHOICES, blank=False, null=False, default='GS')
+    complaint = models.CharField(max_length=255, blank=False, null=False)
 
     status = models.CharField(max_length=10, choices=STATUS_CHOICES, blank=False, null=False)
 
