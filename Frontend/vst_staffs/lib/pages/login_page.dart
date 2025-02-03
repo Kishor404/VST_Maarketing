@@ -101,6 +101,7 @@ class _LoginPageState extends State<LoginPage> {
             final prefs = await SharedPreferences.getInstance();
             prefs.setString('phone', phone);
             prefs.setString('password', password);
+            prefs.setString('staff_id', logData['id'].toString());
             prefs.setString('name', logData['name'] ?? 'Unavailable');
             prefs.setString('email', logData['email'] ?? 'Unavailable');
             prefs.setString('address', logData['address'] ?? 'Unavailable');
@@ -109,6 +110,7 @@ class _LoginPageState extends State<LoginPage> {
             prefs.setString('country', logData['country'] ?? 'Unavailable');
             prefs.setString('postal_code', logData['postal_code'] ?? 'Unavailable');
             prefs.setString('region', logData['region'] ?? 'Unavailable');
+            prefs.setString('role', logData['role'] ?? 'Unavailable');
             prefs.setString('AT', responseData['access_token'] ?? 'Unavailable');
             prefs.setString('RT', responseData['refresh_token'] ?? 'Unavailable');
 

@@ -4,7 +4,7 @@ import 'login_page.dart';
 import 'home_page.dart';
 import 'service_page.dart';
 import 'products_page.dart';
-import 'card_page.dart';
+import 'completed_works.dart';
 import 'profile_page.dart';
 
 
@@ -44,7 +44,7 @@ class _IndexPageState extends State<IndexPage> {
       HomePage(),
       ServicePage(),
       ProductsPage(),
-      CardPage(),
+      CompletedWorks(),
       ProfilePage(
         onNavigateToIndex: (index) {
           setState(() {
@@ -91,16 +91,16 @@ class _IndexPageState extends State<IndexPage> {
               label: 'Home',
             ),
             BottomNavigationBarItem(
-              icon: Icon(Icons.construction),
-              label: 'Service',
+              icon: Icon(Icons.layers),
+              label: 'Upcoming',
             ),
             BottomNavigationBarItem(
-              icon: Icon(Icons.shopping_bag),
-              label: 'Products',
+              icon: Icon(Icons.construction),
+              label: 'Current',
             ),
             BottomNavigationBarItem(
               icon: Icon(Icons.article),
-              label: 'Card',
+              label: 'Completed',
             ),
             BottomNavigationBarItem(
               icon: Icon(Icons.person),
