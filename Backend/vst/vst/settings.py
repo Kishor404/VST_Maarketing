@@ -43,7 +43,8 @@ INSTALLED_APPS = [
     'card',
     'user',
     'service',
-    'products'
+    'products',
+    'utils',
 ]
 
 MIDDLEWARE = [

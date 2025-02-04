@@ -11,12 +11,14 @@ Content-Type: application/json
 
 {"phone":"0000000008","password":"123"}
 
+
+
 ### =========== CUSTOMER SIGNUP API =============
 
 POST http://127.0.0.1:8000/log/customers/signup/
 Content-Type: application/json
 
-{"name":"Customer1","phone":"0000000009","password":"123","region":"IND", "role":"worker"}
+{"name":"Head1","phone":"1234567890","password":"123","region":"IND","role":"head"}
 
 ### =========== WORKER SIGNUP API =============
 
@@ -59,4 +61,41 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiY
 ### ============= SERVICE API ==========
 
 GET http://127.0.0.1:8000/services/
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzM4NjQyMTcyLCJpYXQiOjE3Mzg2NDAzNzIsImp0aSI6IjljOGNlM2EzNDJhMDRiODBhMDQ5MzE1NTViNmFmZTI1IiwidXNlcl9pZCI6MTF9.wlCt5GBtAC-p0qRr_ljr6HbbYIH-tQ7h6XH4F48Y1vo
+
+
+###
+
+POST http://127.0.0.1:8000/services/
 Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzM4NjQ1ODM1LCJpYXQiOjE3Mzg2NDQwMzUsImp0aSI6ImZlYWVlMmUyNjI2NzRjMzg5ZTQxNjhlZDIyYjY4OWY1IiwidXNlcl9pZCI6OX0.yW7YiNWnUJAyA6-7Puke3dPNrR0IDaqL6L4JguV8qbY
+
+{
+  "customer": 9,
+  "staff": 1,
+  "staff_name":"none",
+  "available": {"from": "00", "to": "90"},
+  "description": "complaintDescription",
+  "complaint": "complaintText",
+  "status": "NS"
+}
+
+###
+
+POST http://127.0.0.1:8000/utils/checkstaffavailability/
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzM4NjY2MTczLCJpYXQiOjE3Mzg2NjQzNzMsImp0aSI6ImJiNDU2MjcwNjMyOTQ0MzBiOGVmYmNiNTBjNTA2OTliIiwidXNlcl9pZCI6MTJ9.PYo14PO_fei2jUBMAp6oSRG_B5st0mIy4-NlU-ezL9s
+
+{
+  "from_date":"2025-09-21",
+  "to_date":"2025-09-22"
+}
+
+### =========== WORKER PATCH API =============
+
+PATCH http://127.0.0.1:8000/utils/updateuser/9/
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzM4NjY2NTg5LCJpYXQiOjE3Mzg2NjQ3ODksImp0aSI6IjljMjBmNmZmNTk4MzQ4ZThhNjhhNTllNmUyMmExYjI3IiwidXNlcl9pZCI6OX0.sRzdPeKQrfhIdxQLhTBwytAIPbpSvZ0hWCnj04KpdDg
+
+
+{"availability":{"unavailable": ["2025-09-21","2025-09-22"]}}

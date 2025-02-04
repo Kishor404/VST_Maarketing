@@ -8,11 +8,13 @@ class ServiceSerializer(serializers.ModelSerializer):
             'id',
             'customer',
             'staff',
+            'staff_name',
             'region',
             'available',
             'description',
             'customer_data',
             'complaint',
+            'date_of_service',
             'status',
             'created_at',
             'updated_at'

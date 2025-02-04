@@ -8,6 +8,7 @@ from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework.permissions import IsAuthenticated, AllowAny
 from rest_framework.decorators import api_view, permission_classes
 
+
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
 def protected_view(request):
@@ -79,3 +80,5 @@ class HeadOnlyView(APIView):
         if request.user.role == "head":
             return Response({"message": "Head Access Granted!"})
         return Response({"message": "Unauthorized"}, status=status.HTTP_403_FORBIDDEN)
+    
+

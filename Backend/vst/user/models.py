@@ -27,6 +27,8 @@ class User(AbstractBaseUser, PermissionsMixin):
         ("USA", "United States"),
         ("AUS", "Australia"),
     ]
+    def default_availability():
+        return {"unavailable": []} 
 
     name = models.CharField(max_length=100)
     email = models.EmailField(blank=True, null=True)
@@ -38,6 +40,11 @@ class User(AbstractBaseUser, PermissionsMixin):
     country = models.CharField(max_length=50, blank=True, null=True)
     region = models.CharField(max_length=10, choices=REGION_CHOICES)
     role = models.CharField(max_length=10, choices=ROLE_CHOICES, default="customer")
+
+    #  FOR WORKERS ONLY
+    availability=models.JSONField(default=default_availability)
+    last_service=models.CharField(default="None", max_length=50)
+
 
     is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=False)  # Required for Django admin

@@ -15,7 +15,9 @@ class Service(models.Model):
     customer = models.ForeignKey(User, on_delete=models.CASCADE, related_name="services")
     staff = models.ForeignKey(User, on_delete=models.CASCADE, related_name="servicesstaff")
 
-    region = models.CharField(max_length=50, blank=False, null=False)  # Removed choices
+    staff_name = models.CharField(max_length=255, blank=False, null=False)
+
+    region = models.CharField(max_length=50, blank=False, null=False)
 
     available = models.JSONField(blank=False, null=False)
 
@@ -24,6 +26,8 @@ class Service(models.Model):
     customer_data = models.JSONField(blank=False, null=False)
 
     complaint = models.CharField(max_length=255, blank=False, null=False)
+
+    date_of_service = models.CharField(max_length=255, blank=False, null=False, default='Service Not Done Yet')
 
     status = models.CharField(max_length=10, choices=STATUS_CHOICES, blank=False, null=False)
 
@@ -45,6 +49,8 @@ class Service(models.Model):
                 'district': self.customer.district,
                 'postal_code': self.customer.postal_code,
             }
+        if self.staff:
+            self.staff_name=self.staff.name
 
         super().save(*args, **kwargs)
 

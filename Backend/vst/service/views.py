@@ -1,14 +1,20 @@
 from rest_framework import viewsets
+from rest_framework.permissions import IsAuthenticated
 from .models import Service
 from .serializers import ServiceSerializer
-from rest_framework.permissions import AllowAny
 
 
 class ServiceViewSet(viewsets.ModelViewSet):
-    permission_classes = [AllowAny]
 
     """
     ViewSet for managing Service objects.
     """
-    queryset = Service.objects.all()
     serializer_class = ServiceSerializer
+    permission_classes = [IsAuthenticated] 
+
+    def get_queryset(self):
+        """
+        Override get_queryset to return services for the authenticated user.
+        """
+        user = self.request.user  # Extract user from the token
+        return Service.objects.filter(customer=user)

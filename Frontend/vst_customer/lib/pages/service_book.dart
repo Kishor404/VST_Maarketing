@@ -10,12 +10,16 @@ class ServiceBook extends StatefulWidget {
 }
 
 class ServiceBookState extends State<ServiceBook> {
+  String _refreshToken = '';
+  String _accessToken = '';
   DateTime? fromDate;
   DateTime? toDate;
   String? selectedComplaint;
   TextEditingController otherComplaintController = TextEditingController();
   TextEditingController complaintDetailsController = TextEditingController();
   String? _customerId;
+  final Dio _dio = Dio();
+
 
   final List<String> complaints = ["General Visit", "Water Leakage", "Water Taste Bad", "Others"];
 
@@ -23,13 +27,60 @@ class ServiceBookState extends State<ServiceBook> {
   void initState() {
     super.initState();
     _loadCustomerId();
+    _initializeData();
   }
+
+  Future<void> _initializeData() async {
+    await _loadTokens(); 
+    await _refreshAccessToken();
+  }
+
+  Future<void> _loadTokens() async {
+    final prefs = await SharedPreferences.getInstance();
+    setState(() {
+      _refreshToken = prefs.getString('RT') ?? ''; 
+      _accessToken = prefs.getString('AT') ?? ''; 
+    });
+  }
+
 
   Future<void> _loadCustomerId() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     setState(() {
       _customerId = prefs.getString('customer_id');
     });
+  }
+
+  Future<void> _refreshAccessToken() async {
+    if (_refreshToken.isEmpty) {
+      debugPrint("No refresh token found!");
+      return;
+    }
+
+    final url = 'http://127.0.0.1:8000/log/token/refresh/';
+    final requestBody = {'refresh': _refreshToken};
+
+    try {
+      final response = await _dio.post(
+        url,
+        data: requestBody,
+        options: Options(headers: {'Content-Type': 'application/json'}),
+      );
+
+      final newAccessToken = response.data['access'];
+      if (newAccessToken != null) {
+        final prefs = await SharedPreferences.getInstance();
+        await prefs.setString('AT', newAccessToken);
+
+        setState(() {
+          _accessToken = newAccessToken;
+        });
+
+        debugPrint("Access token refreshed successfully.");
+      }
+    } catch (e) {
+      debugPrint('Error refreshing token: $e');
+    }
   }
 
   Future<void> _selectDate(BuildContext context, bool isFrom) async {
@@ -75,6 +126,7 @@ class ServiceBookState extends State<ServiceBook> {
     Map<String, dynamic> requestBody = {
       "customer": int.parse(_customerId!),
       "staff": 1,
+      "staff_name":"none",
       "available": {
         "from": "${fromDate!.day}/${fromDate!.month}/${fromDate!.year}",
         "to": "${toDate!.day}/${toDate!.month}/${toDate!.year}"
@@ -91,6 +143,7 @@ class ServiceBookState extends State<ServiceBook> {
         options: Options(
           headers: {
             "Content-Type": "application/json",
+            'Authorization': 'Bearer $_accessToken',
           },
         ),
       );
