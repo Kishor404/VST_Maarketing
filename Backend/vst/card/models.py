@@ -1,4 +1,5 @@
 from django.db import models
+from user.models import User 
 
 class Card(models.Model):
     REGION_CHOICES = [
@@ -8,7 +9,7 @@ class Card(models.Model):
     ]
 
     model = models.CharField(max_length=100)
-    customer_code = models.CharField(max_length=100)
+    customer_code = models.ForeignKey(User, on_delete=models.CASCADE, related_name="cards")
     customer_name = models.CharField(max_length=255)
     region = models.CharField(max_length=255,choices=REGION_CHOICES)
     date_of_installation = models.DateField()
@@ -20,6 +21,22 @@ class Card(models.Model):
     contract_start_date = models.DateField(null=True, blank=True)
     contract_end_date = models.DateField(null=True, blank=True)
 
+    def save(self, *args, **kwargs):
+        """ Automatically set region based on customer's region and store customer data """
+        if self.customer_code:
+            self.customer_name = getattr(self.customer_code, 'name', 'Unknown')
+            
+            address_parts = [
+                getattr(self.customer_code, 'address', ''),
+                getattr(self.customer_code, 'city', ''),
+                getattr(self.customer_code, 'district', ''),
+                getattr(self.customer_code, 'postal_code', '')
+            ]
+            self.address = ",".join(filter(None, address_parts))  # Join non-empty parts
+
+        super().save(*args, **kwargs)
+
+
     def __str__(self):
         return f"{self.model} - {self.customer_code}"
 
@@ -27,6 +44,7 @@ class Card(models.Model):
 class ServiceEntry(models.Model):
     card = models.ForeignKey(Card, related_name="service_entries", on_delete=models.CASCADE)
     date = models.DateField()
+    next_service = models.DateField()
     visit_type = models.CharField(max_length=10, choices=[('I', 'Installation'), ('C', 'Complaint'), ('MS', 'Mandatory Service'), ('CS', 'Contract Service'), ('CC', 'Courtesy Call')])
     nature_of_complaint = models.TextField(null=True, blank=True)
     work_details = models.TextField()

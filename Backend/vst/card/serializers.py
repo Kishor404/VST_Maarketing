@@ -9,6 +9,7 @@ class ServiceEntrySerializer(serializers.ModelSerializer):
             'id',
             'card',
             'date',
+            'next_service',
             'visit_type',
             'nature_of_complaint',
             'work_details',

@@ -53,6 +53,7 @@ class CheckAvailabilityView(APIView):
         
         return Response({"message": "No workers available during this period"}, status=status.HTTP_200_OK)
 
+# ========== UPDATE USER ===============
 
 from rest_framework.views import APIView
 from rest_framework.response import Response
@@ -91,3 +92,49 @@ class UserUpdateView(APIView):
         
         # If the serializer isn't valid, return the error response
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+# ========== FIND NEXT SERVICE =========
+
+from datetime import date
+from rest_framework.views import APIView
+from rest_framework.response import Response
+from rest_framework.permissions import IsAuthenticated
+from card.models import Card, ServiceEntry
+from rest_framework import status
+
+
+class NextServiceView(APIView):
+    """
+    Get the latest service entry for the authenticated user's card
+    and return the next service date along with the days remaining.
+    """
+    permission_classes = [IsAuthenticated]  # Ensures only authenticated users can access this view
+
+    def get(self, request):
+        user = request.user  # Get logged-in user from access token
+
+        # Get the user's card
+        try:
+            card = Card.objects.get(customer_code=user)
+        except Card.DoesNotExist:
+            return Response({"error": "No card found for this user"}, status=status.HTTP_404_NOT_FOUND)
+
+        # Get the latest service entry for the user's card
+        latest_service = ServiceEntry.objects.filter(card=card).order_by('-date').first()
+
+        if not latest_service:
+            return Response({"error": "No service entries found for this card"}, status=status.HTTP_404_NOT_FOUND)
+
+        next_service_date = latest_service.next_service
+
+        if not next_service_date:
+            return Response({"error": "Next service date not available"}, status=status.HTTP_400_BAD_REQUEST)
+
+        # Calculate days remaining
+        today = date.today()
+        days_remaining = (next_service_date - today).days
+
+        return Response({
+            "next_service_date": next_service_date.strftime("%Y-%m-%d"),
+            "days_remaining": days_remaining
+        }, status=status.HTTP_200_OK)
