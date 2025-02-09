@@ -16,6 +16,12 @@ class IndexPage extends StatefulWidget {
 class IndexPageState extends State<IndexPage> {
   int _currentIndex = 0; // Keep track of the selected tab
 
+  void _navigateToPage(int index) {
+    setState(() {
+      _currentIndex = index; // Update BottomNavigationBar index
+    });
+  }
+  
   @override
   void initState() {
     super.initState();
@@ -41,17 +47,11 @@ class IndexPageState extends State<IndexPage> {
   Widget build(BuildContext context) {
     // Define the list of pages dynamically
     final List<Widget> pages = [
-      HomePage(),
+      HomePage(onNavigateToIndex: _navigateToPage),
       ServicePage(),
       ProductsPage(),
       CardPage(),
-      ProfilePage(
-        onNavigateToIndex: (index) {
-          setState(() {
-            _currentIndex = index; // Update the index on callback
-          });
-        },
-      ),
+      ProfilePage(onNavigateToIndex: _navigateToPage),
     ];
 
     return Scaffold(

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:dio/dio.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'data.dart';
 
 class ServiceBook extends StatefulWidget {
   const ServiceBook({super.key});
@@ -22,7 +23,7 @@ class ServiceBookState extends State<ServiceBook> {
   final Dio _dio = Dio();
 
 
-  final List<String> complaints = ["General Visit", "Water Leakage", "Water Taste Bad", "Others"];
+  List<String> complaints = ["General Visit","Others"];
 
   @override
   void initState() {
@@ -34,6 +35,20 @@ class ServiceBookState extends State<ServiceBook> {
   Future<void> _initializeData() async {
     await _loadTokens(); 
     await _refreshAccessToken();
+    await fetchData();
+  }
+
+  Future<void> fetchData() async {
+    try {
+      Response response = await _dio.get('${Data.baseUrl}/media/data.json');
+      if (response.statusCode == 200) {
+        setState(() {
+          complaints = List<String>.from(response.data['complaints'] ?? ["General Visit","Others"]);
+        });
+      }
+    } catch (e) {
+      print('Error fetching color: $e');
+    }
   }
 
   Future<void> _loadTokens() async {
@@ -58,7 +73,7 @@ class ServiceBookState extends State<ServiceBook> {
       return;
     }
 
-    final url = 'http://127.0.0.1:8000/log/token/refresh/';
+    final url =  "${Data.baseUrl}/log/token/refresh/";
     final requestBody = {'refresh': _refreshToken};
 
     try {
@@ -108,63 +123,101 @@ class ServiceBookState extends State<ServiceBook> {
   }
 
   Future<void> _bookService() async {
-    if (fromDate == null || toDate == null || selectedComplaint == null || _customerId == null) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text("Please fill all required fields")),
-      );
-      return;
-    }
-
-    String complaintText = selectedComplaint == "Others"
-        ? otherComplaintController.text
-        : selectedComplaint ?? "";
-
-    String complaintDescription = complaintDetailsController.text;
-
-    Dio dio = Dio();
-    const String apiUrl = "http://127.0.0.1:8000/services/";
-
-    Map<String, dynamic> requestBody = {
-      "customer": int.parse(_customerId!),
-      "staff": 1,
-      "staff_name":"none",
-      "available": {
-        "from": "${fromDate!.day}/${fromDate!.month}/${fromDate!.year}",
-        "to": "${toDate!.day}/${toDate!.month}/${toDate!.year}"
-      },
-      "description":complaintDescription,
-      "complaint": complaintText,
-      "status": "BD"
-    };
-
-    try {
-      Response response = await dio.post(
-        apiUrl,
-        data: requestBody,
-        options: Options(
-          headers: {
-            "Content-Type": "application/json",
-            'Authorization': 'Bearer $_accessToken',
-          },
-        ),
-      );
-
-      if (response.statusCode == 201 || response.statusCode == 200) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text("Service booked successfully!")),
-        );
-        Navigator.pop(context);
-      } else {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text("Failed to book service")),
-        );
-      }
-    } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text("Error: $e")),
-      );
-    }
+  if (fromDate == null || toDate == null || selectedComplaint == null || _customerId == null) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(content: Text("Please fill all required fields")),
+    );
+    return;
   }
+
+  String complaintText = selectedComplaint == "Others"
+      ? otherComplaintController.text
+      : selectedComplaint ?? "";
+
+  String complaintDescription = complaintDetailsController.text;
+
+  final String checkAvailabilityUrl = "${Data.baseUrl}/utils/checkstaffavailability/";
+
+  Map<String, dynamic> availabilityRequestBody = {
+    "from_date": "${fromDate!.year}-${fromDate!.month}-${fromDate!.day}",
+    "to_date": "${toDate!.year}-${toDate!.month}-${toDate!.day}"
+  };
+  try {
+    Response availabilityResponse = await _dio.post(
+      checkAvailabilityUrl,
+      data: availabilityRequestBody,
+      options: Options(
+        headers: {
+          "Content-Type": "application/json",
+          'Authorization': 'Bearer $_accessToken',
+        },
+      ),
+    );
+
+    if (availabilityResponse.data.containsKey("worker_id")) {
+      int workerId = availabilityResponse.data["worker_id"];
+      String avaDate = availabilityResponse.data["available_date"];
+      // Proceed with booking since a worker is available
+      await _confirmBooking(workerId, avaDate, complaintText, complaintDescription);
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text("No workers available during this period")),
+      );
+    }
+  } catch (e) {
+    print(e);
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(content: Text("Error checking staff availability: $e")),
+    );
+  }
+}
+
+Future<void> _confirmBooking(int workerId, String avaDate, String complaintText, String complaintDescription) async {
+  final String apiUrl = "${Data.baseUrl}/services/";
+
+  Map<String, dynamic> requestBody = {
+    "customer": int.parse(_customerId!),
+    "staff": workerId, // Assign the available worker
+    "staff_name": "Assigned Worker", // Modify based on API response
+    "available": {
+      "from": "${fromDate!.year}/${fromDate!.month}/${fromDate!.day}",
+      "to": "${toDate!.year}/${toDate!.month}/${toDate!.day}"
+    },
+    "available_date":avaDate,
+    "description": complaintDescription,
+    "complaint": complaintText,
+    "status": "BD"
+  };
+
+  try {
+    Response response = await _dio.post(
+      apiUrl,
+      data: requestBody,
+      options: Options(
+        headers: {
+          "Content-Type": "application/json",
+          'Authorization': 'Bearer $_accessToken',
+        },
+      ),
+    );
+
+    if (response.statusCode == 201 || response.statusCode == 200) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text("Service booked successfully!")),
+      );
+      Navigator.pop(context);
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text("Failed to book service")),
+      );
+    }
+  } catch (e) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(content: Text("Error: $e")),
+    );
+  }
+}
+
 
   @override
   Widget build(BuildContext context) {
@@ -192,7 +245,7 @@ class ServiceBookState extends State<ServiceBook> {
             children: [
               Center(
                 child: Image.network(
-                  'http://127.0.0.1:8000/media/utils/Service_Book.jpg',
+                   "${Data.baseUrl}media/utils/Service_Book.jpg",
                   height: 400,
                 ),
               ),

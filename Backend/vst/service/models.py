@@ -27,6 +27,8 @@ class Service(models.Model):
 
     complaint = models.CharField(max_length=255, blank=False, null=False)
 
+    available_date = models.CharField(max_length=255, blank=False, null=False)
+
     date_of_service = models.CharField(max_length=255, blank=False, null=False, default='Service Not Done Yet')
 
     status = models.CharField(max_length=10, choices=STATUS_CHOICES, blank=False, null=False)

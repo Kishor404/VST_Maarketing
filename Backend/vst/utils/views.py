@@ -8,37 +8,51 @@ from datetime import datetime
 
 # ====== AVAILABLITY CHECKER =========
 
+from datetime import datetime, timedelta
+from rest_framework.views import APIView
+from rest_framework.response import Response
+from rest_framework import status
+from django.contrib.auth import get_user_model
+
+User = get_user_model()
+
 class CheckAvailabilityView(APIView):
     
     def post(self, request):
-        from_date = request.data.get("from_date")
-        to_date = request.data.get("to_date")
+        from_date_str = request.data.get("from_date")
+        to_date_str = request.data.get("to_date")
         
-        if not from_date or not to_date:
+        if not from_date_str or not to_date_str:
             return Response({"message": "Both from_date and to_date are required"}, status=status.HTTP_400_BAD_REQUEST)
         
         try:
-            from_date = datetime.strptime(from_date, "%Y-%m-%d").date()
-            to_date = datetime.strptime(to_date, "%Y-%m-%d").date()
+            from_date = datetime.strptime(from_date_str, "%Y-%m-%d").date()
+            to_date = datetime.strptime(to_date_str, "%Y-%m-%d").date()
         except ValueError:
             return Response({"message": "Invalid date format. Use YYYY-MM-DD."}, status=status.HTTP_400_BAD_REQUEST)
         
-        # Get all workers
         workers = User.objects.filter(role="worker")
-        available_workers = []
         
-        for worker in workers:
-            unavailable_dates = worker.availability.get("unavailable", [])
-            if not any(from_date <= datetime.strptime(date, "%Y-%m-%d").date() <= to_date for date in unavailable_dates):
-                available_workers.append(worker)
+        for check_date in (from_date + timedelta(days=i) for i in range((to_date - from_date).days + 1)):
+            available_workers = []
+            
+            for worker in workers:
+                unavailable_dates = worker.availability.get("unavailable", [])
+                unavailable_dates = {datetime.strptime(date, "%Y-%m-%d").date() for date in unavailable_dates}
+                
+                if check_date not in unavailable_dates:
+                    available_workers.append(worker)
+            
+            if available_workers:
+                selected_worker = min(
+                    available_workers,
+                    key=lambda w: datetime.strptime(w.last_service, "%Y-%m-%d").date() if w.last_service and w.last_service != "None" else datetime.min.date()
+                )
+                
+                return Response({"worker_id": selected_worker.id, "available_date": check_date.strftime("%Y-%m-%d")}, status=status.HTTP_200_OK)
         
-        if not available_workers:
-            return Response({"message": "No workers available during this period"}, status=status.HTTP_404_NOT_FOUND)
-        
-        # Find the worker with the earliest last service date
-        selected_worker = min(available_workers, key=lambda w: datetime.strptime(w.last_service, "%Y-%m-%d").date() if w.last_service and w.last_service != "None" else datetime.min.date())
-        
-        return Response({"worker_id": selected_worker.id}, status=status.HTTP_200_OK)
+        return Response({"message": "No workers available during this period"}, status=status.HTTP_200_OK)
+
 
 from rest_framework.views import APIView
 from rest_framework.response import Response

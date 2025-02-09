@@ -15,6 +15,7 @@ class ServiceSerializer(serializers.ModelSerializer):
             'customer_data',
             'complaint',
             'date_of_service',
+            'available_date',
             'status',
             'created_at',
             'updated_at'
