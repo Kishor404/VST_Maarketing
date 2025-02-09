@@ -11,7 +11,7 @@ class ServicePage extends StatefulWidget {
 
 class ServicePageState extends State<ServicePage> {
   String lastServiceDate = "No Service Data";
-  String serviceMan = "No Service Data";
+  String nextService = "No Service Data";
   String visitType = "No Service Data";
 
   String _refreshToken = '';
@@ -35,6 +35,7 @@ class ServicePageState extends State<ServicePage> {
   Future<void> _initializeData() async {
     await _loadTokens(); 
     await _refreshAccessToken();  
+    await fetchNextService();
     await fetchServices();
     await fetchServiceDetails();
   }
@@ -112,13 +113,46 @@ class ServicePageState extends State<ServicePage> {
     }
   }
 
+  Future<void> fetchNextService() async {
+    if (_accessToken.isEmpty) {
+      debugPrint("No access token available. Cannot fetch services.");
+      return;
+    }
+
+    try {
+      final response = await _dio.get(
+        'http://127.0.0.1:8000/utils/next-service/',
+        options: Options(headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer $_accessToken',
+        }),
+      );
+      print(response.data);
+
+      setState(() {
+        nextService = response.data["days_remaining"].toString();
+        isLoading = false;
+      });
+    } catch (e) {
+      if (e is DioException && e.response?.statusCode == 401) {
+        debugPrint("Access token expired. Refreshing token...");
+        await _refreshAccessToken();
+        return fetchServices(); // Retry fetching after token refresh
+      }
+
+      setState(() {
+        isLoading = false;
+      });
+      debugPrint('Error fetching services: $e');
+    }
+  }
+
   Future<void> fetchServiceDetails() async{
     // Simulate a backend call
     for(int i=0;i<services.length;i++){
       if(services[i]["status"]=="SD"){
         setState(() {
           lastServiceDate = services[i]["date_of_service"];
-          serviceMan = services[i]['staff_name'];
           visitType = services[i]['complaint'];
         });
       }
@@ -174,11 +208,11 @@ class ServicePageState extends State<ServicePage> {
                     style: const TextStyle(fontSize: 16.0, color: Colors.white),
                   ),
                   Text(
-                    'Last Service By: $serviceMan',
+                    'Last Visit Type: $visitType',
                     style: const TextStyle(fontSize: 16.0, color: Colors.white),
                   ),
                   Text(
-                    'Next Service In: $visitType Days',
+                    'Next Service In: $nextService Days',
                     style: const TextStyle(fontSize: 16.0, color: Colors.white),
                   ),
                 ],
