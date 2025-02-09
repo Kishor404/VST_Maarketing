@@ -5,13 +5,13 @@ import 'login_page.dart';
 class ProfilePage extends StatefulWidget {
   final Function(int) onNavigateToIndex; // Callback to update index in IndexPage
 
-  ProfilePage({required this.onNavigateToIndex});
+  ProfilePage({super.key, required this.onNavigateToIndex});
 
   @override
-  _ProfilePageState createState() => _ProfilePageState();
+  ProfilePageState createState() => ProfilePageState();
 }
 
-class _ProfilePageState extends State<ProfilePage> {
+class ProfilePageState extends State<ProfilePage> {
   String _phone = '';
   String _name = '';
   String _customerid = '';

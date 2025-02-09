@@ -3,7 +3,8 @@ import 'package:dio/dio.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class ServiceBook extends StatefulWidget {
-  const ServiceBook({Key? key}) : super(key: key);
+  const ServiceBook({super.key});
+
 
   @override
   ServiceBookState createState() => ServiceBookState();

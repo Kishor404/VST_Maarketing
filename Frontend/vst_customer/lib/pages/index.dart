@@ -8,11 +8,12 @@ import 'card_page.dart';
 import 'profile_page.dart';
 
 class IndexPage extends StatefulWidget {
+  const IndexPage({super.key});
   @override
-  _IndexPageState createState() => _IndexPageState();
+  IndexPageState createState() => IndexPageState();
 }
 
-class _IndexPageState extends State<IndexPage> {
+class IndexPageState extends State<IndexPage> {
   int _currentIndex = 0; // Keep track of the selected tab
 
   @override
@@ -39,7 +40,7 @@ class _IndexPageState extends State<IndexPage> {
   @override
   Widget build(BuildContext context) {
     // Define the list of pages dynamically
-    final List<Widget> _pages = [
+    final List<Widget> pages = [
       HomePage(),
       ServicePage(),
       ProductsPage(),
@@ -67,7 +68,7 @@ class _IndexPageState extends State<IndexPage> {
           elevation: 0,
         ),
       ),
-      body: _pages[_currentIndex], // Display the current page based on selected tab
+      body: pages[_currentIndex], // Display the current page based on selected tab
       bottomNavigationBar: Container(
         height: 70,
         decoration: BoxDecoration(

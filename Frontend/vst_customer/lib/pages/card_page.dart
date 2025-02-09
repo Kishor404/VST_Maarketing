@@ -7,10 +7,10 @@ class CardPage extends StatefulWidget {
   const CardPage({super.key});
 
   @override
-  _CardPageState createState() => _CardPageState();
+  CardPageState createState() => CardPageState();
 }
 
-class _CardPageState extends State<CardPage> {
+class CardPageState extends State<CardPage> {
   String _refreshToken = '';
   String _accessToken = '';
   List<Map<String, dynamic>> cardData = [];

@@ -4,11 +4,12 @@ import 'index.dart';
 import 'package:dio/dio.dart';  // Import Dio
 
 class LoginPage extends StatefulWidget {
+  const LoginPage({super.key});
   @override
-  _LoginPageState createState() => _LoginPageState();
+  LoginPageState createState() => LoginPageState();
 }
 
-class _LoginPageState extends State<LoginPage> {
+class LoginPageState extends State<LoginPage> {
   bool _isLogin = true; // Toggle between login and signup
 
   final urlDomain="127.0.0.1:8000";
@@ -162,7 +163,6 @@ class _LoginPageState extends State<LoginPage> {
         if (response.statusCode == 200) {
           // Successfully logged in
           final responseData = response.data;
-          print('Response Data: $responseData');
 
           // Check if the 'login' field is 1 (login successful)
           if (responseData['login'] == 1) {
@@ -196,12 +196,10 @@ class _LoginPageState extends State<LoginPage> {
           }
         } else {
           // Handle failure (wrong credentials or server error)
-          print('Login failed. Please check your credentials.');
           _showError('Login failed. Please check your credentials.');
         }
       } catch (e) {
         // Handle any exceptions (e.g., network issues)
-        print('An error occurred: $e');
         _showError('An error occurred. Please try again later.');
       }
     } else {
@@ -243,8 +241,8 @@ class _LoginPageState extends State<LoginPage> {
 
         if (response.statusCode == 201) {
           // Signup successful
-          final responseData = response.data;
-          print('Response Data: $responseData');
+          // final responseData = response.data;
+          // print('Response Data: $responseData');
 
           // Save signup info to SharedPreferences
           final prefs = await SharedPreferences.getInstance();
@@ -265,7 +263,6 @@ class _LoginPageState extends State<LoginPage> {
         }
       } catch (e) {
         // Handle any exceptions (e.g., network issues)
-        print('An error occurred: $e');
         _showError('An error occurred. Please try again later.');
       }
     } else {

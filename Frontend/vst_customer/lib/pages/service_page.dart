@@ -4,11 +4,12 @@ import 'package:dio/dio.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class ServicePage extends StatefulWidget {
+  const ServicePage({super.key});
   @override
-  _ServicePageState createState() => _ServicePageState();
+  ServicePageState createState() => ServicePageState();
 }
 
-class _ServicePageState extends State<ServicePage> {
+class ServicePageState extends State<ServicePage> {
   String lastServiceDate = "No Service Data";
   String serviceMan = "No Service Data";
   String visitType = "No Service Data";

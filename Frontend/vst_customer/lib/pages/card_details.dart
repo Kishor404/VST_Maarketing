@@ -3,7 +3,8 @@ import 'package:flutter/material.dart';
 class CardDetailsPage extends StatefulWidget {
   final Map<String, dynamic> cardData;
 
-  const CardDetailsPage({Key? key, required this.cardData}) : super(key: key);
+  // const CardDetailsPage({Key? key, required this.cardData}) : super(key: key);
+  const CardDetailsPage({super.key, required this.cardData});
 
   @override
   State<CardDetailsPage> createState() => _CardDetailsPageState();
