@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'login_page.dart';
 import 'home_page.dart';
-import 'service_page.dart';
-import 'products_page.dart';
+import 'upcoming_works.dart';
+import 'current_works_details.dart';
 import 'completed_works.dart';
 import 'profile_page.dart';
 
@@ -21,7 +21,7 @@ class _IndexPageState extends State<IndexPage> {
       _currentIndex = index; // Update BottomNavigationBar index
     });
   }
-  
+
   @override
   void initState() {
     super.initState();
@@ -48,8 +48,8 @@ class _IndexPageState extends State<IndexPage> {
     // Define the list of pages dynamically
     final List<Widget> _pages = [
       HomePage(onNavigateToIndex: _navigateToPage),
-      ServicePage(),
-      ProductsPage(),
+      UpcomingWorks(),
+      CurrentWorksDetails(),
       CompletedWorks(),
       ProfilePage(
         onNavigateToIndex: (index) {
