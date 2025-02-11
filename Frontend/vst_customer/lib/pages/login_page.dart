@@ -49,20 +49,49 @@ class LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text(_isLogin ? 'Login' : 'Sign Up'),
-      ),
       body: Padding(
-        padding: const EdgeInsets.all(16.0),
+        padding: const EdgeInsets.all(64.0),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
+            Center(
+              child: Image.asset('assets/logoindex.jpg', width: 250),
+            ),
+            SizedBox(height: 40),
+            if(_isLogin)
+            Align(
+              alignment: Alignment.center,
+              child: Text(
+                "Login To Your Account",
+                style: TextStyle(
+                  fontSize: 20,
+                ),
+              ),
+            ),
+            if(!_isLogin)
+            Align(
+              alignment: Alignment.center,
+              child: Text(
+                "Create An New Account",
+                style: TextStyle(
+                  fontSize: 20,
+                ),
+              ),
+            ),
+            
+            SizedBox(height: 20),
             if (!_isLogin) // Show only during signup
               TextField(
                 controller: _nameController,
                 decoration: InputDecoration(
-                  labelText: 'Name',
-                  border: OutlineInputBorder(),
+                  hintText: 'Name',
+                  filled: true,
+                  fillColor: const Color.fromARGB(255, 238, 238, 238),
+                  hintStyle: TextStyle(color: Colors.grey),
+                  border: OutlineInputBorder(
+                    borderSide: BorderSide.none, // Hides the border
+                    borderRadius: BorderRadius.circular(10), // Adds rounded corners
+                  ),
                 ),
               ),
             if (!_isLogin)
@@ -70,8 +99,14 @@ class LoginPageState extends State<LoginPage> {
             if (!_isLogin) // Region Dropdown with Label
               InputDecorator(
                 decoration: InputDecoration(
-                  labelText: 'Region', // Label for the Region dropdown
-                  border: OutlineInputBorder(),
+                  hintText: 'Region',
+                  filled: true,
+                  fillColor: const Color.fromARGB(255, 238, 238, 238),
+                  hintStyle: TextStyle(color: Colors.grey),
+                  border: OutlineInputBorder(
+                    borderSide: BorderSide.none, // Hides the border
+                    borderRadius: BorderRadius.circular(10), // Adds rounded corners
+                  ),
                 ),
                 child: DropdownButton<String>(
                   isExpanded: true,
@@ -95,8 +130,14 @@ class LoginPageState extends State<LoginPage> {
             TextField(
               controller: _phoneController,
               decoration: InputDecoration(
-                labelText: 'Phone Number',
-                border: OutlineInputBorder(),
+                hintText: 'Phone Number',
+                filled: true,
+                fillColor: const Color.fromARGB(255, 238, 238, 238),
+                hintStyle: TextStyle(color: Colors.grey),
+                border: OutlineInputBorder(
+                  borderSide: BorderSide.none, // Hides the border
+                  borderRadius: BorderRadius.circular(10), // Adds rounded corners
+                ),
               ),
               keyboardType: TextInputType.phone,
             ),
@@ -104,8 +145,14 @@ class LoginPageState extends State<LoginPage> {
             TextField(
               controller: _passwordController,
               decoration: InputDecoration(
-                labelText: 'Password',
-                border: OutlineInputBorder(),
+                hintText: 'Password',
+                filled: true,
+                fillColor: const Color.fromARGB(255, 238, 238, 238),
+                hintStyle: TextStyle(color: Colors.grey),
+                border: OutlineInputBorder(
+                  borderSide: BorderSide.none, // Hides the border
+                  borderRadius: BorderRadius.circular(10), // Adds rounded corners
+                ),
               ),
               obscureText: true,
             ),
@@ -118,8 +165,21 @@ class LoginPageState extends State<LoginPage> {
                   _signUp();
                 }
               },
-              child: Text(_isLogin ? 'Login' : 'Sign Up'),
+              style: ElevatedButton.styleFrom(
+                backgroundColor: const Color.fromARGB(255, 55, 99, 174), // Button color
+                foregroundColor: Colors.white, // Text color
+                padding: EdgeInsets.symmetric(horizontal: 64, vertical: 18), // Button size
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(12), // Rounded corners
+                ),
+                elevation: 5, // Shadow effect
+              ),
+              child: Text(
+                _isLogin ? 'Login' : 'Sign Up',
+                style: TextStyle(fontSize: 16), // Text styling
+              ),
             ),
+            SizedBox(height: 20),
             TextButton(
               onPressed: () {
                 setState(() {

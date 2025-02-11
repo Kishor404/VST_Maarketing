@@ -89,13 +89,41 @@ class HomePage extends StatelessWidget {
 
             // Bottom banner
             Expanded(
-              child: Container(
-                decoration: BoxDecoration(
-                  color: Colors.grey[300],
-                  borderRadius: BorderRadius.circular(10),
-                ),
+  child: Container(
+    decoration: BoxDecoration(
+      color: Colors.grey[300],
+      borderRadius: BorderRadius.circular(10),
+    ),
+    child: Center(
+      child: SizedBox(
+        width: 400, // Adjust width as needed
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Text(
+              '"I will love the light for it shows me the way, yet I will endure the darkness because it shows me the stars."', // Replace with your quote
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                fontSize: 14, // Decrease font size for smaller text
+                fontStyle: FontStyle.italic,
+                color: Colors.black87,
               ),
             ),
+            SizedBox(height: 8),
+            Text(
+              '- OG MANDINO', // Replace with author's name
+              style: TextStyle(
+                fontSize: 12, // Decrease font size for author
+                fontWeight: FontWeight.bold,
+                color: Colors.black54,
+              ),
+            ),
+          ],
+        ),
+      ),
+    ),
+  ),
+            )
           ],
         ),
       ),
