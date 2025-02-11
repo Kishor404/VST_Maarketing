@@ -1,11 +1,12 @@
 from django.db import models
 from user.models import User  # Import User model from the user app
+from card.models import Card # Import User model from the user app
+from django.core.exceptions import ValidationError
 
 class Service(models.Model):
 
     STATUS_CHOICES = [
         ('BD', 'Booked'),
-        ('SP', 'Service Period'),
         ('SD', 'Serviced'),
         ('NS', 'Not Serviced'),
         ('CC', 'Service Cancelled By Customer'),
@@ -14,21 +15,21 @@ class Service(models.Model):
 
     customer = models.ForeignKey(User, on_delete=models.CASCADE, related_name="services")
     staff = models.ForeignKey(User, on_delete=models.CASCADE, related_name="servicesstaff")
+    card = models.ForeignKey(Card, on_delete=models.CASCADE, related_name="card")
+
+    rating = models.CharField(max_length=255, default="1")
+    feedback = models.CharField(max_length=255, blank=True, null=True)
 
     staff_name = models.CharField(max_length=255, blank=False, null=False)
+    customer_data = models.JSONField(blank=False, null=False)
 
     region = models.CharField(max_length=50, blank=False, null=False)
 
-    available = models.JSONField(blank=False, null=False)
-
-    description = models.JSONField(blank=True, null=True)
-
-    customer_data = models.JSONField(blank=False, null=False)
-
     complaint = models.CharField(max_length=255, blank=False, null=False)
+    description = models.CharField(max_length=255, blank=True, null=True)
 
+    available = models.JSONField(blank=False, null=False)
     available_date = models.CharField(max_length=255, blank=False, null=False)
-
     date_of_service = models.CharField(max_length=255, blank=False, null=False, default='Service Not Done Yet')
 
     status = models.CharField(max_length=10, choices=STATUS_CHOICES, blank=False, null=False)
@@ -53,6 +54,10 @@ class Service(models.Model):
             }
         if self.staff:
             self.staff_name=self.staff.name
+        
+        if self.card and self.customer:
+            if self.card.customer_code.id != self.customer.id:  # Assuming customer_code stores the customer's ID
+                raise ValidationError("The customer associated with this service must match the customer_code in the card.")
 
         super().save(*args, **kwargs)
 

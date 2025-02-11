@@ -49,7 +49,7 @@ Content-Type: application/json
 ### =============== CARD API ============
 
 GET http://127.0.0.1:8000/api/cards/
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzM4MzM4NzYzLCJpYXQiOjE3MzgzMzY5NjMsImp0aSI6IjA3NGRkYWFjMmI5ZDQwMDI5MzdhNThlNzllOWIyNDhmIiwidXNlcl9pZCI6OH0.T02AzFhB4x-ElmSJmp_c2-Nnp_uUftwRuGPSWsCUvYw
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzM5MjczNzUzLCJpYXQiOjE3MzkyNzE5NTMsImp0aSI6ImYwMDI5YzMxYzcwMTQ2ZjU5Y2JlNGVhZjNhMDEyYjUzIiwidXNlcl9pZCI6OX0.SC5Gyoltj4SrbGTGn7LRkfn85RzKOGSkuR4kHfgvHKw
 
 
 ### ============= SERVICE ENTRIE ON CARD API ==========
@@ -104,3 +104,9 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiY
 
 
 {"availability":{"unavailable": ["2025-09-21","2025-09-22"]}}
+
+
+### ========= STAFF SERVICE ===========
+
+GET http://127.0.0.1:8000/utils/staffservice/
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzM5MjU3MzkxLCJpYXQiOjE3MzkyNTU1OTEsImp0aSI6ImEwYzA1MWIzNjM4YzQwYTY4ZWUyNjczZjcyOTk4OGM5IiwidXNlcl9pZCI6MTB9.Wh8VSzKuGvN7m3LnYuTb0njAE9eH1hmrqj33y36ZgIg

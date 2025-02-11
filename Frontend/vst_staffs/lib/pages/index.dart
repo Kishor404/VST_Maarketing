@@ -49,7 +49,7 @@ class _IndexPageState extends State<IndexPage> {
     final List<Widget> _pages = [
       HomePage(onNavigateToIndex: _navigateToPage),
       UpcomingWorks(),
-      CurrentWorksDetails(),
+      CurrentWork(),
       CompletedWorks(),
       ProfilePage(
         onNavigateToIndex: (index) {

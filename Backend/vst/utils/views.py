@@ -138,3 +138,61 @@ class NextServiceView(APIView):
             "next_service_date": next_service_date.strftime("%Y-%m-%d"),
             "days_remaining": days_remaining
         }, status=status.HTTP_200_OK)
+
+
+# ======== GET UPCOMING SERVICE =============
+
+from rest_framework.views import APIView
+from rest_framework.response import Response
+from rest_framework.permissions import IsAuthenticated
+from service.models import Service
+from service.serializers import ServiceSerializer
+
+class UpcomingServiceView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        
+        user = request.user  
+        
+        services = Service.objects.filter(staff=user, status='BD')
+        
+        serializer = ServiceSerializer(services, many=True)
+        return Response(serializer.data, status=200)
+    
+
+# ======== GET CURRENT SERVICE ===========
+
+from django.utils.timezone import now  # Import the timezone-aware "now" function
+
+class CurrentServiceView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        user = request.user  
+        current_date = now().date()
+
+        services = Service.objects.filter(staff=user, status='BD', available_date=current_date)
+        
+        serializer = ServiceSerializer(services, many=True)
+        return Response(serializer.data, status=200)
+
+# ======== GET COMPLETED SERVICE =============
+
+from rest_framework.views import APIView
+from rest_framework.response import Response
+from rest_framework.permissions import IsAuthenticated
+from service.models import Service
+from service.serializers import ServiceSerializer
+
+class CompletedServiceView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        
+        user = request.user  
+        
+        services = Service.objects.filter(staff=user, status='SD')
+        
+        serializer = ServiceSerializer(services, many=True)
+        return Response(serializer.data, status=200)

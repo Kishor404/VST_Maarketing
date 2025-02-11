@@ -8,6 +8,7 @@ class ServiceSerializer(serializers.ModelSerializer):
             'id',
             'customer',
             'staff',
+            'card',
             'staff_name',
             'region',
             'available',
@@ -17,6 +18,8 @@ class ServiceSerializer(serializers.ModelSerializer):
             'date_of_service',
             'available_date',
             'status',
+            'feedback',
+            'rating',
             'created_at',
             'updated_at'
         ]

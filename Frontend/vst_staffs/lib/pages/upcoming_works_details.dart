@@ -31,46 +31,44 @@ class UpcomingServiceDetails extends StatelessWidget {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Text('Service ID: ${service['service_id']}',
+                    Text('Service ID: ${service['id']}',
                         style: const TextStyle(
                             fontSize: 18, color: Color.fromARGB(255, 55, 99, 174))),
                   ],
                 ),
+                Text('Card ID : ${service['card']},',
+                    style: const TextStyle(fontSize: 18)),
+
                 const SizedBox(height: 8),
 
-                /// **Card ID**
-                Text('Card ID: ${service['card_id']}',
-                    style: const TextStyle(fontSize: 18)),
-                const SizedBox(height: 16),
-
                 /// **User Information**
-                Text('${service['name']},',
+                Text('${service['customer_data']['name']},',
                     style: const TextStyle(fontSize: 18)),
-                Text('${service['address_line1']},',
+                Text('${service['customer_data']['address']},',
                     style: const TextStyle(fontSize: 18)),
-                Text('${service['city']},',
+                Text('${service['customer_data']['city']},',
                     style: const TextStyle(fontSize: 16)),
-                Text('${service['district']}.',
+                Text('${service['customer_data']['district']}.',
                     style: const TextStyle(fontSize: 18)),
                 const SizedBox(height: 16),
 
                 /// **Contact Details**
-                Text('Phone: ${service['phone']}',
+                Text('Phone: ${service['customer_data']['phone']}',
                     style: const TextStyle(fontSize: 18)),
-                Text('Email: ${service['email']}',
+                Text('Email: ${service['customer_data']['email']}',
                     style: const TextStyle(fontSize: 18)),
                 const SizedBox(height: 16),
 
                 /// **Service Details**
-                Text('Visit Type: ${service['visit_type']}',
-                    style: const TextStyle(fontSize: 18)),
                 Text('Complaint: ${service['complaint']}',
+                    style: const TextStyle(fontSize: 18)),
+                Text('Description: ${service['description']}',
                     style: const TextStyle(fontSize: 18)),
                 const SizedBox(height: 16),
 
-                Text('Service Date: ${service['date']}',
+                Text('Service Date: ${service['available_date']}',
                     style: const TextStyle(fontSize: 18, color: Color.fromARGB(255, 55, 99, 174))),
-                Text('Date Of Booking: ${service['date_of_booking']}',
+                Text('Date Of Booking: ${service['created_at'].toString().split("T")[0]}',
                     style: const TextStyle(fontSize: 18)),
                 const SizedBox(height: 36),
 
