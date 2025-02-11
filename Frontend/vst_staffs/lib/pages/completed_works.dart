@@ -1,48 +1,55 @@
 import 'package:flutter/material.dart';
+import 'completed_works_details.dart';
 
 class CompletedWorks extends StatelessWidget {
   final List<Map<String, dynamic>> services = [
-    {
-      "service_id": 563,
-      "card_id": 235,
-      "visit_type": "General Service",
-      "date": "08/06/2025",
-      "rating": 3.5
+     {
+      'date':'00/90/1212',
+      'service_id': '353',
+      'card_id': '142',
+      'name': 'Unknown Name',
+      'address_line1': '00, Street Name',
+      'city': 'City Name',
+      'district': 'District Name',
+      'phone': '+91 0000000000',
+      'email': 'unknown@gmail.com',
+      'visit_type': 'Complaint',
+      'complaint': 'Water Leakage',
+      'rating': 4,
+      'feedback': 'The Service was very Good and Awesome',
+      'verified': 0
     },
     {
-      "service_id": 268,
-      "card_id": 235,
-      "visit_type": "General Service",
-      "date": "08/06/2025",
-      "rating": 4.0
+      'date':'00/90/1212',
+      'service_id': '404',
+      'card_id': '420',
+      'name': 'Unknown Name',
+      'address_line1': '00, Street Name',
+      'city': 'City Name',
+      'district': 'District Name',
+      'phone': '+91 0000000000',
+      'email': 'unknown@gmail.com',
+      'visit_type': 'Complaint',
+      'complaint': 'Water Leakage',
+      'rating': 4,
+      'feedback': '',
+      'verified': 1
     },
     {
-      "service_id": 112,
-      "card_id": 235,
-      "visit_type": "General Service",
-      "date": "08/06/2025",
-      "rating": 5.0
-    },
-    {
-      "service_id": 563,
-      "card_id": 235,
-      "visit_type": "General Service",
-      "date": "08/06/2025",
-      "rating": 3.5
-    },
-    {
-      "service_id": 268,
-      "card_id": 235,
-      "visit_type": "General Service",
-      "date": "08/06/2025",
-      "rating": 4.0
-    },
-    {
-      "service_id": 112,
-      "card_id": 235,
-      "visit_type": "General Service",
-      "date": "08/06/2025",
-      "rating": 5.0
+      'date':'00/90/1212',
+      'service_id': '007',
+      'card_id': '999',
+      'name': 'Unknown Name',
+      'address_line1': '00, Street Name',
+      'city': 'City Name',
+      'district': 'District Name',
+      'phone': '+91 0000000000',
+      'email': 'unknown@gmail.com',
+      'visit_type': 'Complaint',
+      'complaint': 'Water Leakage',
+      'rating': 4,
+      'feedback': '',
+      'verified': 1
     },
   ];
 
@@ -82,55 +89,66 @@ class CompletedCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(10),
-        side: const BorderSide(color: Color.fromRGBO(55, 99, 174, 1), width: 2),
-      ),
-      margin: const EdgeInsets.symmetric(vertical: 12),
-      elevation: 3,
-      child: Column(
-        children: [
-          Container(
-            decoration: const BoxDecoration(
-              color: Color.fromRGBO(55, 99, 174, 1),
-              borderRadius: BorderRadius.vertical(top: Radius.circular(10)),
-            ),
-            padding: const EdgeInsets.all(8),
-            child: Center(
-              child: Text(
-                'Service ID : ${service["service_id"]}',
-                style: const TextStyle(
-                    color: Colors.white,
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold),
+    return GestureDetector(
+      onTap: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => CompletedServiceDetails(service: service),
+          ),
+        );
+      },
+      child: Card(
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(10),
+          side: const BorderSide(color: Color.fromRGBO(55, 99, 174, 1), width: 2),
+        ),
+        margin: const EdgeInsets.symmetric(vertical: 12),
+        elevation: 3,
+        child: Column(
+          children: [
+            Container(
+              decoration: const BoxDecoration(
+                color: Color.fromRGBO(55, 99, 174, 1),
+                borderRadius: BorderRadius.vertical(top: Radius.circular(10)),
+              ),
+              padding: const EdgeInsets.all(8),
+              child: Center(
+                child: Text(
+                  'Service ID : ${service["service_id"]}',
+                  style: const TextStyle(
+                      color: Colors.white,
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold),
+                ),
               ),
             ),
-          ),
-          Padding(
-            padding: const EdgeInsets.all(15.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Text('Card ID : ${service["card_id"]}',
-                    style: const TextStyle(
-                        fontSize: 16, color: Color.fromRGBO(55, 99, 174, 1))),
-                Text('Visit Type : ${service["visit_type"]}',
-                    style: const TextStyle(
-                        fontSize: 16, color: Color.fromRGBO(55, 99, 174, 1))),
-                Text('Date : ${service["date"]}',
-                    style: const TextStyle(
-                        fontSize: 16, color: Color.fromRGBO(55, 99, 174, 1))),
-                const SizedBox(height: 8),
-                StarRating(rating: (service["rating"] as num).toDouble()),
-              ],
+            Padding(
+              padding: const EdgeInsets.all(15.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Text('Card ID : ${service["card_id"]}',
+                      style: const TextStyle(
+                          fontSize: 16, color: Color.fromRGBO(55, 99, 174, 1))),
+                  Text('Visit Type : ${service["visit_type"]}',
+                      style: const TextStyle(
+                          fontSize: 16, color: Color.fromRGBO(55, 99, 174, 1))),
+                  Text('Date : ${service["date"]}',
+                      style: const TextStyle(
+                          fontSize: 16, color: Color.fromRGBO(55, 99, 174, 1))),
+                  const SizedBox(height: 8),
+                  StarRating(rating: (service["rating"] as num).toDouble()),
+                ],
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
 }
+
 
 class StarRating extends StatelessWidget {
   final double rating;
