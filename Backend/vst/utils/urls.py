@@ -1,5 +1,13 @@
 from django.urls import path
-from .views import (CheckAvailabilityView, UserUpdateView, NextServiceView, UpcomingServiceView, CurrentServiceView, CompletedServiceView)
+from .views import (
+    CheckAvailabilityView, 
+    UserUpdateView, 
+    NextServiceView, 
+    UpcomingServiceView, 
+    CurrentServiceView, 
+    CompletedServiceView,
+    GetUserByID
+    )
 
 urlpatterns = [
     # User authentication endpoints
@@ -9,4 +17,5 @@ urlpatterns = [
     path('upcomingservice/', UpcomingServiceView.as_view(), name='upcoming-service-info'),
     path('currentservice/', CurrentServiceView.as_view(), name='current-service-info'),
     path('completedservice/', CompletedServiceView.as_view(), name='completed-service-info'),
+    path('getuserbyid/<int:id>', GetUserByID.as_view(), name='get-user'),
 ]

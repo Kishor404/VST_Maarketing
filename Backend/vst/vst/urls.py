@@ -10,6 +10,7 @@ urlpatterns = [
     path('services/', include('service.urls')), 
     path('products/', include('products.urls')), 
     path('utils/', include('utils.urls')), 
+    path('editreq/', include('editReq.urls')), 
 ]
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

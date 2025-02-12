@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'edit_user.dart';
 
 class HomePage extends StatelessWidget {
   final Function(int) onNavigateToIndex; 
@@ -12,7 +13,7 @@ class HomePage extends StatelessWidget {
     // Define icons and labels for the buttons
     final List<Map<String, dynamic>> buttonData = [
       {'icon': Icons.layers, 'label': 'Upcoming', 'onTap': () => onNavigateToIndex(1)},
-      {'icon': Icons.phone, 'label': 'Contact', 'onTap': () => print('Cart tapped')},
+      {'icon': Icons.people_outline_outlined, 'label': 'Edit User', 'onTap': () => Navigator.push(context, MaterialPageRoute(builder: (context) => EditUserPage()),),},
       {'icon': Icons.article, 'label': 'Completed', 'onTap': () => onNavigateToIndex(3)},
       {'icon': Icons.settings, 'label': 'Settings', 'onTap': () => print('Settings tapped')},
       {'icon': Icons.notifications, 'label': 'Alerts', 'onTap': () => print('Alerts tapped')},

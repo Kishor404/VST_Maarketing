@@ -38,6 +38,7 @@ dependencies:
   dio: ^5.1.0
 
 dev_dependencies:
+  flutter_native_splash: ^2.3.9
   flutter_test:
     sdk: flutter
 
@@ -55,11 +56,8 @@ dev_dependencies:
 flutter:
   assets:
     - assets/fonts/
-    - assets/products/
     - assets/logo.png
     - assets/logoindex.jpg
-    - assets/banners/
-    - assets/service_illus.jpg
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in
   # the material Icons class.
@@ -101,3 +99,9 @@ flutter:
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/to/font-from-package
+
+flutter_native_splash:
+  color: "#ffffff"  # Background color
+  image: assets/splash.png  # Splash image (optional)
+  android: true
+  ios: true

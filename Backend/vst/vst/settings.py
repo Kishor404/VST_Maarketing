@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     'service',
     'products',
     'utils',
+    'editReq',
 ]
 
 MIDDLEWARE = [
