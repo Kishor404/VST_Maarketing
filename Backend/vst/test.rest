@@ -18,7 +18,7 @@ Content-Type: application/json
 POST http://127.0.0.1:8000/log/customers/signup/
 Content-Type: application/json
 
-{"name":"Head1","phone":"1234567890","password":"123","region":"IND","role":"head"}
+{"name":"Admin1","phone":"7418081727","password":"123","region":"IND","role":"admin"}
 
 ### =========== WORKER SIGNUP API =============
 

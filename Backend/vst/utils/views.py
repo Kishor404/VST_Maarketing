@@ -235,3 +235,32 @@ class GetUserByID(APIView):
         serializer = UserSerializer(user)
 
         return Response(serializer.data, status=status.HTTP_200_OK)
+
+
+# ============ GET COUNT FOR DASHBOARD =========
+
+# views.py
+from rest_framework.views import APIView
+from rest_framework.response import Response
+from rest_framework.exceptions import PermissionDenied
+from user.models import User
+
+class RoleCountView(APIView):
+
+    def get(self, request, *args, **kwargs):
+        # Check if the user has the 'admin' role in the access token
+        if request.user.role != 'admin':  # Adjust based on your actual role attribute
+            raise PermissionDenied("You do not have permission to access this resource.")
+        
+        # Get the counts of users with specific roles
+        user_count = User.objects.filter(role='user').count()  # Adjust based on your model's role field
+        staff_count = User.objects.filter(role='worker').count()  # Adjust based on your model's role field
+        customer_count = User.objects.filter(role='customer').count()  # Adjust based on your model's role field
+        head_count = User.objects.filter(role='head').count()  # Adjust based on your model's role field
+
+        return Response({
+            'user_count': user_count,
+            'staff_count': staff_count,
+            'customer_count': customer_count,
+            'head_count': head_count
+        })

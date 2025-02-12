@@ -17,6 +17,7 @@ class UserManager(BaseUserManager):
 
 class User(AbstractBaseUser, PermissionsMixin):
     ROLE_CHOICES = [
+        ("user", "User"),
         ("customer", "Customer"),
         ("worker", "Worker"),
         ("admin", "Admin"),
@@ -39,7 +40,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     postal_code = models.CharField(max_length=20, blank=True, null=True)
     country = models.CharField(max_length=50, blank=True, null=True)
     region = models.CharField(max_length=10, choices=REGION_CHOICES)
-    role = models.CharField(max_length=10, choices=ROLE_CHOICES, default="customer")
+    role = models.CharField(max_length=10, choices=ROLE_CHOICES, default="user")
 
     #  FOR WORKERS ONLY
     availability=models.JSONField(default=default_availability)

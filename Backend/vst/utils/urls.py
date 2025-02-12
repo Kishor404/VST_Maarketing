@@ -6,7 +6,8 @@ from .views import (
     UpcomingServiceView, 
     CurrentServiceView, 
     CompletedServiceView,
-    GetUserByID
+    GetUserByID,
+    RoleCountView
     )
 
 urlpatterns = [
@@ -18,4 +19,5 @@ urlpatterns = [
     path('currentservice/', CurrentServiceView.as_view(), name='current-service-info'),
     path('completedservice/', CompletedServiceView.as_view(), name='completed-service-info'),
     path('getuserbyid/<int:id>', GetUserByID.as_view(), name='get-user'),
+    path('role-count/', RoleCountView.as_view(), name='role-count'),
 ]
