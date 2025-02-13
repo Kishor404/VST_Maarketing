@@ -6,19 +6,19 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiY
 
 ### =========== CUSTOMER LOGIN API =============
 
-POST http://127.0.0.1:8000/log/customers/login/
+POST http://127.0.0.1:8000/log/login/
 Content-Type: application/json
 
-{"phone":"0000000008","password":"123"}
+{"phone":"2222222222","password":"123"}
 
 
 
 ### =========== SIGNUP API =============
 
-POST http://127.0.0.1:8000/log/customers/signup/
+POST http://127.0.0.1:8000/log/signup/
 Content-Type: application/json
 
-{"name":"Worker 007","phone":"0987654321","password":"123","region":"Rajapalayam","role":"worker"}
+{"name":"Head 420","phone":"2222222222","password":"123","region":"rajapalayam","role":"head"}
 
 ### ========== CARD DETAILS API ==========
 
@@ -40,16 +40,22 @@ GET http://127.0.0.1:8000/api/cards/
 Content-Type: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzM5MzY3MDg5LCJpYXQiOjE3MzkzNjUyODksImp0aSI6ImYzZjZkMmI1MWQ0MDRiNmViMDRmYzZmMTJmMDUzZjU1IiwidXNlcl9pZCI6MTZ9.Gs1jv8_pCv0yX1untblT84nL88njLdrvjozVZMfOuzA
 
-### ======= UPDATE USER ==========
-
-PATCH http://127.0.0.1:8000/utils/updateuser/16/
-Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzM5MzY3MDg5LCJpYXQiOjE3MzkzNjUyODksImp0aSI6ImYzZjZkMmI1MWQ0MDRiNmViMDRmYzZmMTJmMDUzZjU1IiwidXNlcl9pZCI6MTZ9.Gs1jv8_pCv0yX1untblT84nL88njLdrvjozVZMfOuzA
-
-{"role":"customer"}
 
 ### =========== NEXT SERVICE ============
 
 GET http://127.0.0.1:8000/utils/next-service/
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzM5NDE0MzAyLCJpYXQiOjE3Mzk0MTI1MDIsImp0aSI6IjcyMjFiNjZiZWRkODQ0ZDNiZjZlNzI4Y2EzMjBlYjRmIiwidXNlcl9pZCI6OX0.JJ5dHjBn-onMg80aglWYzSCDPnNesrc8u5x5CuYfZ-M
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzM5NDU0MTMwLCJpYXQiOjE3Mzk0NTIzMzAsImp0aSI6IjdkYWZhNzNlYzRhYzQ5MmE5MzVlZTE1NzlhMzgwNDE4IiwidXNlcl9pZCI6MTV9.fiCconew8eEwtiIUj3txqXHRgCVhpVc4zFg23yEpBxM
+
+
+### ======== GET USER BY ID ==========
+
+GET http://127.0.0.1:8000/utils/getuserbyid/16
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzM5NDU2MjYzLCJpYXQiOjE3Mzk0NTQ0NjMsImp0aSI6ImVkNzQzMmU0YmVmODRhOTY4Y2Q4ZTkyNTU3NDI2YzA0IiwidXNlcl9pZCI6MTV9.UmsK75M5yKjcLosBrowahXYV0NnBtkwc9IdxwXhsB9U
+
+### ======== HEAD ACCEPT REQUESTED EDIT ==========
+
+GET http://127.0.0.1:8000/utils/headeditreq/7
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzM5NDU3NTc0LCJpYXQiOjE3Mzk0NTU3NzQsImp0aSI6IjZkMmU1ZmM1ZWNkMjQwNjM5NzVlNTU4OWNhNDNiNDdjIiwidXNlcl9pZCI6MTh9.cc7e5IW-XF8mM9kSJ0bqt027lsF6TkhD7QPsCJsFzhs

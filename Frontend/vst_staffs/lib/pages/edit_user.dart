@@ -22,7 +22,7 @@ class _EditUserPageState extends State<EditUserPage> {
   final TextEditingController _postalCodeController = TextEditingController();
   final TextEditingController _countryController = TextEditingController();
 
-  String _selectedRegion = 'IND';
+  String _selectedRegion = 'rajapalayam';
   String _selectedRole = 'customer';
   bool _isLoading = false;
 
@@ -100,7 +100,7 @@ class _EditUserPageState extends State<EditUserPage> {
           _districtController.text = userData['district'] ?? "";
           _postalCodeController.text = userData['postal_code'] ?? "";
           _countryController.text = userData['country'] ?? "";
-          _selectedRegion = userData['region'] ?? "IND";
+          _selectedRegion = userData['region'] ?? "rajapalayam";
           _selectedRole = userData['role'] ?? "customer";
         });
       }
@@ -127,6 +127,7 @@ class _EditUserPageState extends State<EditUserPage> {
           }),
           data: {
             "staff": _staffid,
+            "customer": _userIdController.text.toString(),
             "customerData": {
               "name": _nameController.text,
               "email": _emailController.text,
@@ -247,9 +248,12 @@ class _EditUserPageState extends State<EditUserPage> {
           _buildTextField(_countryController, "Country"),
           SizedBox(height: 10),
           _buildDropdown("Region", _selectedRegion, {
-            "IND": "India",
-            "USA": "United States",
-            "AUS": "Australia",
+            "rajapalayam": "rajapalayam",
+            "ambasamuthiram": "ambasamuthiram",
+            "sankarankovil": "sankarankovil",
+            "tenkasi": "tenkasi",
+            "tirunelveli": "tirunelveli",
+            "chennai": "chennai",
           }, (value) => setState(() => _selectedRegion = value!)),
           SizedBox(height: 10),
           _buildDropdown("Role", _selectedRole, {

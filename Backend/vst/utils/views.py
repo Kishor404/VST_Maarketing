@@ -53,45 +53,6 @@ class CheckAvailabilityView(APIView):
         
         return Response({"message": "No workers available during this period"}, status=status.HTTP_200_OK)
 
-# ========== UPDATE USER ===============
-
-from rest_framework.views import APIView
-from rest_framework.response import Response
-from rest_framework import status
-from user.models import User
-from rest_framework.permissions import IsAuthenticated
-from rest_framework.exceptions import PermissionDenied
-from user.serializers import UserSerializer
-
-class UserUpdateView(APIView):
-    """
-    View to handle the partial update of a user profile by id.
-    Only allows updating fields if the user has the 'worker' role.
-    """
-    permission_classes = [IsAuthenticated]  # Ensure the user is authenticated
-
-    def patch(self, request, *args, **kwargs):
-        # Get the user id from the URL (e.g., /user/update/{id}/)
-        user_id = kwargs.get('id')
-
-        try:
-            user = User.objects.get(id=user_id)
-        except User.DoesNotExist:
-            return Response({"detail": "User not found."}, status=status.HTTP_404_NOT_FOUND)
-
-        # Check if the authenticated user is trying to update their own profile or is an admin/head
-        if user != request.user and not (request.user.role == 'head' or request.user.role == 'admin'):
-            raise PermissionDenied("You are not allowed to update this profile.")
-
-        # Validate and update user fields using the serializer
-        serializer = UserSerializer(user, data=request.data, partial=True)
-
-        if serializer.is_valid():
-            serializer.save()  # Update the user with the validated data
-            return Response(serializer.data, status=status.HTTP_200_OK)
-        
-        # If the serializer isn't valid, return the error response
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 # ========== FIND NEXT SERVICE =========
 
@@ -202,6 +163,82 @@ class CompletedServiceView(APIView):
         return Response(serializer.data, status=200)
     
 
+
+
+# ============ GET COUNT FOR DASHBOARD =========
+
+# views.py
+from rest_framework.views import APIView
+from rest_framework.response import Response
+from rest_framework.exceptions import PermissionDenied
+from user.models import User
+
+class RoleCountView(APIView):
+
+    def get(self, request, *args, **kwargs):
+        # Check if the user has the 'admin' role in the access token
+        if request.user.role != 'admin':  # Adjust based on your actual role attribute
+            raise PermissionDenied("You do not have permission to access this resource.")
+        
+        # Get the counts of users with specific roles
+        user_count = User.objects.filter(role='user').count()  # Adjust based on your model's role field
+        staff_count = User.objects.filter(role='worker').count()  # Adjust based on your model's role field
+        customer_count = User.objects.filter(role='customer').count()  # Adjust based on your model's role field
+        head_count = User.objects.filter(role='head').count()  # Adjust based on your model's role field
+
+        return Response({
+            'user_count': user_count,
+            'staff_count': staff_count,
+            'customer_count': customer_count,
+            'head_count': head_count
+        })
+
+
+# ================ HEAD ACCEPT AND EDIT THE EDITREQ ===========
+
+
+from rest_framework.views import APIView
+from rest_framework.response import Response
+from rest_framework import status
+from rest_framework.permissions import IsAuthenticated
+from django.shortcuts import get_object_or_404
+from editReq.models import EditReq
+from user.models import User
+from user.serializers import UserSerializer
+
+class HeadEdit(APIView):
+    
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request, *args, **kwargs):
+        editreq_id = kwargs.get('id')
+
+        # Ensure only 'head' can access this API
+        if request.user.role != 'head':
+            return Response({"error": "Permission denied"}, status=status.HTTP_403_FORBIDDEN)
+
+        # Get the EditReq object
+        edit_req = get_object_or_404(EditReq, id=editreq_id)
+
+        # Get the customer ID from the EditReq
+        customer_id = edit_req.customer  
+
+        # Get the user linked to that customer ID
+        user = get_object_or_404(User, id=customer_id)
+
+        # Update the user with the new customer data
+        user_serializer = UserSerializer(user, data=edit_req.customerData, partial=True)
+
+        if user_serializer.is_valid():
+            user_serializer.save()
+
+            # Delete the EditReq entry after a successful update
+            edit_req.delete()
+
+            return Response({"message": "User updated successfully and EditReq deleted."}, status=status.HTTP_200_OK)
+        
+        return Response(user_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    
 # =========== GET USET BY ID ==========
 
 from rest_framework.views import APIView
@@ -240,31 +277,3 @@ class GetUserByID(APIView):
 
         return Response(serializer.data, status=status.HTTP_200_OK)
 
-
-# ============ GET COUNT FOR DASHBOARD =========
-
-# views.py
-from rest_framework.views import APIView
-from rest_framework.response import Response
-from rest_framework.exceptions import PermissionDenied
-from user.models import User
-
-class RoleCountView(APIView):
-
-    def get(self, request, *args, **kwargs):
-        # Check if the user has the 'admin' role in the access token
-        if request.user.role != 'admin':  # Adjust based on your actual role attribute
-            raise PermissionDenied("You do not have permission to access this resource.")
-        
-        # Get the counts of users with specific roles
-        user_count = User.objects.filter(role='user').count()  # Adjust based on your model's role field
-        staff_count = User.objects.filter(role='worker').count()  # Adjust based on your model's role field
-        customer_count = User.objects.filter(role='customer').count()  # Adjust based on your model's role field
-        head_count = User.objects.filter(role='head').count()  # Adjust based on your model's role field
-
-        return Response({
-            'user_count': user_count,
-            'staff_count': staff_count,
-            'customer_count': customer_count,
-            'head_count': head_count
-        })

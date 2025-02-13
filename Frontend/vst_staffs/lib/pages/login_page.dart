@@ -115,7 +115,7 @@ class _LoginPageState extends State<LoginPage> {
     final password = _passwordController.text;
 
     if (phone.isNotEmpty && password.isNotEmpty) {
-      final url = 'http://$urlDomain/log/customers/login/';
+      final url = 'http://$urlDomain/log/login/';
       final requestBody = {'phone': phone, 'password': password};
 
       try {

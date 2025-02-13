@@ -202,7 +202,7 @@ class LoginPageState extends State<LoginPage> {
 
     if (phone.isNotEmpty && password.isNotEmpty) {
       // Handle login logic with API call
-      final url = '${Data.baseUrl}/log/customers/login/';
+      final url = '${Data.baseUrl}/log/login/';
       final requestBody = {'phone': phone, 'password': password};
       
       try {
@@ -276,7 +276,7 @@ class LoginPageState extends State<LoginPage> {
 
     if (name.isNotEmpty && phone.isNotEmpty && password.isNotEmpty && region.isNotEmpty) {
       // Perform signup API call
-      final url = '${Data.baseUrl}/log/customers/signup/'; // Use your correct endpoint
+      final url = '${Data.baseUrl}/log/signup/'; // Use your correct endpoint
       final requestBody = {
         'name': name,
         'phone': phone,

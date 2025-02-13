@@ -8,8 +8,8 @@ from .views import (
 
 urlpatterns = [
     # User authentication endpoints
-    path('customers/signup/', SignupView.as_view(), name='signup'),
-    path('customers/login/', LoginView.as_view(), name='login'),
+    path('signup/', SignupView.as_view(), name='signup'),
+    path('login/', LoginView.as_view(), name='login'),
 
     # Role-Based Protected Views
     path('workers/protected/', WorkerOnlyView.as_view(), name='worker-protected'),

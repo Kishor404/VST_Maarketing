@@ -6,6 +6,7 @@ class EditReqSerializer(serializers.ModelSerializer):
         model = EditReq
         fields = [
             'id',
+            'customer',
             'customerData',
             'staff',
         ]

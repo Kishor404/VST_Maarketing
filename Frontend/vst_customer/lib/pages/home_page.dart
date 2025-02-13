@@ -15,7 +15,7 @@ class HomePage extends StatelessWidget {
     final List<Map<String, dynamic>> buttonData = [
       {'icon': Icons.construction, 'label': 'Service', 'onTap': () => onNavigateToIndex(1)},
       {'icon': Icons.phone, 'label': 'Contact', 'onTap': () => print('Cart tapped')},
-      {'icon': Icons.article, 'label': 'View Card', 'onTap': () => onNavigateToIndex(3)},
+      {'icon': Icons.article, 'label': 'Card', 'onTap': () => onNavigateToIndex(3)},
       {'icon': Icons.settings, 'label': 'Settings', 'onTap': () => print('Settings tapped')},
       {'icon': Icons.notifications, 'label': 'Alerts', 'onTap': () => print('Alerts tapped')},
       {'icon': Icons.shopping_bag, 'label': 'Products', 'onTap': () => onNavigateToIndex(2)},
