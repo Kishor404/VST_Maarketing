@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'index.dart';
-import 'package:dio/dio.dart';  // Import Dio
+import 'package:dio/dio.dart';
+import 'data.dart';
+
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -11,8 +13,6 @@ class LoginPage extends StatefulWidget {
 
 class LoginPageState extends State<LoginPage> {
   bool _isLogin = true; // Toggle between login and signup
-
-  final urlDomain="127.0.0.1:8000";
 
   final _phoneController = TextEditingController();
   final _passwordController = TextEditingController();
@@ -202,7 +202,7 @@ class LoginPageState extends State<LoginPage> {
 
     if (phone.isNotEmpty && password.isNotEmpty) {
       // Handle login logic with API call
-      final url = 'http://$urlDomain/log/customers/login/';
+      final url = '${Data.baseUrl}/log/customers/login/';
       final requestBody = {'phone': phone, 'password': password};
       
       try {
@@ -276,7 +276,7 @@ class LoginPageState extends State<LoginPage> {
 
     if (name.isNotEmpty && phone.isNotEmpty && password.isNotEmpty && region.isNotEmpty) {
       // Perform signup API call
-      final url = 'http://$urlDomain/log/customers/signup/'; // Use your correct endpoint
+      final url = '${Data.baseUrl}/log/customers/signup/'; // Use your correct endpoint
       final requestBody = {
         'name': name,
         'phone': phone,

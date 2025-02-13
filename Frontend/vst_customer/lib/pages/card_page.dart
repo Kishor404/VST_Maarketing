@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'card_details.dart'; // Import the CardDetailsPage
 import 'package:dio/dio.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'data.dart';
 
 class CardPage extends StatefulWidget {
   const CardPage({super.key});
@@ -43,7 +44,7 @@ class CardPageState extends State<CardPage> {
       return;
     }
 
-    final url = 'http://127.0.0.1:8000/log/token/refresh/';
+    final url = '${Data.baseUrl}/log/token/refresh/';
     final requestBody = {'refresh': _refreshToken};
 
     try {
@@ -88,7 +89,7 @@ class CardPageState extends State<CardPage> {
 
     try {
       final response = await _dio.get(
-        'http://127.0.0.1:8000/api/cards-details/',
+        '${Data.baseUrl}/api/cards-details/',
         options: Options(headers: {
           'Content-Type': 'application/json',
           'Authorization': 'Bearer $_accessToken',

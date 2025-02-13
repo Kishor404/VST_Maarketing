@@ -1,10 +1,17 @@
 import 'package:flutter/material.dart';
-import 'pages/index.dart'; // Import the HomePage from home.dart
+import 'notification_service.dart'; // Import the notification service
+import 'pages/index.dart'; // Import the HomePage from index.dart
 
-void main() => runApp(MyApp());
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await NotificationService().initNotifications(); // Initialize notifications
+
+  runApp(MyApp());
+}
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
+  
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -12,7 +19,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         scaffoldBackgroundColor: Colors.white,
         primarySwatch: Colors.blue,
-        fontFamily: 'Poppins'
+        fontFamily: 'Poppins',
       ),
       home: IndexPage(), // Reference the HomePage
     );

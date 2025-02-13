@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:dio/dio.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'data.dart';
+import '../notification_service.dart';
 
 class ServiceBook extends StatefulWidget {
   const ServiceBook({super.key});
@@ -250,6 +251,11 @@ Future<void> _confirmBooking(int workerId, String avaDate, String complaintText,
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text("Service booked successfully!")),
       );
+      NotificationService().showNotification(
+          id: 0,
+          title: "Service Booked !",
+          body: "The Service Booking was sucessfull",
+        );
       Navigator.pop(context);
     } else {
       ScaffoldMessenger.of(context).showSnackBar(

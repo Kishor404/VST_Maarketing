@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'service_book.dart';
 import 'package:dio/dio.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'data.dart';
+
 
 class ServicePage extends StatefulWidget {
   const ServicePage({super.key});
@@ -54,7 +56,7 @@ class ServicePageState extends State<ServicePage> {
       return;
     }
 
-    final url = 'http://127.0.0.1:8000/log/token/refresh/';
+    final url = '${Data.baseUrl}/log/token/refresh/';
     final requestBody = {'refresh': _refreshToken};
 
     try {
@@ -88,7 +90,7 @@ class ServicePageState extends State<ServicePage> {
 
     try {
       final response = await _dio.get(
-        'http://127.0.0.1:8000/services/',
+        '${Data.baseUrl}/services/',
         options: Options(headers: {
           'Content-Type': 'application/json',
           'Authorization': 'Bearer $_accessToken',
@@ -121,7 +123,7 @@ class ServicePageState extends State<ServicePage> {
 
     try {
       final response = await _dio.get(
-        'http://127.0.0.1:8000/utils/next-service/',
+        '${Data.baseUrl}/utils/next-service/',
         options: Options(headers: {
           'Content-Type': 'application/json',
           'Authorization': 'Bearer $_accessToken',
@@ -220,7 +222,7 @@ class ServicePageState extends State<ServicePage> {
             const SizedBox(height: 10.0),
             Expanded(
               child: Image.network(
-                  'http://127.0.0.1:8000/media/utils/Service_Illus.jpg',
+                  '${Data.baseUrl}/media/utils/Service_Illus.jpg',
                   height: 400,
                 ),
             ),
