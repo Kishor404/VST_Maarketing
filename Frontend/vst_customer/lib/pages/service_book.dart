@@ -20,7 +20,9 @@ class ServiceBookState extends State<ServiceBook> {
   TextEditingController otherComplaintController = TextEditingController();
   TextEditingController complaintDetailsController = TextEditingController();
   String? _customerId;
+  List<Map<String, dynamic>> cardData = [];
   final Dio _dio = Dio();
+  String? selectedCard;
 
 
   List<String> complaints = ["General Visit","Others"];
@@ -36,6 +38,7 @@ class ServiceBookState extends State<ServiceBook> {
     await _loadTokens(); 
     await _refreshAccessToken();
     await fetchData();
+    await fetchCards(); 
   }
 
   Future<void> fetchData() async {
@@ -96,6 +99,45 @@ class ServiceBookState extends State<ServiceBook> {
       }
     } catch (e) {
       debugPrint('Error refreshing token: $e');
+    }
+  }
+
+  Future<void> fetchCards() async {
+    if (_accessToken.isEmpty) {
+      debugPrint("No access token available. Cannot fetch cards.");
+      return;
+    }
+
+    try {
+      final response = await _dio.get(
+        'http://127.0.0.1:8000/api/cards-details/',
+        options: Options(headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer $_accessToken',
+        }),
+      );
+
+      if (response.statusCode == 200 && response.data is List) {
+        setState(() {
+          cardData = List<Map<String, dynamic>>.from(response.data);
+
+        });
+      } else {
+        debugPrint("Unexpected response format: ${response.data}");
+        setState(() {
+
+        });
+      }
+    } catch (e) {
+      if (e is DioException && e.response?.statusCode == 401) {
+        debugPrint("Access token expired. Refreshing token...");
+        await _refreshAccessToken();
+        return fetchCards(); // Retry fetching after token refresh
+      }
+
+      setState(() {
+      });
+      debugPrint('Error fetching cards: $e');
     }
   }
 
@@ -174,6 +216,7 @@ class ServiceBookState extends State<ServiceBook> {
 
 Future<void> _confirmBooking(int workerId, String avaDate, String complaintText, String complaintDescription) async {
   final String apiUrl = "${Data.baseUrl}/services/";
+  int cardId = int.parse(selectedCard!.split('-')[0]);
 
   Map<String, dynamic> requestBody = {
     "customer": int.parse(_customerId!),
@@ -186,8 +229,10 @@ Future<void> _confirmBooking(int workerId, String avaDate, String complaintText,
     "available_date":avaDate,
     "description": complaintDescription,
     "complaint": complaintText,
-    "status": "BD"
+    "status": "BD",
+    "card": cardId,
   };
+  print(requestBody);
 
   try {
     Response response = await _dio.post(
@@ -246,7 +291,7 @@ Future<void> _confirmBooking(int workerId, String avaDate, String complaintText,
               Center(
                 child: Image.network(
                    "${Data.baseUrl}media/utils/Service_Book.jpg",
-                  height: 400,
+                  height: 250,
                 ),
               ),
               const SizedBox(height: 20),
@@ -296,6 +341,33 @@ Future<void> _confirmBooking(int workerId, String avaDate, String complaintText,
                   ),
                 ],
               ),
+              const SizedBox(height: 20),
+              const Text(
+                "Select Your Card",
+                style: TextStyle(fontSize: 18),
+              ),
+              const SizedBox(height: 10),
+              DropdownButtonFormField<String>(
+                decoration: InputDecoration(
+                  labelText: "Card",
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(10.0),
+                  ),
+                ),
+                value: selectedCard,
+                items: cardData.map((card) {
+                  String displayText = "${card['id']}-${card['model']}";
+                  return DropdownMenuItem<String>(
+                    value: displayText,
+                    child: Text(displayText),
+                  );
+                }).toList(),
+                onChanged: (String? newValue) {
+                  setState(() {
+                    selectedCard = newValue;
+                  });
+                },
+              ),
               const SizedBox(height: 30),
               const Text(
                 "Service Details",
@@ -303,6 +375,8 @@ Future<void> _confirmBooking(int workerId, String avaDate, String complaintText,
                   fontSize: 18,
                 ),
               ),
+              
+
               const SizedBox(height: 20),
               DropdownButtonFormField<String>(
                 decoration: InputDecoration(

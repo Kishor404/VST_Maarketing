@@ -24,9 +24,12 @@ class User(AbstractBaseUser, PermissionsMixin):
         ("head", "Head"),
     ]
     REGION_CHOICES = [
-        ("IND", "India"),
-        ("USA", "United States"),
-        ("AUS", "Australia"),
+        ("rajapalayam", "Rajapalayam"),
+        ("ambasamuthiram", "Ambasamuthiram"),
+        ("sankarankovil", "Sankarankovil"),
+        ("tenkasi", "Tenkasi"),
+        ("tirunelveli", "Tirunelveli"),
+        ("chennai", "Chennai"),
     ]
     def default_availability():
         return {"unavailable": []} 
@@ -35,11 +38,10 @@ class User(AbstractBaseUser, PermissionsMixin):
     email = models.EmailField(blank=True, null=True)
     phone = models.CharField(max_length=15, unique=True)
     address = models.TextField(blank=True, null=True)
-    city = models.CharField(max_length=50, blank=True, null=True)
-    district = models.CharField(max_length=50, blank=True, null=True)
-    postal_code = models.CharField(max_length=20, blank=True, null=True)
-    country = models.CharField(max_length=50, blank=True, null=True)
-    region = models.CharField(max_length=10, choices=REGION_CHOICES)
+    city = models.CharField(max_length=255, blank=True, null=True)
+    district = models.CharField(max_length=255, blank=True, null=True)
+    postal_code = models.CharField(max_length=255, blank=True, null=True)
+    region = models.CharField(max_length=255, choices=REGION_CHOICES)
     role = models.CharField(max_length=10, choices=ROLE_CHOICES, default="user")
 
     #  FOR WORKERS ONLY

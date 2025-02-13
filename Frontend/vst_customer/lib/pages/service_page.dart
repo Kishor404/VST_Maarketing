@@ -12,7 +12,7 @@ class ServicePage extends StatefulWidget {
 class ServicePageState extends State<ServicePage> {
   String lastServiceDate = "No Service Data";
   String nextService = "No Service Data";
-  String visitType = "No Service Data";
+  String nextServiceCard = "No Service Data";
 
   String _refreshToken = '';
   String _accessToken = '';
@@ -127,10 +127,10 @@ class ServicePageState extends State<ServicePage> {
           'Authorization': 'Bearer $_accessToken',
         }),
       );
-      print(response.data);
 
       setState(() {
         nextService = response.data["days_remaining"].toString();
+        nextServiceCard = response.data["card_id"].toString();
         isLoading = false;
       });
     } catch (e) {
@@ -153,7 +153,6 @@ class ServicePageState extends State<ServicePage> {
       if(services[i]["status"]=="SD"){
         setState(() {
           lastServiceDate = services[i]["date_of_service"];
-          visitType = services[i]['complaint'];
         });
       }
       if(services[i]["status"]=="BD" || services[i]["status"]=="SP"){
@@ -208,7 +207,7 @@ class ServicePageState extends State<ServicePage> {
                     style: const TextStyle(fontSize: 16.0, color: Colors.white),
                   ),
                   Text(
-                    'Last Visit Type: $visitType',
+                    'Next Service For Card Id: $nextServiceCard',
                     style: const TextStyle(fontSize: 16.0, color: Colors.white),
                   ),
                   Text(

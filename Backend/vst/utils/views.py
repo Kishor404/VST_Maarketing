@@ -102,44 +102,48 @@ from rest_framework.permissions import IsAuthenticated
 from card.models import Card, ServiceEntry
 from rest_framework import status
 
-
 class NextServiceView(APIView):
     """
-    Get the latest service entry for the authenticated user's card
-    and return the next service date along with the days remaining.
+    Get the card with the nearest upcoming service date for the authenticated user.
     """
-    permission_classes = [IsAuthenticated]  # Ensures only authenticated users can access this view
+    permission_classes = [IsAuthenticated]
 
     def get(self, request):
         user = request.user  # Get logged-in user from access token
+        
+        # Get all cards associated with the user
+        cards = Card.objects.filter(customer_code=user)
 
-        # Get the user's card
-        try:
-            card = Card.objects.get(customer_code=user)
-        except Card.DoesNotExist:
-            return Response({"error": "No card found for this user"}, status=status.HTTP_404_NOT_FOUND)
+        if not cards.exists():
+            return Response({"error": "No cards found for this user"}, status=status.HTTP_404_NOT_FOUND)
 
-        # Get the latest service entry for the user's card
-        latest_service = ServiceEntry.objects.filter(card=card).order_by('-date').first()
-
-        if not latest_service:
-            return Response({"error": "No service entries found for this card"}, status=status.HTTP_404_NOT_FOUND)
-
-        next_service_date = latest_service.next_service
-
-        if not next_service_date:
-            return Response({"error": "Next service date not available"}, status=status.HTTP_400_BAD_REQUEST)
-
-        # Calculate days remaining
         today = date.today()
-        days_remaining = (next_service_date - today).days
+        nearest_card = None
+        min_days_remaining = float('inf')
 
-        return Response({
-            "next_service_date": next_service_date.strftime("%Y-%m-%d"),
-            "days_remaining": days_remaining
-        }, status=status.HTTP_200_OK)
+        for card in cards:
+            # Get the latest service entry for each card
+            latest_service = ServiceEntry.objects.filter(card=card).order_by('-date').first()
 
+            if latest_service and latest_service.next_service:
+                next_service_date = latest_service.next_service
+                days_remaining = (next_service_date - today).days
 
+                # Check if this card has the least days remaining
+                if days_remaining < min_days_remaining:
+                    min_days_remaining = days_remaining
+                    nearest_card = {
+                        "card_id": card.id,
+                        "next_service_date": next_service_date.strftime("%Y-%m-%d"),
+                        "days_remaining": days_remaining
+                    }
+
+        if nearest_card:
+            return Response(nearest_card, status=status.HTTP_200_OK)
+        else:
+            return Response({"error": "No valid service entry found"}, status=status.HTTP_404_NOT_FOUND)
+
+    
 # ======== GET UPCOMING SERVICE =============
 
 from rest_framework.views import APIView

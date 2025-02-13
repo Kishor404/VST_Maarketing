@@ -17,7 +17,7 @@ class LoginPageState extends State<LoginPage> {
   final _phoneController = TextEditingController();
   final _passwordController = TextEditingController();
   final _nameController = TextEditingController();
-  String _selectedRegion = 'AUS'; // Default region is 'AUS'
+  String _selectedRegion = 'rajapalayam'; // Default region is 'AUS'
 
   @override
   void dispose() {
@@ -116,7 +116,7 @@ class LoginPageState extends State<LoginPage> {
                       _selectedRegion = newValue!;
                     });
                   },
-                  items: <String>['AUS', 'IND', 'USA']
+                  items: <String>["rajapalayam","ambasamuthiram", "sankarankovil","tenkasi", "tirunelveli", "chennai"]
                       .map<DropdownMenuItem<String>>((String value) {
                     return DropdownMenuItem<String>(
                       value: value,
@@ -282,6 +282,7 @@ class LoginPageState extends State<LoginPage> {
         'phone': phone,
         'password': password,
         'region': region,
+        'role': 'customer'
       };
       
       try {

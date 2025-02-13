@@ -2,16 +2,11 @@ from django.db import models
 from user.models import User 
 
 class Card(models.Model):
-    REGION_CHOICES = [
-        ('IND', 'India'),
-        ('USA', 'United States'),
-        ('AUS', 'Australia'),
-    ]
 
     model = models.CharField(max_length=100)
     customer_code = models.ForeignKey(User, on_delete=models.CASCADE, related_name="cards")
     customer_name = models.CharField(max_length=255)
-    region = models.CharField(max_length=255,choices=REGION_CHOICES)
+    region = models.CharField(max_length=255)
     date_of_installation = models.DateField()
     address = models.TextField()
     warranty_start_date = models.DateField()
@@ -25,6 +20,7 @@ class Card(models.Model):
         """ Automatically set region based on customer's region and store customer data """
         if self.customer_code:
             self.customer_name = getattr(self.customer_code, 'name', 'Unknown')
+            self.region = getattr(self.customer_code, 'region', 'Unknown')
             
             address_parts = [
                 getattr(self.customer_code, 'address', ''),

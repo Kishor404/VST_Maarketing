@@ -13,100 +13,43 @@ Content-Type: application/json
 
 
 
-### =========== CUSTOMER SIGNUP API =============
+### =========== SIGNUP API =============
 
 POST http://127.0.0.1:8000/log/customers/signup/
 Content-Type: application/json
 
-{"name":"Admin1","phone":"7418081727","password":"123","region":"IND","role":"admin"}
+{"name":"Worker 007","phone":"0987654321","password":"123","region":"Rajapalayam","role":"worker"}
 
-### =========== WORKER SIGNUP API =============
+### ========== CARD DETAILS API ==========
 
-GET http://127.0.0.1:8000/log/workers/protected/
+GET http://127.0.0.1:8000/api/cards-details/
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzM4NDA0Njc5LCJpYXQiOjE3Mzg0MDI4NzksImp0aSI6ImRjNzFhMTIzMzQzNjRlMzRiNzE0ZTUxNTg5ZmY3YzA3IiwidXNlcl9pZCI6OX0.Z714lL9SQNFJ8o3GauQrXqKM2Tx0glBXZ5TzR3ODyVI
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzM5MzY4MDMxLCJpYXQiOjE3MzkzNjYyMzEsImp0aSI6IjMwMTc1YzIwMjI4ZjQ1N2U4YjdjYTQ4NzEyZjdmOWYzIiwidXNlcl9pZCI6MTZ9.ZKugN8QyAFXtaP3CchA895WD6g9UVphB6Idx_YIkhDY
 
-### =========== WORKER LOGIN API =============
+### ========== CARD POST API ==========
 
-POST http://127.0.0.1:8000/log/Workers/login/
+POST http://127.0.0.1:8000/api/cards/
 Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzM5MzY3MDg5LCJpYXQiOjE3MzkzNjUyODksImp0aSI6ImYzZjZkMmI1MWQ0MDRiNmViMDRmYzZmMTJmMDUzZjU1IiwidXNlcl9pZCI6MTZ9.Gs1jv8_pCv0yX1untblT84nL88njLdrvjozVZMfOuzA
 
-{"phone":"1111111111","password":"123"}
+{"model":"Purifier IO", "customer_code":16, "customer_name":"oo", "region":"oo", "date_of_installation":"2025-02-12", "address":"oo", "warranty_start_date":"2025-02-16", "warranty_end_date":"2025-05-16"}
 
-### ============ TEST TOKEN API ==========
-
-GET http://127.0.0.1:8000/log/protected/
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzM4MjMxMjE1LCJpYXQiOjE3MzgyMjk0MTUsImp0aSI6IjRhMmE4OGNkOWZmNTQ2NzRiZjYzZjIwN2RlOTM3YjJkIiwidXNlcl9pZCI6OH0.1YmMnQrVuJdbcE_Y7I6yXVfTQ0dH82g-5rlC3OVT7aQ
-
-### ============ REFRESH TOKEN API ===========
-
-POST http://127.0.0.1:8000/log/token/refresh/
-Content-Type: application/json
-
-{"refresh":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTczODgzNTIwNSwiaWF0IjoxNzM4MjMwNDA1LCJqdGkiOiJmYmVlMDkxYjdiYjA0MjgyOWFhYTY1MWI0YmEzZTc0YyIsInVzZXJfaWQiOjh9.01vaHD4z-BksCP86cmUWQwKF5G8Fe-R0pSAhDriWdp0"}
-
-
-### =============== CARD API ============
+### ======== GET CARD =========
 
 GET http://127.0.0.1:8000/api/cards/
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzM5MjczNzUzLCJpYXQiOjE3MzkyNzE5NTMsImp0aSI6ImYwMDI5YzMxYzcwMTQ2ZjU5Y2JlNGVhZjNhMDEyYjUzIiwidXNlcl9pZCI6OX0.SC5Gyoltj4SrbGTGn7LRkfn85RzKOGSkuR4kHfgvHKw
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzM5MzY3MDg5LCJpYXQiOjE3MzkzNjUyODksImp0aSI6ImYzZjZkMmI1MWQ0MDRiNmViMDRmYzZmMTJmMDUzZjU1IiwidXNlcl9pZCI6MTZ9.Gs1jv8_pCv0yX1untblT84nL88njLdrvjozVZMfOuzA
 
+### ======= UPDATE USER ==========
 
-### ============= SERVICE ENTRIE ON CARD API ==========
+PATCH http://127.0.0.1:8000/utils/updateuser/16/
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzM5MzY3MDg5LCJpYXQiOjE3MzkzNjUyODksImp0aSI6ImYzZjZkMmI1MWQ0MDRiNmViMDRmYzZmMTJmMDUzZjU1IiwidXNlcl9pZCI6MTZ9.Gs1jv8_pCv0yX1untblT84nL88njLdrvjozVZMfOuzA
 
-GET http://127.0.0.1:8000/api/service-entries/
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzM4MzM4NzYzLCJpYXQiOjE3MzgzMzY5NjMsImp0aSI6IjA3NGRkYWFjMmI5ZDQwMDI5MzdhNThlNzllOWIyNDhmIiwidXNlcl9pZCI6OH0.T02AzFhB4x-ElmSJmp_c2-Nnp_uUftwRuGPSWsCUvYw
+{"role":"customer"}
 
-
-### ============= SERVICE API ==========
-
-GET http://127.0.0.1:8000/services/
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzM5MDcxODU3LCJpYXQiOjE3MzkwNzAwNTcsImp0aSI6IjlkMmEyMmYxZjRjMDQyNTFhOTVkNjE3ZGQwZmVjYTk5IiwidXNlcl9pZCI6OX0.tO0ngmUlGKgZ7eDWbbq5z_1ZbJU9Xo02QX3_LZ4EJJw
-
-### ============= SERVICE API ==========
+### =========== NEXT SERVICE ============
 
 GET http://127.0.0.1:8000/utils/next-service/
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzM5MDgxNzI3LCJpYXQiOjE3MzkwNzk5MjcsImp0aSI6IjU4ZWMxM2JjM2ZmODQxYTJiODQ5YjU2NjUyZDdjZDAxIiwidXNlcl9pZCI6OX0.rXbSu-shXpo6nIfUzHP0JoJPxGyJy_zOlNvA4ckCwgw
-
-
-###
-
-POST http://127.0.0.1:8000/services/
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzM4NjQ1ODM1LCJpYXQiOjE3Mzg2NDQwMzUsImp0aSI6ImZlYWVlMmUyNjI2NzRjMzg5ZTQxNjhlZDIyYjY4OWY1IiwidXNlcl9pZCI6OX0.yW7YiNWnUJAyA6-7Puke3dPNrR0IDaqL6L4JguV8qbY
-
-{
-  "customer": 9,
-  "staff": 1,
-  "staff_name":"none",
-  "available": {"from": "00", "to": "90"},
-  "description": "complaintDescription",
-  "complaint": "complaintText",
-  "status": "NS"
-}
-
-###
-
-POST http://127.0.0.1:8000/utils/checkstaffavailability/
-Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzM5MDcxNDc2LCJpYXQiOjE3MzkwNjk2NzYsImp0aSI6ImU0N2IzOTJmYWMyNzQ1MWZhMTA3OWJkYjZhNjgzOWI5IiwidXNlcl9pZCI6OX0.99pXVzNVjBdPfczIHk0z0pV8BD0o4T41hnr3gLuC5pE
-
-{
-  "from_date":"2025-09-21",
-  "to_date":"2025-09-23"
-}
-
-### =========== WORKER PATCH API =============
-
-PATCH http://127.0.0.1:8000/utils/updateuser/9/
-Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzM4NjY2NTg5LCJpYXQiOjE3Mzg2NjQ3ODksImp0aSI6IjljMjBmNmZmNTk4MzQ4ZThhNjhhNTllNmUyMmExYjI3IiwidXNlcl9pZCI6OX0.sRzdPeKQrfhIdxQLhTBwytAIPbpSvZ0hWCnj04KpdDg
-
-
-{"availability":{"unavailable": ["2025-09-21","2025-09-22"]}}
-
-
-### ========= STAFF SERVICE ===========
-
-GET http://127.0.0.1:8000/utils/staffservice/
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzM5MjU3MzkxLCJpYXQiOjE3MzkyNTU1OTEsImp0aSI6ImEwYzA1MWIzNjM4YzQwYTY4ZWUyNjczZjcyOTk4OGM5IiwidXNlcl9pZCI6MTB9.Wh8VSzKuGvN7m3LnYuTb0njAE9eH1hmrqj33y36ZgIg
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzM5NDE0MzAyLCJpYXQiOjE3Mzk0MTI1MDIsImp0aSI6IjcyMjFiNjZiZWRkODQ0ZDNiZjZlNzI4Y2EzMjBlYjRmIiwidXNlcl9pZCI6OX0.JJ5dHjBn-onMg80aglWYzSCDPnNesrc8u5x5CuYfZ-M

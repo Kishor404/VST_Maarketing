@@ -88,7 +88,7 @@ class CardPageState extends State<CardPage> {
 
     try {
       final response = await _dio.get(
-        'http://127.0.0.1:8000/api/cards/',
+        'http://127.0.0.1:8000/api/cards-details/',
         options: Options(headers: {
           'Content-Type': 'application/json',
           'Authorization': 'Bearer $_accessToken',
