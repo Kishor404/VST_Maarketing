@@ -111,7 +111,7 @@ class ServiceBookState extends State<ServiceBook> {
 
     try {
       final response = await _dio.get(
-        'http://127.0.0.1:8000/api/cards-details/',
+        '${Data.baseUrl}/api/cards-details/',
         options: Options(headers: {
           'Content-Type': 'application/json',
           'Authorization': 'Bearer $_accessToken',

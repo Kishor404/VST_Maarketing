@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'data.dart';
+
 
 class HomePage extends StatelessWidget {
   final Function(int) onNavigateToIndex; 
@@ -46,7 +48,7 @@ class HomePage extends StatelessWidget {
                       borderRadius: BorderRadius.circular(10),
                       image: DecorationImage(
                         image: NetworkImage(
-                            'http://127.0.0.1:8000/media/banners/banner$actualIndex.jpg'), // Fetch from URL
+                            '${Data.baseUrl}/media/banners/banner$actualIndex.jpg'), // Fetch from URL
                         fit: BoxFit.cover,
                       ),
                     ),
@@ -96,7 +98,7 @@ class HomePage extends StatelessWidget {
     ),
     child: Center(
       child: SizedBox(
-        width: 400, // Adjust width as needed
+        width: MediaQuery.of(context).size.width * 0.8, // Adjust width as needed
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
@@ -104,7 +106,7 @@ class HomePage extends StatelessWidget {
               '"I will love the light for it shows me the way, yet I will endure the darkness because it shows me the stars."', // Replace with your quote
               textAlign: TextAlign.center,
               style: TextStyle(
-                fontSize: 14, // Decrease font size for smaller text
+                fontSize: 16, // Decrease font size for smaller text
                 fontStyle: FontStyle.italic,
                 color: Colors.black87,
               ),
@@ -113,7 +115,7 @@ class HomePage extends StatelessWidget {
             Text(
               '- OG MANDINO', // Replace with author's name
               style: TextStyle(
-                fontSize: 12, // Decrease font size for author
+                fontSize: 14, // Decrease font size for author
                 fontWeight: FontWeight.bold,
                 color: Colors.black54,
               ),
@@ -147,14 +149,14 @@ class HomePage extends StatelessWidget {
           children: [
             Icon(
               icon,
-              size: screenWidth / 23,
+              size: screenWidth / 18,
               color: Colors.white70,
             ),
             const SizedBox(height: 8), // Spacing between the icon and label
             Text(
               label,
               style: TextStyle(
-                fontSize: screenWidth / 40,
+                fontSize: screenWidth / 35,
                 color: Colors.white70,
               ),
             ),
