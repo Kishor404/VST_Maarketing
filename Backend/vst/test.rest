@@ -18,7 +18,7 @@ Content-Type: application/json
 POST http://127.0.0.1:8000/log/signup/
 Content-Type: application/json
 
-{"name":"Head 420","phone":"2222222222","password":"123","region":"rajapalayam","role":"head"}
+{"name":"Sundar","phone":"2222222222","password":"123","region":"rajapalayam","role":"head"}
 
 ### ========== CARD DETAILS API ==========
 

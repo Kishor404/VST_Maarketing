@@ -4,7 +4,6 @@ import 'index.dart';
 import 'package:dio/dio.dart';
 import 'data.dart';
 
-
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
   @override
@@ -12,192 +11,204 @@ class LoginPage extends StatefulWidget {
 }
 
 class LoginPageState extends State<LoginPage> {
-  bool _isLogin = true; // Toggle between login and signup
+  bool _isLogin = true;
 
   final _phoneController = TextEditingController();
   final _passwordController = TextEditingController();
   final _nameController = TextEditingController();
-  String _selectedRegion = 'rajapalayam'; // Default region is 'AUS'
+  final _emailController = TextEditingController();
+  final _addressController = TextEditingController();
+  final _cityController = TextEditingController();
+  final _districtController = TextEditingController();
+  final _postalCodeController = TextEditingController();
+  String _selectedRegion = 'rajapalayam';
 
   @override
   void dispose() {
     _phoneController.dispose();
     _passwordController.dispose();
     _nameController.dispose();
+    _emailController.dispose();
+    _addressController.dispose();
+    _cityController.dispose();
+    _districtController.dispose();
+    _postalCodeController.dispose();
     super.dispose();
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    _checkSavedLogin();
-  }
-
-  // Method to check if login info is saved
-  Future<void> _checkSavedLogin() async {
-    final prefs = await SharedPreferences.getInstance();
-    final savedPhone = prefs.getString('phone');
-    final savedPassword = prefs.getString('password');
-
-    if (savedPhone != null && savedPassword != null) {
-      // Auto-login with saved info
-      _phoneController.text = savedPhone;
-      _passwordController.text = savedPassword;
-    }
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Padding(
-        padding: const EdgeInsets.all(64.0),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Center(
-              child: Image.asset('assets/logoindex.jpg', width: 250),
-            ),
-            SizedBox(height: 40),
-            if(_isLogin)
-            Align(
-              alignment: Alignment.center,
-              child: Text(
-                "Login To Your Account",
-                style: TextStyle(
-                  fontSize: 20,
+      body: Center(
+        child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 64, vertical: 46),
+        child: SingleChildScrollView(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Center(child: Image.asset('assets/logoindex.jpg', width: 250)),
+              SizedBox(height: 40),
+              Align(
+                alignment: Alignment.center,
+                child: Text(
+                  _isLogin ? "Login To Your Account" : "Create A New Account",
+                  style: TextStyle(fontSize: 20),
                 ),
               ),
-            ),
-            if(!_isLogin)
-            Align(
-              alignment: Alignment.center,
-              child: Text(
-                "Create An New Account",
-                style: TextStyle(
-                  fontSize: 20,
-                ),
-              ),
-            ),
-            
-            SizedBox(height: 20),
-            if (!_isLogin) // Show only during signup
-              TextField(
-                controller: _nameController,
-                decoration: InputDecoration(
-                  hintText: 'Name',
-                  filled: true,
-                  fillColor: const Color.fromARGB(255, 238, 238, 238),
-                  hintStyle: TextStyle(color: Colors.grey),
-                  border: OutlineInputBorder(
-                    borderSide: BorderSide.none, // Hides the border
-                    borderRadius: BorderRadius.circular(10), // Adds rounded corners
-                  ),
-                ),
-              ),
-            if (!_isLogin)
+              SizedBox(height: 20),
+              if (!_isLogin) ...[
+                _buildTextField(_nameController, 'Name'),
+                SizedBox(height: 10),
+                _buildTextField(_emailController, 'Email (Optional)'),
+                SizedBox(height: 10),
+                _buildDropdownField(),
+                SizedBox(height: 10),
+                _buildTextField(_addressController, 'Address'),
+                SizedBox(height: 10),
+                _buildTextField(_cityController, 'City'),
+                SizedBox(height: 10),
+                _buildTextField(_districtController, 'District'),
+                SizedBox(height: 10),
+                _buildTextField(_postalCodeController, 'Postal Code', isNumber: true),
+                SizedBox(height: 10),
+              ],
+              _buildTextField(_phoneController, 'Phone Number', isNumber: true),
               SizedBox(height: 10),
-            if (!_isLogin) // Region Dropdown with Label
-              InputDecorator(
-                decoration: InputDecoration(
-                  hintText: 'Region',
-                  filled: true,
-                  fillColor: const Color.fromARGB(255, 238, 238, 238),
-                  hintStyle: TextStyle(color: Colors.grey),
-                  border: OutlineInputBorder(
-                    borderSide: BorderSide.none, // Hides the border
-                    borderRadius: BorderRadius.circular(10), // Adds rounded corners
-                  ),
+              _buildTextField(_passwordController, 'Password', obscureText: true),
+              SizedBox(height: 20),
+              ElevatedButton(
+                onPressed: _isLogin ? _login : _signUp,
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: const Color.fromARGB(255, 55, 99, 174),
+                  foregroundColor: Colors.white,
+                  padding: EdgeInsets.symmetric(horizontal: 64, vertical: 18),
+                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                  elevation: 5,
                 ),
-                child: DropdownButton<String>(
-                  isExpanded: true,
-                  value: _selectedRegion,
-                  onChanged: (String? newValue) {
-                    setState(() {
-                      _selectedRegion = newValue!;
-                    });
-                  },
-                  items: <String>["rajapalayam","ambasamuthiram", "sankarankovil","tenkasi", "tirunelveli", "chennai"]
-                      .map<DropdownMenuItem<String>>((String value) {
-                    return DropdownMenuItem<String>(
-                      value: value,
-                      child: Text(value),
-                    );
-                  }).toList(),
-                ),
+                child: Text(_isLogin ? 'Login' : 'Sign Up', style: TextStyle(fontSize: 16)),
               ),
-            if (!_isLogin)
-              SizedBox(height: 10),
-            TextField(
-              controller: _phoneController,
-              decoration: InputDecoration(
-                hintText: 'Phone Number',
-                filled: true,
-                fillColor: const Color.fromARGB(255, 238, 238, 238),
-                hintStyle: TextStyle(color: Colors.grey),
-                border: OutlineInputBorder(
-                  borderSide: BorderSide.none, // Hides the border
-                  borderRadius: BorderRadius.circular(10), // Adds rounded corners
-                ),
+              SizedBox(height: 20),
+              TextButton(
+                onPressed: () => setState(() => _isLogin = !_isLogin),
+                child: Text(_isLogin
+                    ? "Don't have an account? Sign Up"
+                    : 'Already have an account? Login'),
               ),
-              keyboardType: TextInputType.phone,
-            ),
-            SizedBox(height: 10),
-            TextField(
-              controller: _passwordController,
-              decoration: InputDecoration(
-                hintText: 'Password',
-                filled: true,
-                fillColor: const Color.fromARGB(255, 238, 238, 238),
-                hintStyle: TextStyle(color: Colors.grey),
-                border: OutlineInputBorder(
-                  borderSide: BorderSide.none, // Hides the border
-                  borderRadius: BorderRadius.circular(10), // Adds rounded corners
-                ),
-              ),
-              obscureText: true,
-            ),
-            SizedBox(height: 20),
-            ElevatedButton(
-              onPressed: () {
-                if (_isLogin) {
-                  _login();
-                } else {
-                  _signUp();
-                }
-              },
-              style: ElevatedButton.styleFrom(
-                backgroundColor: const Color.fromARGB(255, 55, 99, 174), // Button color
-                foregroundColor: Colors.white, // Text color
-                padding: EdgeInsets.symmetric(horizontal: 64, vertical: 18), // Button size
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(12), // Rounded corners
-                ),
-                elevation: 5, // Shadow effect
-              ),
-              child: Text(
-                _isLogin ? 'Login' : 'Sign Up',
-                style: TextStyle(fontSize: 16), // Text styling
-              ),
-            ),
-            SizedBox(height: 20),
-            TextButton(
-              onPressed: () {
-                setState(() {
-                  _isLogin = !_isLogin;
-                });
-              },
-              child: Text(_isLogin
-                  ? "Don't have an account? Sign Up"
-                  : 'Already have an account? Login'),
-            ),
-          ],
+            ],
+          ),
         ),
+      ),
+    ),
+    );
+  }
+
+  Widget _buildTextField(TextEditingController controller, String hintText,
+      {bool obscureText = false, bool isNumber = false}) {
+    return TextField(
+      controller: controller,
+      decoration: InputDecoration(
+        hintText: hintText,
+        filled: true,
+        fillColor: const Color.fromARGB(255, 238, 238, 238),
+        hintStyle: TextStyle(color: Colors.grey),
+        border: OutlineInputBorder(
+          borderSide: BorderSide.none,
+          borderRadius: BorderRadius.circular(10),
+        ),
+      ),
+      obscureText: obscureText,
+      keyboardType: isNumber ? TextInputType.phone : TextInputType.text,
+    );
+  }
+
+  Widget _buildDropdownField() {
+    return InputDecorator(
+      decoration: InputDecoration(
+        filled: true,
+        fillColor: const Color.fromARGB(255, 238, 238, 238),
+        border: OutlineInputBorder(
+          borderSide: BorderSide.none,
+          borderRadius: BorderRadius.circular(10),
+        ),
+      ),
+      child: DropdownButton<String>(
+        isExpanded: true,
+        value: _selectedRegion,
+        onChanged: (String? newValue) {
+          setState(() {
+            _selectedRegion = newValue!;
+          });
+        },
+        items: <String>["rajapalayam", "ambasamuthiram", "sankarankovil", "tenkasi", "tirunelveli", "chennai"]
+            .map<DropdownMenuItem<String>>((String value) {
+          return DropdownMenuItem<String>(
+            value: value,
+            child: Text(value),
+          );
+        }).toList(),
       ),
     );
   }
 
-  Future<void> _login() async {
+  Future<void> _signUp() async {
+    final name = _nameController.text;
     final phone = _phoneController.text;
+    final password = _passwordController.text;
+    final email = _emailController.text;
+    final address = _addressController.text;
+    final city = _cityController.text;
+    final district = _districtController.text;
+    final postalCode = _postalCodeController.text;
+    final region = _selectedRegion;
+
+    if (name.isNotEmpty &&
+        phone.isNotEmpty &&
+        password.isNotEmpty &&
+        address.isNotEmpty &&
+        city.isNotEmpty &&
+        district.isNotEmpty &&
+        postalCode.isNotEmpty) {
+      final url = '${Data.baseUrl}/log/signup/';
+      final requestBody = {
+        'name': name,
+        'phone': phone,
+        'password': password,
+        'region': region,
+        'email': email.isNotEmpty ? email : null,
+        'address': address,
+        'city': city,
+        'district': district,
+        'postal_code': postalCode,
+        'role': 'customer'
+      };
+
+      try {
+        Dio dio = Dio();
+        final response = await dio.post(
+          url,
+          data: requestBody,
+          options: Options(headers: {'Content-Type': 'application/json'}),
+        );
+
+        if (response.statusCode == 201) {
+          final prefs = await SharedPreferences.getInstance();
+          prefs.setString('phone', phone);
+          prefs.setString('password', password);
+          _showSuccess('Signup successful! Please log in.');
+          Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => LoginPage()));
+        } else {
+          _showError('Signup failed. Please try again.');
+        }
+      } catch (e) {
+        _showError('An error occurred. Please try again later.');
+      }
+    } else {
+      _showError('Please fill in all required fields.');
+    }
+  }
+
+  Future<void> _login() async {
+     final phone = _phoneController.text;
     final password = _passwordController.text;
 
     if (phone.isNotEmpty && password.isNotEmpty) {
@@ -268,82 +279,13 @@ class LoginPageState extends State<LoginPage> {
     }
   }
 
-  Future<void> _signUp() async {
-    final name = _nameController.text;
-    final phone = _phoneController.text;
-    final password = _passwordController.text;
-    final region = _selectedRegion; // Get selected region from dropdown
-
-    if (name.isNotEmpty && phone.isNotEmpty && password.isNotEmpty && region.isNotEmpty) {
-      // Perform signup API call
-      final url = '${Data.baseUrl}/log/signup/'; // Use your correct endpoint
-      final requestBody = {
-        'name': name,
-        'phone': phone,
-        'password': password,
-        'region': region,
-        'role': 'customer'
-      };
-      
-      try {
-        // Initialize Dio
-        Dio dio = Dio();
-        
-        // Send POST request with headers
-        final response = await dio.post(
-          url,
-          data: requestBody,
-          options: Options(
-            headers: {
-              'Content-Type': 'application/json',
-            },
-          ),
-        );
-
-        if (response.statusCode == 201) {
-          // Signup successful
-          // final responseData = response.data;
-          // print('Response Data: $responseData');
-
-          // Save signup info to SharedPreferences
-          final prefs = await SharedPreferences.getInstance();
-          prefs.setString('phone', phone);
-          prefs.setString('password', password); 
-
-          // Show a success message (optional)
-          _showSuccess('Signup successful! Please log in.');
-
-          // Navigate to LoginPage after successful signup
-          Navigator.pushReplacement(
-            context,
-            MaterialPageRoute(builder: (context) => LoginPage()),
-          );
-        } else {
-          // Handle signup failure based on response
-          _showError('Signup failed. Please try again.');
-        }
-      } catch (e) {
-        // Handle any exceptions (e.g., network issues)
-        _showError('An error occurred. Please try again later.');
-      }
-    } else {
-      // Handle case where fields are empty
-      _showError('Please fill in all fields');
-    }
-  }
-
   void _showSuccess(String message) {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
         title: Text('Success'),
         content: Text(message),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.of(context).pop(),
-            child: Text('OK'),
-          ),
-        ],
+        actions: [TextButton(onPressed: () => Navigator.of(context).pop(), child: Text('OK'))],
       ),
     );
   }
@@ -354,12 +296,7 @@ class LoginPageState extends State<LoginPage> {
       builder: (context) => AlertDialog(
         title: Text('Error'),
         content: Text(message),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.of(context).pop(),
-            child: Text('OK'),
-          ),
-        ],
+        actions: [TextButton(onPressed: () => Navigator.of(context).pop(), child: Text('OK'))],
       ),
     );
   }
