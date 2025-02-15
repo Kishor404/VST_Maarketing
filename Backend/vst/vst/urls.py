@@ -11,6 +11,7 @@ urlpatterns = [
     path('products/', include('products.urls')), 
     path('utils/', include('utils.urls')), 
     path('editreq/', include('editReq.urls')), 
+    path('unavailablereq/', include('unavailableReq.urls')), 
 ]
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

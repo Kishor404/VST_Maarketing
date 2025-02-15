@@ -9,16 +9,18 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiY
 POST http://127.0.0.1:8000/log/login/
 Content-Type: application/json
 
-{"phone":"2222222222","password":"123"}
+{"phone":"9123456780","password":"123"}
 
 
-
+# ----- HEAD : 9876543120 ---------
+# ----- STAFF : 9123456780 --------
+# ----- CUSTOMER/USER : 9182736450 ------
 ### =========== SIGNUP API =============
 
 POST http://127.0.0.1:8000/log/signup/
 Content-Type: application/json
 
-{"name":"Sundar","phone":"2222222222","password":"123","region":"rajapalayam","role":"head"}
+{"name":"Manikam","phone":"9123456780","password":"123","region":"rajapalayam","role":"worker"}
 
 ### ========== CARD DETAILS API ==========
 
@@ -56,6 +58,95 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiY
 
 ### ======== HEAD ACCEPT REQUESTED EDIT ==========
 
-GET http://127.0.0.1:8000/utils/headeditreq/7
+GET http://127.0.0.1:8000/utils/headeditreq/8
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzM5NDU3NTc0LCJpYXQiOjE3Mzk0NTU3NzQsImp0aSI6IjZkMmU1ZmM1ZWNkMjQwNjM5NzVlNTU4OWNhNDNiNDdjIiwidXNlcl9pZCI6MTh9.cc7e5IW-XF8mM9kSJ0bqt027lsF6TkhD7QPsCJsFzhs
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzM5NjAzOTg3LCJpYXQiOjE3Mzk2MDIxODcsImp0aSI6ImFhZGEzOGRmNDlkMzRhYzI4MGZkZDViNmQ4YjI4Y2E3IiwidXNlcl9pZCI6MTl9.uu0L-UxDjg6zYCmgvtQVtYULHgENYCw0T-lQRcZxCVM
+
+### ======== CREATE CARD BY HEAD ==========
+
+POST http://127.0.0.1:8000/api/headcreatecard/
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzM5NTQzNTY3LCJpYXQiOjE3Mzk1NDE3NjcsImp0aSI6IjNiYmU1MjczZjZmODRhY2E4N2VkMmI0ZGVjNzJhMWUxIiwidXNlcl9pZCI6MjF9.55AIrNT5GEylp8l4Cf8mj6hwdBZQ_1_pL9KdXSdKEmQ
+
+{
+    "model":"Purifier IO", 
+    "customer_code":16, 
+    "customer_name":"oo", 
+    "region":"oo", 
+    "date_of_installation":"2025-02-12", 
+    "address":"oo", 
+    "warranty_start_date":"2025-02-16", 
+    "warranty_end_date":"2025-05-16"
+}
+
+### ======== GET CARD BY HEAD ==========
+
+GET http://127.0.0.1:8000/api/headcardlist/
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzM5NjAzOTg3LCJpYXQiOjE3Mzk2MDIxODcsImp0aSI6ImFhZGEzOGRmNDlkMzRhYzI4MGZkZDViNmQ4YjI4Y2E3IiwidXNlcl9pZCI6MTl9.uu0L-UxDjg6zYCmgvtQVtYULHgENYCw0T-lQRcZxCVM
+
+###========== EDIT CARD BY HEAD USING ID ========
+
+PATCH http://127.0.0.1:8000/api/headeditcard/5/
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzM5NjAyMjY2LCJpYXQiOjE3Mzk2MDA0NjYsImp0aSI6IjA3NDhlMzdkMDAxZjQ3ZjE4ODhiNGY3ZjJiZTQ2ZGQyIiwidXNlcl9pZCI6MTl9.Ntm5WtjS2nTW_61RDwYxeW3Rx79bfkZ8_fQ8wjNltes
+
+{
+    "model":"Purifier Mark II", 
+    "customer_code":16, 
+    "customer_name":"oo", 
+    "region":"oo", 
+    "date_of_installation":"2025-02-12", 
+    "address":"oo", 
+    "warranty_start_date":"2025-02-16", 
+    "warranty_end_date":"2025-05-16"
+}
+
+### ========= CREATE SERVICE ENTRIES =========
+
+POST http://127.0.0.1:8000/api/createserviceentry/
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzM5NjAzMjA0LCJpYXQiOjE3Mzk2MDE0MDQsImp0aSI6IjkzYjZlZTU0ZGEzMzQwZjVhOWU1MzkxZmQ5N2M3YjhkIiwidXNlcl9pZCI6MTl9.wW2qRAZgnTzjay77H8J8P7MCEZi-UriMS5YExbZUiVI
+
+{
+    "card":4, 
+    "date":"2025-02-15", 
+    "next_service":"2025-05-12", 
+    "visit_type":"C", 
+    "nature_of_complaint":"None", 
+    "work_details":"Check the working of purifier", 
+    "parts_replaced":"No", 
+    "icr_number":"5354",
+    "amount_charged":"5000",
+    "customer_signature":{"sign":0},
+    "cse_signature":{"sign":0}
+}
+
+### ========= CREATE SERVICE ENTRIES =========
+
+PATCH http://127.0.0.1:8000/api/signbycustomer/3/
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzM5NjA0MDQ3LCJpYXQiOjE3Mzk2MDIyNDcsImp0aSI6IjhjM2Y5NDI2ZTQ2ZTQ3YWNiODhhODMyYWFiNGYwZjc2IiwidXNlcl9pZCI6MjJ9.m8TTCPivD8WRqJqaqTLnSGV_ffw1wPWeoFNH-6Aru2w
+
+{
+    "customer_signature":{"sign":1}
+}
+
+### ======== UNAVAILABLE REQ ============
+
+POST http://127.0.0.1:8000/unavailablereq/
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzM5NjE0Mzk1LCJpYXQiOjE3Mzk2MTI1OTUsImp0aSI6ImQyOTcwZTRiOTMzYTQzNDA4Mjc5YTIxYzM3MmI1Y2E4IiwidXNlcl9pZCI6MjF9.X6mUpmKDwGbtzPKnJ0xr2mLhAgC0LB5Fp0UrMDjUYqg
+
+{
+    "service":21,
+    "staff":21
+}
+
+### ========= REASSIGN REQ ============
+
+POST http://127.0.0.1:8000/utils/reassingstaff/2
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzM5NjE0Mzk1LCJpYXQiOjE3Mzk2MTI1OTUsImp0aSI6ImQyOTcwZTRiOTMzYTQzNDA4Mjc5YTIxYzM3MmI1Y2E4IiwidXNlcl9pZCI6MjF9.X6mUpmKDwGbtzPKnJ0xr2mLhAgC0LB5Fp0UrMDjUYqg
+
+{}

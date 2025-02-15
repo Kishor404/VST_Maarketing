@@ -4,6 +4,8 @@ from .serializers import CardSerializer, ServiceEntrySerializer
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.viewsets import ReadOnlyModelViewSet
+from rest_framework import generics
+from rest_framework.exceptions import PermissionDenied
 
 class CardViewSet(viewsets.ModelViewSet):
     """
@@ -28,8 +30,113 @@ class CardListView(ReadOnlyModelViewSet):
     def get_queryset(self):
         user = self.request.user
         allowed_roles = {"customer", "worker", "head", "admin"}
-        print("ID "+user.role)
 
         if user.role not in allowed_roles:
             return Card.objects.none()  # Return empty queryset if unauthorized
         return Card.objects.filter(customer_code=user.id)
+    
+
+class CardCreateByHead(generics.CreateAPIView):
+    queryset = Card.objects.all()
+    serializer_class = CardSerializer
+
+    def create(self, request, *args, **kwargs):
+        user_role = request.user.role if hasattr(request.user, 'role') else None
+
+        if user_role != 'head':
+            raise PermissionDenied("You are not authorized to perform this action.")
+
+        return super().create(request, *args, **kwargs)
+    
+class CardUpdateByHead(generics.UpdateAPIView):
+    queryset = Card.objects.all()
+    serializer_class = CardSerializer
+    lookup_field = 'id'
+
+    def patch(self, request, *args, **kwargs):
+        user_role = request.user.role if hasattr(request.user, 'role') else None
+
+        if user_role != 'head':
+            raise PermissionDenied("You are not authorized to perform this action.")
+
+        return super().patch(request, *args, **kwargs)
+
+
+class CardListByHead(generics.ListAPIView):
+    queryset = Card.objects.all()
+    serializer_class = CardSerializer
+
+    def get(self, request, *args, **kwargs):
+        user_role = request.user.role if hasattr(request.user, 'role') else None
+
+        if user_role not in {"head", "worker"}:
+            raise PermissionDenied("You are not authorized to perform this action.")
+
+        return super().get(request, *args, **kwargs)
+
+class ServiceEntryCreateByHeadAndWorker(generics.CreateAPIView):
+    
+    queryset = ServiceEntry.objects.all()
+    serializer_class = ServiceEntrySerializer
+
+    def create(self, request, *args, **kwargs):
+        user_role = request.user.role if hasattr(request.user, 'role') else None
+
+        if user_role not in {"head", "worker"}:
+            raise PermissionDenied("You are not authorized to perform this action.")
+
+        return super().create(request, *args, **kwargs)
+    
+class ServiceEntryUpdateByHeadAndWorker(generics.UpdateAPIView):
+    
+    queryset = ServiceEntry.objects.all()
+    serializer_class = ServiceEntrySerializer
+    lookup_field = 'id'
+
+    def patch(self, request, *args, **kwargs):
+        user_role = request.user.role if hasattr(request.user, 'role') else None
+
+        if user_role not in {"head", "worker"}:
+            raise PermissionDenied("You are not authorized to perform this action.")
+
+        return super().patch(request, *args, **kwargs)
+
+class ServiceEntryCustomerSignatureUpdate(generics.UpdateAPIView):
+    """
+    API view for updating only the customer_signature field. 
+    Only accessible by customers for their own service entries.
+    """
+    queryset = ServiceEntry.objects.all()
+    serializer_class = ServiceEntrySerializer
+    lookup_field = 'id'
+
+    def patch(self, request, *args, **kwargs):
+        user = request.user
+        user_role = getattr(user, 'role', None)
+
+        # Ensure only customers can access this endpoint
+        if user_role != "customer":
+            raise PermissionDenied("You are not authorized to update this field.")
+
+        # Fetch the service entry
+        try:
+            service_entry = ServiceEntry.objects.get(id=kwargs["id"])
+        except ServiceEntry.DoesNotExist:
+            raise PermissionDenied("Service entry not found.")
+
+        # Get the associated card
+        card = service_entry.card  # Assuming ServiceEntry has a ForeignKey to Card
+
+        # Verify that the requesting user is the owner (customer_code == user.id)
+        if card.customer_code.id != user.id:  
+            raise PermissionDenied("You are not authorized to update this service entry.")
+
+        # Create a modified data dictionary
+        updated_data = {"customer_signature": request.data.get("customer_signature")}
+
+        # Perform the partial update
+        serializer = self.get_serializer(service_entry, data=updated_data, partial=True)
+        serializer.is_valid(raise_exception=True)
+        self.perform_update(serializer)
+
+        return Response(serializer.data)

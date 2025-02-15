@@ -46,6 +46,7 @@ INSTALLED_APPS = [
     'products',
     'utils',
     'editReq',
+    'unavailableReq'
 ]
 
 MIDDLEWARE = [

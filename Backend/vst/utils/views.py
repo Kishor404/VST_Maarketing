@@ -37,10 +37,10 @@ class CheckAvailabilityView(APIView):
             available_workers = []
             
             for worker in workers:
-                unavailable_dates = worker.availability.get("unavailable", [])
-                unavailable_dates = {datetime.strptime(date, "%Y-%m-%d").date() for date in unavailable_dates}
+                unavailables = worker.availability.get("unavailable", [])
+                unavailables = {datetime.strptime(date, "%Y-%m-%d").date() for date in unavailables}
                 
-                if check_date not in unavailable_dates:
+                if check_date not in unavailables:
                     available_workers.append(worker)
             
             if available_workers:
@@ -49,7 +49,7 @@ class CheckAvailabilityView(APIView):
                     key=lambda w: datetime.strptime(w.last_service, "%Y-%m-%d").date() if w.last_service and w.last_service != "None" else datetime.min.date()
                 )
                 
-                return Response({"worker_id": selected_worker.id, "available_date": check_date.strftime("%Y-%m-%d")}, status=status.HTTP_200_OK)
+                return Response({"worker_id": selected_worker.id, "available": check_date.strftime("%Y-%m-%d")}, status=status.HTTP_200_OK)
         
         return Response({"message": "No workers available during this period"}, status=status.HTTP_200_OK)
 
@@ -137,7 +137,7 @@ class CurrentServiceView(APIView):
         user = request.user  
         current_date = now().date()
 
-        services = Service.objects.filter(staff=user, status='BD', available_date=current_date)
+        services = Service.objects.filter(staff=user, status='BD', available=current_date)
         
         serializer = ServiceSerializer(services, many=True)
         return Response(serializer.data, status=200)
@@ -277,3 +277,93 @@ class GetUserByID(APIView):
 
         return Response(serializer.data, status=status.HTTP_200_OK)
 
+
+# =========== REASSIGN STAFF ==========
+
+import json
+from datetime import datetime, timedelta
+from rest_framework.views import APIView
+from rest_framework.response import Response
+from rest_framework import status
+from django.shortcuts import get_object_or_404
+from django.contrib.auth import get_user_model
+from unavailableReq.models import UnavailableReq
+from service.models import Service
+
+User = get_user_model()
+
+class AssignAvailableStaffView(APIView):
+    def post(self, request, *args, **kwargs):
+        # Fetch unavailable request by ID
+        req_id = kwargs.get("id") or request.data.get("id")
+        if not req_id:
+            return Response({"message": "Request ID is required."}, status=status.HTTP_400_BAD_REQUEST)
+
+        unavailable_req = get_object_or_404(UnavailableReq, id=req_id)
+        service = unavailable_req.service
+        current_staff = unavailable_req.staff
+
+        # Debugging: Print the available data
+        print("Raw available:", service.available, type(service.available))
+
+        # Parse available from JSON format and normalize date format
+        try:
+            if isinstance(service.available, str):
+                available = json.loads(service.available)  # Convert string to JSON
+            else:
+                available = service.available  # Already a dictionary
+
+            # Ensure required keys exist
+            if "from" not in available or "to" not in available:
+                raise KeyError("Missing 'from' or 'to' in available.")
+
+            # Normalize date format (replace '/' with '-')
+            from_date_str = available["from"].replace("/", "-")
+            to_date_str = available["to"].replace("/", "-")
+
+            # Convert to date format
+            from_date = datetime.strptime(from_date_str, "%Y-%m-%d").date()
+            to_date = datetime.strptime(to_date_str, "%Y-%m-%d").date()
+        except (KeyError, ValueError, json.JSONDecodeError) as e:
+            print("Error parsing available:", str(e))  # Debugging
+            return Response({"message": "Invalid available format.", "error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
+
+        # Fetch workers excluding the current staff
+        workers = User.objects.filter(role="worker").exclude(id=current_staff.id)
+        available_worker = None
+
+        for check_date in (from_date + timedelta(days=i) for i in range((to_date - from_date).days + 1)):
+            available_workers = []
+
+            for worker in workers:
+                try:
+                    # Parse worker availability if stored as JSON string
+                    worker_availability = json.loads(worker.availability) if isinstance(worker.availability, str) else worker.availability
+                    unavailables = worker_availability.get("unavailable", [])
+                    unavailables = {datetime.strptime(date, "%Y-%m-%d").date() for date in unavailables}
+                except (json.JSONDecodeError, AttributeError, ValueError):
+                    unavailables = set()  # Handle malformed availability data
+
+                if check_date not in unavailables:
+                    available_workers.append(worker)
+
+            if available_workers:
+                # Select the worker with the earliest last service date
+                available_worker = min(
+                    available_workers,
+                    key=lambda w: datetime.strptime(w.last_service, "%Y-%m-%d").date() if w.last_service and w.last_service != "None" else datetime.min.date()
+                )
+                break
+
+        if available_worker:
+            # Assign new worker to the service
+            service.staff = available_worker
+            service.save()
+            unavailable_req.delete()
+            return Response({
+                "message": "Staff reassigned successfully.",
+                "worker_id": available_worker.id,
+                "available": check_date.strftime("%Y-%m-%d")
+            }, status=status.HTTP_200_OK)
+        
+        return Response({"message": "No available workers found."}, status=status.HTTP_200_OK)

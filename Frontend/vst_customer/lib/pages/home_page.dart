@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'contact.dart';
 import 'data.dart';
+import 'help.dart';
 
 
 class HomePage extends StatelessWidget {
@@ -14,12 +16,12 @@ class HomePage extends StatelessWidget {
     // Define icons and labels for the buttons
     final List<Map<String, dynamic>> buttonData = [
       {'icon': Icons.construction, 'label': 'Service', 'onTap': () => onNavigateToIndex(1)},
-      {'icon': Icons.phone, 'label': 'Contact', 'onTap': () => print('Cart tapped')},
+      {'icon': Icons.phone, 'label': 'Contact', 'onTap': () => Navigator.push(context, MaterialPageRoute(builder: (context) => ContactPage()),)},
       {'icon': Icons.article, 'label': 'Card', 'onTap': () => onNavigateToIndex(3)},
       {'icon': Icons.settings, 'label': 'Settings', 'onTap': () => print('Settings tapped')},
       {'icon': Icons.notifications, 'label': 'Alerts', 'onTap': () => print('Alerts tapped')},
       {'icon': Icons.shopping_bag, 'label': 'Products', 'onTap': () => onNavigateToIndex(2)},
-      {'icon': Icons.help, 'label': 'Help', 'onTap': () => print('Help tapped')},
+      {'icon': Icons.help, 'label': 'Help', 'onTap': () => Navigator.push(context, MaterialPageRoute(builder: (context) => HelpPage()),)},
       {'icon': Icons.person, 'label': 'Profile', 'onTap': () => onNavigateToIndex(4)},
     ];
 
