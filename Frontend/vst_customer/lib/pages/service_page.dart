@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:vst_maarketing/pages/service_last.dart';
+import 'service_details.dart';
 import 'service_book.dart';
 import 'package:dio/dio.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'data.dart';
-
 
 class ServicePage extends StatefulWidget {
   const ServicePage({super.key});
@@ -24,9 +25,8 @@ class ServicePageState extends State<ServicePage> {
   bool isLoading = true;
   final Dio _dio = Dio();
 
-  bool bookButton=true;
-  bool lastButton=false;
-
+  bool bookButton = true;
+  bool lastButton = false;
 
   @override
   void initState() {
@@ -35,18 +35,18 @@ class ServicePageState extends State<ServicePage> {
   }
 
   Future<void> _initializeData() async {
-    await _loadTokens(); 
-    await _refreshAccessToken();  
+    await _loadTokens();
+    await _refreshAccessToken();
     await fetchNextService();
     await fetchServices();
-    await fetchServiceDetails();
+    fetchServiceDetails(); // No need for `await` as it's not an API call
   }
 
   Future<void> _loadTokens() async {
     final prefs = await SharedPreferences.getInstance();
     setState(() {
-      _refreshToken = prefs.getString('RT') ?? ''; 
-      _accessToken = prefs.getString('AT') ?? ''; 
+      _refreshToken = prefs.getString('RT') ?? '';
+      _accessToken = prefs.getString('AT') ?? '';
     });
   }
 
@@ -99,19 +99,21 @@ class ServicePageState extends State<ServicePage> {
 
       setState(() {
         services = response.data;
-        isLoading = false;
       });
+
+      fetchServiceDetails(); // Process fetched services
     } catch (e) {
       if (e is DioException && e.response?.statusCode == 401) {
         debugPrint("Access token expired. Refreshing token...");
         await _refreshAccessToken();
-        return fetchServices(); // Retry fetching after token refresh
+        return fetchServices();
       }
 
+      debugPrint('Error fetching services: $e');
+    } finally {
       setState(() {
         isLoading = false;
       });
-      debugPrint('Error fetching services: $e');
     }
   }
 
@@ -133,62 +135,79 @@ class ServicePageState extends State<ServicePage> {
       setState(() {
         nextService = response.data["days_remaining"].toString();
         nextServiceCard = response.data["card_id"].toString();
-        isLoading = false;
       });
     } catch (e) {
       if (e is DioException && e.response?.statusCode == 401) {
         debugPrint("Access token expired. Refreshing token...");
         await _refreshAccessToken();
-        return fetchServices(); // Retry fetching after token refresh
+        return fetchNextService();
       }
-
-      setState(() {
-        isLoading = false;
-      });
-      debugPrint('Error fetching services: $e');
+      debugPrint('Error fetching next service: $e');
     }
   }
 
-  Future<void> fetchServiceDetails() async{
-    // Simulate a backend call
-    for(int i=0;i<services.length;i++){
-      if(services[i]["status"]=="SD"){
-        setState(() {
-          lastServiceDate = services[i]["date_of_service"];
-        });
-      }
-      if(services[i]["status"]=="BD" || services[i]["status"]=="SP"){
-        bookedServices.add(services[i]);
-      }
-      if(services[i]["status"]=="NS" || services[i]["status"]=="CC" || services[i]["status"]=="CW"){
-        cancelServices.add(services[i]);
+
+  void fetchServiceDetails() {
+    if (services.isEmpty) return;
+
+    List<dynamic> tempBookedServices = [];
+    List<dynamic> tempCancelServices = [];
+    String tempLastServiceDate = lastServiceDate;
+
+    for (var service in services) {
+      switch (service["status"]) {
+        case "SD":
+          tempLastServiceDate = service["date_of_service"];
+          break;
+        case "BD":
+        case "SP":
+          tempBookedServices.add(service);
+          break;
+        case "NS":
+        case "CC":
+        case "CW":
+          tempCancelServices.add(service);
+          break;
       }
     }
 
-    if(bookedServices.isNotEmpty){
-      setState(() {
-        bookButton=false;
-      });
-    }
-    if(cancelServices.isNotEmpty){
-      setState(() {
-        lastButton=true;
-      });
-    }
+    setState(() {
+      lastServiceDate = tempLastServiceDate;
+      bookedServices = tempBookedServices;
+      cancelServices = tempCancelServices;
+      bookButton = bookedServices.isEmpty;
+      lastButton = cancelServices.isNotEmpty;
+    });
+  }
+
+  Widget buildServiceButton({required String label, required VoidCallback onPressed}) {
+    return ElevatedButton(
+      onPressed: onPressed,
+      style: ElevatedButton.styleFrom(
+        backgroundColor: const Color.fromARGB(255, 55, 99, 174),
+        padding: const EdgeInsets.symmetric(horizontal: 34.0, vertical: 20.0),
+        textStyle: const TextStyle(fontSize: 18.0),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(8.0),
+        ),
+      ),
+      child: Text(label, style: const TextStyle(color: Colors.white)),
+    );
   }
 
   @override
   Widget build(BuildContext context) {
     double screenWidth = MediaQuery.of(context).size.width;
+
     return Scaffold(
-      backgroundColor: Color.fromRGBO(255, 255, 255, 1),
+      backgroundColor: Colors.white,
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 50.0),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Container(
-              width: screenWidth*0.8,
+              width: screenWidth * 0.8,
               padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 30.0),
               decoration: BoxDecoration(
                 color: const Color.fromARGB(255, 55, 99, 174),
@@ -198,10 +217,7 @@ class ServicePageState extends State<ServicePage> {
                 children: [
                   const Text(
                     'Service',
-                    style: TextStyle(
-                      fontSize: 24.0,
-                      color: Colors.white,
-                    ),
+                    style: TextStyle(fontSize: 24.0, color: Colors.white),
                   ),
                   const SizedBox(height: 15.0),
                   Text(
@@ -221,78 +237,28 @@ class ServicePageState extends State<ServicePage> {
             ),
             const SizedBox(height: 10.0),
             Expanded(
-              child: Image.network(
-                  '${Data.baseUrl}/media/utils/Service_Illus.jpg',
-                  height: 400,
-                ),
+              child: Image.network('${Data.baseUrl}/media/utils/Service_Illus.jpg', height: 400),
             ),
             const SizedBox(height: 10.0),
 
-            // CANCEL BUTTON
+            lastButton
+                ? buildServiceButton(
+                    label: 'Cancelled Service',
+                    onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => ServiceLast(serviceData: cancelServices.last))),
+                  )
+                : Container(),
 
-            lastButton ? ElevatedButton(
-              onPressed: () {
-                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) =>
-                                        ServiceBook(),
-                                  ),
-                                );
-              },
-              style: ElevatedButton.styleFrom(
-                backgroundColor: const Color.fromARGB(255, 55, 99, 174),
-                padding: const EdgeInsets.symmetric(horizontal: 34.0, vertical: 20.0),
-                textStyle: const TextStyle(fontSize: 18.0),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(8.0),
-                ),
-              ),
-              child: const Text('Last Service', style: TextStyle(color: Colors.white)),
-            ) : Container(),
-
-            // BOOK BUTTON 
             const SizedBox(height: 15.0),
 
-            bookButton ? ElevatedButton(
-              onPressed: () {
-                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) =>
-                                        ServiceBook(),
-                                  ),
-                                );
-              },
-              style: ElevatedButton.styleFrom(
-                backgroundColor: const Color.fromARGB(255, 55, 99, 174),
-                padding: const EdgeInsets.symmetric(horizontal: 34.0, vertical: 20.0),
-                textStyle: const TextStyle(fontSize: 18.0),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(8.0),
-                ),
-              ),
-              child: const Text('Book Service', style: TextStyle(color: Colors.white)),
-            ) : ElevatedButton(
-              onPressed: () {
-                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) =>
-                                        ServiceBook(),
-                                  ),
-                                );
-              },
-              style: ElevatedButton.styleFrom(
-                backgroundColor: const Color.fromARGB(255, 55, 99, 174),
-                padding: const EdgeInsets.symmetric(horizontal: 34.0, vertical: 20.0),
-                textStyle: const TextStyle(fontSize: 18.0),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(8.0),
-                ),
-              ),
-              child: const Text('Service Details', style: TextStyle(color: Colors.white)),
-            ),
+            bookButton
+                ? buildServiceButton(
+                    label: 'Book Service',
+                    onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => ServiceBook())),
+                  )
+                : buildServiceButton(
+                    label: 'Service Details',
+                    onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => ServiceDetails(serviceData: bookedServices.last))),
+                  ),
           ],
         ),
       ),

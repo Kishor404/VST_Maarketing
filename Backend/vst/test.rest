@@ -9,7 +9,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiY
 POST http://127.0.0.1:8000/log/login/
 Content-Type: application/json
 
-{"phone":"9123456780","password":"123"}
+{"phone":"9182736450","password":"123"}
 
 
 # ----- HEAD : 9876543120 ---------
@@ -150,3 +150,11 @@ Content-Type: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzM5NjE0Mzk1LCJpYXQiOjE3Mzk2MTI1OTUsImp0aSI6ImQyOTcwZTRiOTMzYTQzNDA4Mjc5YTIxYzM3MmI1Y2E4IiwidXNlcl9pZCI6MjF9.X6mUpmKDwGbtzPKnJ0xr2mLhAgC0LB5Fp0UrMDjUYqg
 
 {}
+
+### ======== CANCEL SERVICE BY CUSTOMER =======
+
+PATCH http://127.0.0.1:8000/services/cancleservicebycustomer/22
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzM5NjMxMDk0LCJpYXQiOjE3Mzk2MjkyOTQsImp0aSI6IjA5ZWUzYjYzZWI5YTRhNGY5OGVmOTM0NmZiZWNlOTYwIiwidXNlcl9pZCI6MjJ9.q-OeWLVtc8C5ZTEHhTKddLEAUzgu5t3SR_Y5gdIXzfY
+
+{}  

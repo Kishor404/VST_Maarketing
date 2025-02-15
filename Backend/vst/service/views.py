@@ -4,8 +4,8 @@ from .models import Service
 from .serializers import ServiceSerializer
 from rest_framework.response import Response
 from rest_framework import status
-
-from user.models import User
+from rest_framework.views import APIView
+from django.shortcuts import get_object_or_404
 
 
 class ServiceViewSet(viewsets.ModelViewSet):
@@ -45,3 +45,24 @@ class ServiceViewSet(viewsets.ModelViewSet):
                 print(f"Error updating staff availability: {e}")  # Debugging purpose
 
         return Response(serializer.data, status=status.HTTP_201_CREATED)
+
+
+
+class CancelServiceByCustomer(APIView):
+    
+    def patch(self, request, *args, **kwargs):
+        service_id = kwargs.get('id')
+        user = request.user  # Get the user from the access token
+        
+        # Fetch the service instance
+        service = get_object_or_404(Service, id=service_id)
+        
+        # Check if the service's customer is the logged-in user
+        if service.customer != user:
+            return Response({'error': 'Unauthorized'}, status=status.HTTP_403_FORBIDDEN)
+        
+        # Update the status
+        service.status = 'CC'
+        service.save()
+        
+        return Response({'message': 'Service status updated successfully'}, status=status.HTTP_200_OK)
