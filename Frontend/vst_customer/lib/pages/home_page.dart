@@ -9,10 +9,10 @@ class HomePage extends StatefulWidget {
   const HomePage({super.key, required this.onNavigateToIndex});
 
   @override
-  _HomePageState createState() => _HomePageState();
+  HomePageState createState() => HomePageState();
 }
 
-class _HomePageState extends State<HomePage> {
+class HomePageState extends State<HomePage> {
   final Dio _dio = Dio();
   List<String> quotes = [
     "I will love the light for it shows me the way, yet I will endure the darkness because it shows me the stars.",
