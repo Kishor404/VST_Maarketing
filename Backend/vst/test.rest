@@ -9,7 +9,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiY
 POST http://127.0.0.1:8000/log/login/
 Content-Type: application/json
 
-{"phone":"9182736450","password":"123"}
+{"phone":"9876543120","password":"123"}
 
 
 # ----- HEAD : 9876543120 ---------
@@ -106,10 +106,10 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiY
 
 POST http://127.0.0.1:8000/api/createserviceentry/
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzM5NjAzMjA0LCJpYXQiOjE3Mzk2MDE0MDQsImp0aSI6IjkzYjZlZTU0ZGEzMzQwZjVhOWU1MzkxZmQ5N2M3YjhkIiwidXNlcl9pZCI6MTl9.wW2qRAZgnTzjay77H8J8P7MCEZi-UriMS5YExbZUiVI
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzM5NzE1MDkxLCJpYXQiOjE3Mzk3MTMyOTEsImp0aSI6ImNlOGJkZDYxNTUxMzQwMGU4NjY2ODhmZDI3MGMyNmNhIiwidXNlcl9pZCI6MTl9.4XcqzPhxVmM1F-jV2xIkSMkLfH-QBRtyl-O7tQ0BGTQ
 
 {
-    "card":4, 
+    "card":3, 
     "date":"2025-02-15", 
     "next_service":"2025-05-12", 
     "visit_type":"C", 
@@ -122,7 +122,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiY
     "cse_signature":{"sign":0}
 }
 
-### ========= CREATE SERVICE ENTRIES =========
+### ========= SIGN SERVICE ENTRIES =========
 
 PATCH http://127.0.0.1:8000/api/signbycustomer/3/
 Content-Type: application/json

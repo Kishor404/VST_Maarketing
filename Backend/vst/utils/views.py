@@ -137,8 +137,7 @@ class CurrentServiceView(APIView):
         user = request.user  
         current_date = now().date()
 
-        services = Service.objects.filter(staff=user, status='BD', available=current_date)
-        
+        services = Service.objects.filter(staff=user, status='BD', available_date=current_date)
         serializer = ServiceSerializer(services, many=True)
         return Response(serializer.data, status=200)
 

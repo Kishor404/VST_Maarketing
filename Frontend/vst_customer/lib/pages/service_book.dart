@@ -199,7 +199,7 @@ class ServiceBookState extends State<ServiceBook> {
 
     if (availabilityResponse.data.containsKey("worker_id")) {
       int workerId = availabilityResponse.data["worker_id"];
-      String avaDate = availabilityResponse.data["available_date"];
+      String avaDate = availabilityResponse.data["available"];
       // Proceed with booking since a worker is available
       await _confirmBooking(workerId, avaDate, complaintText, complaintDescription);
     } else {
