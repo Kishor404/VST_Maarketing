@@ -15,5 +15,55 @@
           "name": "N UDAYASANKAR RAJHA",
           "phone": "9843232131"
         }
-      }
+      },
+    "instructions":[
+      [
+        "Getting Started",
+        [
+          "Open the app and log in with your credentials.",
+          "Navigate through the home screen to access features.",
+          "Use the menu to explore various sections of the app."
+        ]
+      ],
+      [
+        "Using Features",
+        [
+          "Tap on an item to get detailed information.",
+          "Use search functionality to find specific content.",
+          "Bookmark important items for later reference."
+        ]
+      ],
+      [
+        "Troubleshooting",
+        [
+          "Ensure you have a stable internet connection.",
+          "Restart the app if you encounter any issues.",
+          "Contact our support team at support@example.com."
+        ]
+      ],
+      [
+        "Troubleshooting",
+        [
+          "Ensure you have a stable internet connection.",
+          "Restart the app if you encounter any issues.",
+          "Contact our support team at support@example.com."
+        ]
+      ],
+      [
+        "Troubleshooting",
+        [
+          "Ensure you have a stable internet connection.",
+          "Restart the app if you encounter any issues.",
+          "Contact our support team at support@example.com."
+        ]
+      ],
+      [
+        "Troubleshooting",
+        [
+          "Ensure you have a stable internet connection.",
+          "Restart the app if you encounter any issues.",
+          "Contact our support team at support@example.com."
+        ]
+      ]
+    ]
 }

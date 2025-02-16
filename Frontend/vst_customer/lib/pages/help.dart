@@ -1,76 +1,60 @@
 import 'package:flutter/material.dart';
+import 'package:dio/dio.dart';
+import 'data.dart';
 
-class HelpPage extends StatelessWidget {
-  final List<List<dynamic>> instructions = [
-    [
-      'Getting Started',
-      [
-        'Open the app and log in with your credentials.',
-        'Navigate through the home screen to access features.',
-        'Use the menu to explore various sections of the app.',
-      ]
-    ],
-    [
-      'Using Features',
-      [
-        'Tap on an item to get detailed information.',
-        'Use search functionality to find specific content.',
-        'Bookmark important items for later reference.',
-      ]
-    ],
-    [
-      'Troubleshooting',
-      [
-        'Ensure you have a stable internet connection.',
-        'Restart the app if you encounter any issues.',
-        'Contact our support team at support@example.com.',
-      ]
-    ],
-    [
-      'Troubleshooting',
-      [
-        'Ensure you have a stable internet connection.',
-        'Restart the app if you encounter any issues.',
-        'Contact our support team at support@example.com.',
-      ]
-    ],
-    [
-      'Troubleshooting',
-      [
-        'Ensure you have a stable internet connection.',
-        'Restart the app if you encounter any issues.',
-        'Contact our support team at support@example.com.',
-      ]
-    ],
-    [
-      'Troubleshooting',
-      [
-        'Ensure you have a stable internet connection.',
-        'Restart the app if you encounter any issues.',
-        'Contact our support team at support@example.com.',
-      ]
-    ],
-  ];
+class HelpPage extends StatefulWidget {
+  @override
+  _HelpPageState createState() => _HelpPageState();
+}
+
+class _HelpPageState extends State<HelpPage> {
+  final Dio _dio = Dio();
+  List<List<dynamic>> instructions = [];
+
+  @override
+  void initState() {
+    super.initState();
+    fetchInstructions();
+  }
+
+  Future<void> fetchInstructions() async {
+  try {
+    Response response = await _dio.get('${Data.baseUrl}/media/data.json');
+    if (response.statusCode == 200) {
+      setState(() {
+        instructions = (response.data['instructions'] as List)
+            .map((section) => [
+                  section[0] as String,
+                  (section[1] as List<dynamic>).cast<String>() // Ensure steps are List<String>
+                ])
+            .toList();
+      });
+    }
+  } catch (e) {
+    print('Error fetching instructions: $e');
+  }
+}
+
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Text('Help & Instructions'),
-        foregroundColor: Color.fromARGB(255, 255, 255, 255),
         backgroundColor: Color.fromARGB(255, 55, 99, 174),
+        foregroundColor: Colors.white,
       ),
-      body: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: instructions.map((section) {
-              return _buildInstructionBox(section[0], section[1]);
-            }).toList(),
-          ),
-        ),
-      ),
+      body: instructions.isEmpty
+          ? Center(child: CircularProgressIndicator()) // Show loader until data is fetched
+          : SingleChildScrollView(
+              padding: EdgeInsets.all(16.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: instructions.map((section) {
+                  return _buildInstructionBox(section[0], section[1]);
+                }).toList(),
+              ),
+            ),
     );
   }
 
@@ -86,10 +70,7 @@ class HelpPage extends StatelessWidget {
           children: [
             Text(
               title,
-              style: TextStyle(
-                fontSize: 20,
-                color: Color.fromARGB(255, 55, 99, 174),
-              ),
+              style: TextStyle(fontSize: 20, color: Color.fromARGB(255, 55, 99, 174)),
             ),
             SizedBox(height: 10),
             Column(
@@ -107,12 +88,12 @@ class HelpPage extends StatelessWidget {
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Icon(Icons.arrow_right_rounded, color: const Color.fromARGB(255, 55, 99, 174)),
+          Icon(Icons.arrow_right_rounded, color: Color.fromARGB(255, 55, 99, 174)),
           SizedBox(width: 10),
           Expanded(
             child: Text(
               instruction,
-              style: TextStyle(fontSize: 16, color: const Color.fromARGB(255, 77, 77, 77)),
+              style: TextStyle(fontSize: 16, color: Color.fromARGB(255, 77, 77, 77)),
             ),
           ),
         ],
