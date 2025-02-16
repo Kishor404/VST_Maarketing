@@ -51,7 +51,7 @@ class ServiceBookState extends State<ServiceBook> {
         });
       }
     } catch (e) {
-      print('Error fetching color: $e');
+      print('Error fetching complaints: $e');
     }
   }
 

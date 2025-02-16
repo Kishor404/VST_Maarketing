@@ -1,4 +1,19 @@
 {
     "complaints":["General Visit", "Water Leakage", "Water Taste Bad", "Others"],
-    "quotes":["I will love the light for it shows me the way, yet I will endure the darkness because it shows me the stars.","OG Mandino"]
+    "quotes":["I will love the light for it shows me the way, yet I will endure the darkness because it shows me the stars.","OG Mandino"],
+    "contact":{
+        "company": {
+          "logo": "assets/logoindex.jpg",
+          "address_line1": "906L, 1st Floor, Thai Complex,",
+          "address_line2": "Tenkasi Road,",
+          "address_line3": "RAJAPALAYAM - 626 117",
+          "phone": ["04563-231045", "9047722131"],
+          "email": "vstmaarketing@gmail.com",
+          "web": "www.vstmaarketing.com"
+        },
+        "admin": {
+          "name": "N UDAYASANKAR RAJHA",
+          "phone": "9843232131"
+        }
+      }
 }
