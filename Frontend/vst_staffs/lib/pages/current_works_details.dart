@@ -182,6 +182,7 @@ Future<void> _createServiceEntry(Map<String, dynamic> service, Map<String, Strin
 
   await _refreshAccessToken();
   final requestBody = {
+    "service": service['id'],
     "card": service['card'],
     "date": service['available_date'],
     "next_service": userInput['next_service'],

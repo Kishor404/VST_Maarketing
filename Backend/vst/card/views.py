@@ -6,6 +6,7 @@ from rest_framework import status
 from rest_framework.viewsets import ReadOnlyModelViewSet
 from rest_framework import generics
 from rest_framework.exceptions import PermissionDenied
+from service.models import Service
 
 class CardViewSet(viewsets.ModelViewSet):
     """
@@ -101,6 +102,7 @@ class ServiceEntryUpdateByHeadAndWorker(generics.UpdateAPIView):
 
         return super().patch(request, *args, **kwargs)
 
+
 class ServiceEntryCustomerSignatureUpdate(generics.UpdateAPIView):
     """
     API view for updating only the customer_signature field. 
@@ -130,6 +132,17 @@ class ServiceEntryCustomerSignatureUpdate(generics.UpdateAPIView):
         # Verify that the requesting user is the owner (customer_code == user.id)
         if card.customer_code.id != user.id:  
             raise PermissionDenied("You are not authorized to update this service entry.")
+
+        # Get the associated Service and update its status
+        service_id = service_entry.service  # Assuming it's an ID, not an object
+        if service_id:
+            try:
+                service = Service.objects.get(id=service_id)  # Fetch the actual service object
+                service.status = "SD"
+                service.save()
+            except Service.DoesNotExist:
+                raise PermissionDenied("Associated service not found.")
+
 
         # Create a modified data dictionary
         updated_data = {"customer_signature": request.data.get("customer_signature")}

@@ -9,7 +9,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiY
 POST http://127.0.0.1:8000/log/login/
 Content-Type: application/json
 
-{"phone":"9876543120","password":"123"}
+{"phone":"9182736450","password":"123"}
 
 
 # ----- HEAD : 9876543120 ---------
@@ -124,12 +124,12 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiY
 
 ### ========= SIGN SERVICE ENTRIES =========
 
-PATCH http://127.0.0.1:8000/api/signbycustomer/3/
+PATCH http://127.0.0.1:8000/api/signbycustomer/6/
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzM5NjA0MDQ3LCJpYXQiOjE3Mzk2MDIyNDcsImp0aSI6IjhjM2Y5NDI2ZTQ2ZTQ3YWNiODhhODMyYWFiNGYwZjc2IiwidXNlcl9pZCI6MjJ9.m8TTCPivD8WRqJqaqTLnSGV_ffw1wPWeoFNH-6Aru2w
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzM5NzIzMTY5LCJpYXQiOjE3Mzk3MjEzNjksImp0aSI6IjlkMTFkN2Y1NTAyMjQ2NDhhOTkwZWFiYWM0YWE2MTdmIiwidXNlcl9pZCI6MjJ9.TnUIwyqHIGo9fMecFpRzNX6wtSiaKMMiq-4IOWXocjA
 
 {
-    "customer_signature":{"sign":1}
+    "customer_signature":{"sign":0}
 }
 
 ### ======== UNAVAILABLE REQ ============

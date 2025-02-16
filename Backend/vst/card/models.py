@@ -39,6 +39,7 @@ class Card(models.Model):
 
 class ServiceEntry(models.Model):
     card = models.ForeignKey(Card, related_name="service_entries", on_delete=models.CASCADE)
+    service = models.CharField(max_length=255, blank=True)
     date = models.DateField()
     next_service = models.DateField()
     visit_type = models.CharField(max_length=10, choices=[('I', 'Installation'), ('C', 'Complaint'), ('MS', 'Mandatory Service'), ('CS', 'Contract Service'), ('CC', 'Courtesy Call')])
