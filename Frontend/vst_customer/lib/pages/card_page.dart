@@ -125,16 +125,16 @@ class CardPageState extends State<CardPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      appBar: AppBar(
-        title: Text(
-          'Service Card',
-          style: TextStyle(color: Color.fromARGB(255, 55, 99, 174)),
-        ),
-        centerTitle: true,
-        backgroundColor: Colors.white,
-        elevation: 0,
-        shadowColor: Colors.transparent,
-      ),
+      // appBar: AppBar(
+      //   title: Text(
+      //     'Service Card',
+      //     style: TextStyle(color: Color.fromARGB(255, 55, 99, 174)),
+      //   ),
+      //   centerTitle: true,
+      //   backgroundColor: Colors.white,
+      //   elevation: 0,
+      //   shadowColor: Colors.transparent,
+      // ),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 60, vertical: 20),
         child: isLoading

@@ -181,6 +181,7 @@ Future<void> _showServiceEntryDialog(BuildContext context, Map<String, dynamic> 
 Future<void> _createServiceEntry(Map<String, dynamic> service, Map<String, String> userInput) async {
 
   await _refreshAccessToken();
+  print(service['id']);
   final requestBody = {
     "service": service['id'],
     "card": service['card'],

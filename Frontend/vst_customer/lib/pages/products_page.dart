@@ -108,67 +108,80 @@ class _ProductsPageState extends State<ProductsPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      appBar: AppBar(
-        elevation: 0,
-        backgroundColor: const Color.fromARGB(255, 55, 99, 174),
-        title: const Center(
-          child: Text(
-            'Available Products',
-            style: TextStyle(color: Colors.white, fontSize: 20.0),
-          ),
-        ),
-      ),
       body: isLoading
           ? const Center(child: CircularProgressIndicator())
-          : SafeArea(
-              child: Padding(
-                padding: const EdgeInsets.all(30.0),
-                child: GridView.builder(
-                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 2,
-                    childAspectRatio: 1,
+          : Column(
+              children: [
+                const Padding(
+                  padding: EdgeInsets.all(20.0),
+                  child: Text(
+                    'Products',
+                    style: TextStyle(
+                      fontSize: 24.0,
+                      color: Color.fromARGB(255, 55, 99, 174),
+                    ),
                   ),
-                  itemCount: products.length,
-                  itemBuilder: (context, index) {
-                    final product = products[index];
-                    bool isLastColumn = (index + 1) % 2 == 0;
-                    bool isLastRow = index >= products.length - 2;
-
-                    return Container(
-                      decoration: BoxDecoration(
-                        border: Border(
-                          right: isLastColumn
-                              ? BorderSide.none
-                              : const BorderSide(
-                                  color: Color.fromARGB(255, 131, 131, 131),
-                                  width: 1.0),
-                          bottom: isLastRow
-                              ? BorderSide.none
-                              : const BorderSide(
-                                  color: Color.fromARGB(255, 131, 131, 131),
-                                  width: 1.0),
-                        ),
-                      ),
-                      child: ProductTile(
-                        productName: product['name'],
-                        productImage: product['image'],
-                        onTap: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => ProductDetailsPage(
-                                productName: product['name'],
-                                productImg: product['image'],
-                                productDet: product['details'],
-                              ),
-                            ),
-                          );
-                        },
-                      ),
-                    );
-                  },
                 ),
-              ),
+                Expanded(
+                  child: products.isEmpty
+                      ? const Center(
+                          child: Text(
+                            'No products available',
+                            style: TextStyle(fontSize: 18.0, color: Colors.grey),
+                          ),
+                        )
+                      : SafeArea(
+                          child: Padding(
+                            padding: const EdgeInsets.all(30.0),
+                            child: GridView.builder(
+                              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                                crossAxisCount: 2,
+                                childAspectRatio: 1,
+                              ),
+                              itemCount: products.length,
+                              itemBuilder: (context, index) {
+                                final product = products[index];
+                                bool isLastColumn = (index + 1) % 2 == 0;
+                                bool isLastRow = index >= products.length - 2;
+
+                                return Container(
+                                  decoration: BoxDecoration(
+                                    border: Border(
+                                      right: isLastColumn
+                                          ? BorderSide.none
+                                          : const BorderSide(
+                                              color: Color.fromARGB(255, 131, 131, 131),
+                                              width: 1.0),
+                                      bottom: isLastRow
+                                          ? BorderSide.none
+                                          : const BorderSide(
+                                              color: Color.fromARGB(255, 131, 131, 131),
+                                              width: 1.0),
+                                    ),
+                                  ),
+                                  child: ProductTile(
+                                    productName: product['name'],
+                                    productImage: product['image'],
+                                    onTap: () {
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) => ProductDetailsPage(
+                                            productName: product['name'],
+                                            productImg: product['image'],
+                                            productDet: product['details'],
+                                          ),
+                                        ),
+                                      );
+                                    },
+                                  ),
+                                );
+                              },
+                            ),
+                          ),
+                        ),
+                ),
+              ],
             ),
     );
   }

@@ -7,6 +7,7 @@ class ServiceEntrySerializer(serializers.ModelSerializer):
         model = ServiceEntry
         fields = [
             'id',
+            'service',
             'card',
             'date',
             'next_service',

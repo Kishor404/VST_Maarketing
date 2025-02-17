@@ -9,18 +9,26 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiY
 POST http://127.0.0.1:8000/log/login/
 Content-Type: application/json
 
-{"phone":"9182736450","password":"123"}
+{"phone":"9078563412","password":"123"}
 
+# ====== DEMO 1 ========
 
 # ----- HEAD : 9876543120 ---------
 # ----- STAFF : 9123456780 --------
 # ----- CUSTOMER/USER : 9182736450 ------
+
+# ======= DEMO 2 ==========
+
+# ------ HEAD : 7856341290 --------
+# ------ STAFF : 8796054321 -------
+# ------ CUSTOMER : 9078563412 ----
+
 ### =========== SIGNUP API =============
 
 POST http://127.0.0.1:8000/log/signup/
 Content-Type: application/json
 
-{"name":"Manikam","phone":"9123456780","password":"123","region":"rajapalayam","role":"worker"}
+{"name":"Ram","phone":"7856341290","password":"123","region":"rajapalayam","role":"head"}
 
 ### ========== CARD DETAILS API ==========
 
@@ -58,24 +66,24 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiY
 
 ### ======== HEAD ACCEPT REQUESTED EDIT ==========
 
-GET http://127.0.0.1:8000/utils/headeditreq/8
+GET http://127.0.0.1:8000/utils/headeditreq/9
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzM5NjAzOTg3LCJpYXQiOjE3Mzk2MDIxODcsImp0aSI6ImFhZGEzOGRmNDlkMzRhYzI4MGZkZDViNmQ4YjI4Y2E3IiwidXNlcl9pZCI6MTl9.uu0L-UxDjg6zYCmgvtQVtYULHgENYCw0T-lQRcZxCVM
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzM5NzYxMjc5LCJpYXQiOjE3Mzk3NTk0NzksImp0aSI6ImQxZDI1ZTE5NDI5MTQ4NmZhZjg3ZWMyNjU5MDcyZDNlIiwidXNlcl9pZCI6MjR9.uqZ9kAi5MOE87vxxHapsO-Ywn1227U_tj1cS-CR66oU
 
 ### ======== CREATE CARD BY HEAD ==========
 
 POST http://127.0.0.1:8000/api/headcreatecard/
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzM5NTQzNTY3LCJpYXQiOjE3Mzk1NDE3NjcsImp0aSI6IjNiYmU1MjczZjZmODRhY2E4N2VkMmI0ZGVjNzJhMWUxIiwidXNlcl9pZCI6MjF9.55AIrNT5GEylp8l4Cf8mj6hwdBZQ_1_pL9KdXSdKEmQ
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzM5NzYwNTkwLCJpYXQiOjE3Mzk3NTg3OTAsImp0aSI6ImUzNDZkZDAzY2RkNzQzYjU4OGQxNDlhMDU5Yzk0NTgzIiwidXNlcl9pZCI6MjR9.qFJPMI0VzDBWpVbQ3EkLdiA00PnskyLlkIhIOInonH4
 
 {
-    "model":"Purifier IO", 
-    "customer_code":16, 
+    "model":"Purifier XI", 
+    "customer_code":25, 
     "customer_name":"oo", 
     "region":"oo", 
-    "date_of_installation":"2025-02-12", 
+    "date_of_installation":"2025-02-17", 
     "address":"oo", 
-    "warranty_start_date":"2025-02-16", 
+    "warranty_start_date":"2025-02-17", 
     "warranty_end_date":"2025-05-16"
 }
 
@@ -124,12 +132,12 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiY
 
 ### ========= SIGN SERVICE ENTRIES =========
 
-PATCH http://127.0.0.1:8000/api/signbycustomer/6/
+PATCH http://127.0.0.1:8000/api/signbycustomer/8/
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzM5NzIzMTY5LCJpYXQiOjE3Mzk3MjEzNjksImp0aSI6IjlkMTFkN2Y1NTAyMjQ2NDhhOTkwZWFiYWM0YWE2MTdmIiwidXNlcl9pZCI6MjJ9.TnUIwyqHIGo9fMecFpRzNX6wtSiaKMMiq-4IOWXocjA
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzM5NzgyNjAwLCJpYXQiOjE3Mzk3ODA4MDAsImp0aSI6IjlhY2NiOGUzYWUwZDQzYzY5YWY2ZTk0ZjgzNmQ1ZGU2IiwidXNlcl9pZCI6MjV9._N1VwY9UODTOsF_wOhJ5fktAEr-lC6tT4WnnoT8MF14
 
 {
-    "customer_signature":{"sign":0}
+    "customer_signature":{"sign":1}
 }
 
 ### ======== UNAVAILABLE REQ ============
@@ -158,3 +166,14 @@ Content-Type: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzM5NjMxMDk0LCJpYXQiOjE3Mzk2MjkyOTQsImp0aSI6IjA5ZWUzYjYzZWI5YTRhNGY5OGVmOTM0NmZiZWNlOTYwIiwidXNlcl9pZCI6MjJ9.q-OeWLVtc8C5ZTEHhTKddLEAUzgu5t3SR_Y5gdIXzfY
 
 {}  
+
+### ======== CHECK AVAILABILTY =========
+
+POST http://127.0.0.1:8000/utils/checkstaffavailability/
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzM5ODAyNjcyLCJpYXQiOjE3Mzk4MDA4NzIsImp0aSI6ImViMGFjNGZiNWQ2ZTQ2NDRiYmVhMGM1YjM5ZmRmOWQ3IiwidXNlcl9pZCI6MjV9.WZGEzqpSkDEXBwuqOYDXIlQAGHEpfiG81Y8LBFhLBKA
+
+{
+    "from_date":"2025-02-15",
+    "to_date":"2025-02-17"
+}

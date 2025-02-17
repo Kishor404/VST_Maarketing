@@ -35,8 +35,8 @@ class _ProfilePageState extends State<ProfilePage> {
       _email = prefs.getString('email') ?? 'user@vst.com';
       _region = prefs.getString('region') ?? 'Default Region';
       _role = prefs.getString('role') ?? 'Error';
-      _address = "${prefs.getString('address') ?? "00, Unknown"},\n"
-          "${prefs.getString('city') ?? "Unavailable"}, ${prefs.getString('state') ?? "Unavailable"}\n"
+      _address = "${prefs.getString('address') ?? "00, Unknown"}\n"
+          "${prefs.getString('city') ?? "Unavailable"}, ${prefs.getString('district') ?? "Unavailable"}\n"
           "${prefs.getString('postal_code') ?? "000000"}";
     });
   }
@@ -47,79 +47,6 @@ class _ProfilePageState extends State<ProfilePage> {
     Navigator.pushReplacement(
       context,
       MaterialPageRoute(builder: (context) => LoginPage()),
-    );
-  }
-
-  void _editEmail() {
-    TextEditingController emailController = TextEditingController(text: _email);
-
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: Text('Edit Email'),
-          content: TextField(
-            controller: emailController,
-            decoration: InputDecoration(hintText: 'Enter new email'),
-          ),
-          actions: <Widget>[
-            TextButton(
-              onPressed: () {
-                Navigator.of(context).pop(); // Close the dialog
-              },
-              child: Text('Cancel'),
-            ),
-            TextButton(
-              onPressed: () async {
-                setState(() {
-                  _email = emailController.text;
-                });
-                final prefs = await SharedPreferences.getInstance();
-                await prefs.setString('email', _email); // Save email to shared preferences
-                Navigator.of(context).pop(); // Close the dialog
-              },
-              child: Text('Save'),
-            ),
-          ],
-        );
-      },
-    );
-  }
-
-  void _editAddress() {
-    TextEditingController addressController = TextEditingController(text: _address);
-
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: Text('Edit Address'),
-          content: TextField(
-            controller: addressController,
-            decoration: InputDecoration(hintText: 'Enter new address'),
-            maxLines: 3,
-          ),
-          actions: <Widget>[
-            TextButton(
-              onPressed: () {
-                Navigator.of(context).pop(); // Close the dialog
-              },
-              child: Text('Cancel'),
-            ),
-            TextButton(
-              onPressed: () async {
-                setState(() {
-                  _address = addressController.text;
-                });
-                final prefs = await SharedPreferences.getInstance();
-                await prefs.setString('address', _address); // Save address to shared preferences
-                Navigator.of(context).pop(); // Close the dialog
-              },
-              child: Text('Save'),
-            ),
-          ],
-        );
-      },
     );
   }
 
@@ -186,37 +113,15 @@ class _ProfilePageState extends State<ProfilePage> {
                         leading: Icon(Icons.email, color: Color.fromARGB(255, 55, 99, 174)),
                         title: Text('Email'),
                         subtitle: Text(_email),
-                        trailing: IconButton(
-                          icon: Icon(Icons.edit, color: Color.fromARGB(255, 55, 99, 174)),
-                          onPressed: _editEmail, // Trigger edit email dialog
-                        ),
+                        
                       ),
                       ListTile(
                         leading: Icon(Icons.location_on, color: Color.fromARGB(255, 55, 99, 174)),
                         title: Text('Address'),
                         subtitle: Text(_address),
-                        trailing: IconButton(
-                          icon: Icon(Icons.edit, color: Color.fromARGB(255, 55, 99, 174)),
-                          onPressed: _editAddress, // Trigger edit address dialog
-                        ),
+                        
                       ),
                       Spacer(),
-                      ElevatedButton(
-                        onPressed: () {
-                          widget.onNavigateToIndex(1); // Navigate to ServicePage
-                        },
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: Color.fromARGB(255, 55, 99, 174),
-                          minimumSize: Size(double.infinity, 50),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(8),
-                          ),
-                        ),
-                        child: Text(
-                          'Service Info',
-                          style: TextStyle(fontSize: 18, color: Colors.white),
-                        ),
-                      ),
                       SizedBox(height: 10),
                       ElevatedButton(
                         onPressed: _logout,

@@ -19,6 +19,8 @@ User = get_user_model()
 class CheckAvailabilityView(APIView):
     
     def post(self, request):
+
+        reqSender_region=request.user.region
         from_date_str = request.data.get("from_date")
         to_date_str = request.data.get("to_date")
         
@@ -31,7 +33,7 @@ class CheckAvailabilityView(APIView):
         except ValueError:
             return Response({"message": "Invalid date format. Use YYYY-MM-DD."}, status=status.HTTP_400_BAD_REQUEST)
         
-        workers = User.objects.filter(role="worker")
+        workers = User.objects.filter(role="worker",region=reqSender_region)
         
         for check_date in (from_date + timedelta(days=i) for i in range((to_date - from_date).days + 1)):
             available_workers = []
@@ -117,10 +119,10 @@ class UpcomingServiceView(APIView):
     permission_classes = [IsAuthenticated]
 
     def get(self, request):
-        
         user = request.user  
-        
-        services = Service.objects.filter(staff=user, status='BD')
+        current_date = now().date()
+
+        services = Service.objects.filter(staff=user, status='BD', available_date__lt=current_date)
         
         serializer = ServiceSerializer(services, many=True)
         return Response(serializer.data, status=200)
@@ -210,6 +212,8 @@ class HeadEdit(APIView):
     permission_classes = [IsAuthenticated]
 
     def get(self, request, *args, **kwargs):
+
+        reqSender_region=request.user.region
         editreq_id = kwargs.get('id')
 
         # Ensure only 'head' can access this API
@@ -228,7 +232,7 @@ class HeadEdit(APIView):
         # Update the user with the new customer data
         user_serializer = UserSerializer(user, data=edit_req.customerData, partial=True)
 
-        if user_serializer.is_valid():
+        if (user_serializer.is_valid() and edit_req.staff.region==reqSender_region):
             user_serializer.save()
 
             # Delete the EditReq entry after a successful update
@@ -238,7 +242,7 @@ class HeadEdit(APIView):
         
         return Response(user_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     
-# =========== GET USET BY ID ==========
+# =========== GET USER BY ID ==========
 
 from rest_framework.views import APIView
 from rest_framework.response import Response
@@ -294,6 +298,7 @@ User = get_user_model()
 class AssignAvailableStaffView(APIView):
     def post(self, request, *args, **kwargs):
         # Fetch unavailable request by ID
+        reqSender_region=request.user.region
         req_id = kwargs.get("id") or request.data.get("id")
         if not req_id:
             return Response({"message": "Request ID is required."}, status=status.HTTP_400_BAD_REQUEST)
@@ -328,7 +333,7 @@ class AssignAvailableStaffView(APIView):
             return Response({"message": "Invalid available format.", "error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
 
         # Fetch workers excluding the current staff
-        workers = User.objects.filter(role="worker").exclude(id=current_staff.id)
+        workers = User.objects.filter(role="worker", region=reqSender_region).exclude(id=current_staff.id)
         available_worker = None
 
         for check_date in (from_date + timedelta(days=i) for i in range((to_date - from_date).days + 1)):
@@ -366,3 +371,28 @@ class AssignAvailableStaffView(APIView):
             }, status=status.HTTP_200_OK)
         
         return Response({"message": "No available workers found."}, status=status.HTTP_200_OK)
+
+
+# =========== GET EDITREQ BY HEAD ===========
+
+from rest_framework.views import APIView
+from rest_framework.response import Response
+from rest_framework.permissions import IsAuthenticated
+from rest_framework import status
+from editReq.models import EditReq
+from editReq.serializers import EditReqSerializer
+
+class EditReqView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        """Fetch edit requests if the role is head"""
+        role = request.user.role
+        reqSender_region=request.user.region
+
+        if role != "head":
+            return Response({"detail": "Unauthorized"}, status=status.HTTP_403_FORBIDDEN)
+
+        edit_requests = EditReq.objects.filter(staff__region=reqSender_region)
+        serializer = EditReqSerializer(edit_requests, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
