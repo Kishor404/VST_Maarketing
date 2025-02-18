@@ -139,6 +139,8 @@ class ServiceEntryCustomerSignatureUpdate(generics.UpdateAPIView):
             try:
                 service = Service.objects.get(id=service_id)  # Fetch the actual service object
                 service.status = "SD"
+                service.feedback = request.data.get("feedback")
+                service.rating = request.data.get("rating")
                 service.save()
             except Service.DoesNotExist:
                 raise PermissionDenied("Associated service not found.")

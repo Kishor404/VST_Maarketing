@@ -75,30 +75,70 @@ class _CardDetailsPageState extends State<CardDetailsPage> {
 
   void _showSignConfirmationDialog(BuildContext context, int serviceId) {
   showDialog(
-    context: context,
-    builder: (context) {
-      return AlertDialog(
-        title: const Text("Confirm Signature"),
-        content: const Text("Are you sure you want to sign this service?"),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(context),
-            child: const Text("Cancel"),
+  context: context,
+  builder: (context) {
+    double rating = 0;
+    TextEditingController feedbackController = TextEditingController();
+
+    return StatefulBuilder(
+      builder: (context, setDialogState) {
+        return AlertDialog(
+          title: const Text("Confirm Signature"),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              const Text("Are you sure you want to sign this service?"),
+              const SizedBox(height: 16),
+              const Text("Please provide your rating:"),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: List.generate(5, (index) {
+                  return IconButton(
+                    icon: Icon(
+                      index < rating ? Icons.star : Icons.star_border,
+                    ),
+                    color: Colors.amber,
+                    onPressed: () {
+                      setDialogState(() {
+                        rating = index + 1.0;
+                      });
+                    },
+                  );
+                }),
+              ),
+              const SizedBox(height: 16),
+              TextField(
+                controller: feedbackController,
+                decoration: const InputDecoration(
+                  labelText: "Feedback",
+                  border: OutlineInputBorder(),
+                ),
+                maxLines: 3,
+              ),
+            ],
           ),
-          ElevatedButton(
-            onPressed: () {
-              Navigator.pop(context);
-              _signService(serviceId, context);
-            },
-            child: const Text("Confirm"),
-          ),
-        ],
-      );
-    },
-  );
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.pop(context),
+              child: const Text("Cancel"),
+            ),
+            ElevatedButton(
+              onPressed: () {
+                Navigator.pop(context);
+                _signService(serviceId, rating, feedbackController.text, context);
+              },
+              child: const Text("Confirm"),
+            ),
+          ],
+        );
+      },
+    );
+  },
+);
+
 }
 
-void _signService(int serviceId, BuildContext context) async {
+void _signService(int serviceId, double rating, String feedback, BuildContext context) async {
   final dio = Dio();
   final url = '${Data.baseUrl}/api/signbycustomer/$serviceId/';
   final headers = {
@@ -107,7 +147,9 @@ void _signService(int serviceId, BuildContext context) async {
         'Bearer $_accessToken'
   };
   final data = {
-    "customer_signature": {"sign": 1}
+    "customer_signature": {"sign": 1},
+    "feedback": feedback,
+    "rating": rating.toString()
   };
 
   try {

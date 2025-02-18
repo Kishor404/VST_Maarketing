@@ -34,7 +34,7 @@ Content-Type: application/json
 
 GET http://127.0.0.1:8000/api/cards-details/
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzM5MzY4MDMxLCJpYXQiOjE3MzkzNjYyMzEsImp0aSI6IjMwMTc1YzIwMjI4ZjQ1N2U4YjdjYTQ4NzEyZjdmOWYzIiwidXNlcl9pZCI6MTZ9.ZKugN8QyAFXtaP3CchA895WD6g9UVphB6Idx_YIkhDY
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzM5ODY4MTg4LCJpYXQiOjE3Mzk4NjYzODgsImp0aSI6ImM3YzViMDU2ZGZjZjQzN2NhMGVlZWI0Zjc0N2ZmNzQ5IiwidXNlcl9pZCI6MjV9.j67W4vCRTjO4igX_jK-4u0389iuCe45MAfpiFubLP5M
 
 ### ========== CARD POST API ==========
 
@@ -132,12 +132,14 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiY
 
 ### ========= SIGN SERVICE ENTRIES =========
 
-PATCH http://127.0.0.1:8000/api/signbycustomer/8/
+PATCH http://127.0.0.1:8000/api/signbycustomer/9/
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzM5NzgyNjAwLCJpYXQiOjE3Mzk3ODA4MDAsImp0aSI6IjlhY2NiOGUzYWUwZDQzYzY5YWY2ZTk0ZjgzNmQ1ZGU2IiwidXNlcl9pZCI6MjV9._N1VwY9UODTOsF_wOhJ5fktAEr-lC6tT4WnnoT8MF14
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzM5ODY4NjI5LCJpYXQiOjE3Mzk4NjY4MjksImp0aSI6IjZjNjExMjdiYTljMDRjMTY5MWVjZGNiZjhhNTkxODVmIiwidXNlcl9pZCI6MjV9.8JRdeLWx3P8_FZ6cEPzHcmd1Ft5wRfJx1KLfiFmY658
 
 {
-    "customer_signature":{"sign":1}
+    "customer_signature":{"sign":0},
+    "feedback":"Good",
+    "rating":1
 }
 
 ### ======== UNAVAILABLE REQ ============
