@@ -3,6 +3,7 @@ import 'package:dio/dio.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'data.dart';
 import '../notification_service.dart';
+import 'index.dart';
 
 class ServiceBook extends StatefulWidget {
   const ServiceBook({super.key});
@@ -233,7 +234,6 @@ Future<void> _confirmBooking(int workerId, String avaDate, String complaintText,
     "status": "BD",
     "card": cardId,
   };
-  print(requestBody);
 
   try {
     Response response = await _dio.post(
@@ -250,6 +250,11 @@ Future<void> _confirmBooking(int workerId, String avaDate, String complaintText,
     if (response.statusCode == 201 || response.statusCode == 200) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text("Service booked successfully!")),
+      );
+      Navigator.pushAndRemoveUntil(
+        context,
+        MaterialPageRoute(builder: (context) => IndexPage()),
+        (Route<dynamic> route) => false, // Remove all previous routes
       );
       NotificationService().showNotification(
           id: 0,

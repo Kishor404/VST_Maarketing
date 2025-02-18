@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:dio/dio.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'data.dart';
+import 'index.dart';
 
 
 class CardDetailsPage extends StatefulWidget {
@@ -160,8 +161,13 @@ void _signService(int serviceId, double rating, String feedback, BuildContext co
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text("Signed successfully")),
       );
-      Navigator.pop(context);
-      Navigator.pop(context);
+      Navigator.pushAndRemoveUntil(
+        context,
+        MaterialPageRoute(builder: (context) => IndexPage()),
+        (Route<dynamic> route) => false, // Remove all previous routes
+      );
+      // Navigator.pop(context);
+      // Navigator.pop(context);
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text("Failed to sign: ${response.data}")),

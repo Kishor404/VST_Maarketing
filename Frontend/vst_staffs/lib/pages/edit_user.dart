@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:dio/dio.dart';
+import 'index.dart';
 
 class EditUserPage extends StatefulWidget {
   @override
@@ -147,7 +148,11 @@ class _EditUserPageState extends State<EditUserPage> {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(content: Text("User updated successfully!")),
           );
-          Navigator.pop(context);// Go back after request is sent
+          Navigator.pushAndRemoveUntil(
+            context,
+            MaterialPageRoute(builder: (context) => IndexPage()),
+            (Route<dynamic> route) => false, // Remove all previous routes
+          );
         }
       } catch (e) {
         ScaffoldMessenger.of(context).showSnackBar(
