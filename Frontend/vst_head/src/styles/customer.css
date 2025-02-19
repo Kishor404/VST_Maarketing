@@ -1,0 +1,119 @@
+.customer-cont{
+    display: flex;
+    justify-content: center;
+    align-items: start;
+    width: 100%;
+    height: 100%;
+    background-color: #3763ae;
+    flex-direction: column;
+}
+
+.customer-count-cont{
+    background-color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 0px 30px;
+    border-radius: 20px;
+    margin: 0px 30px;
+    height: 60%;
+}
+.customer-count-icon{
+    padding-left: 30px;
+}
+.customer-count-box{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+.customer-count-value{
+    margin: 0;
+    font-size: 18pt;
+}
+.customer-count-title{
+    margin: 0;
+    font-size: 12pt;
+    color: grey;
+}
+
+.customer-list-cont{
+    display: flex;
+    justify-content: start;
+    align-items: start;
+    width: 90%;
+    height: 60%;
+    background-color: #ffffff;
+    margin: 30px;
+    overflow-y: scroll;
+    border-radius: 20px;
+    border: 2px solid white;
+}
+.customer-list{
+    background-color: white;
+    width: 100%;
+}
+.customer-list thead{
+    background-color: #3763ae;
+    color: white;
+}
+.customer-list tbody{
+    background-color: #f0f0f0;
+}
+.customer-list td, .customer-list th{
+    text-align: center;
+    padding: 10px;
+    font-weight: 100;
+}
+
+.customer-top{
+    display: flex;
+    justify-content: start;
+    align-items: center;
+    width: 100%;
+    height: 20%;
+}
+
+.customer-edit-cont{
+    background-color: white;
+    height: 60%;
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    padding: 0px 20px;
+    border-radius: 20px;
+    flex-direction: column;
+}
+.customer-edit-input{
+    background-color: #e2e2e2;
+    border: none;
+    padding: 15px;
+    width: 300px;
+    margin-right: 20px;
+    border-radius: 15px;
+}
+.customer-edit-button{
+    background-color: #3763ae;
+    border: none;
+    padding: 15px 30px;
+    color: white;
+    border-radius: 15px;
+    cursor: pointer;
+}
+.customer-edit-button:hover{
+    background-color: #4073cc;
+}
+
+::-webkit-scrollbar {
+  display: none;
+}
+
+/* For Firefox */
+html {
+  scrollbar-width: none;
+}
+
+/* For IE/Edge */
+body {
+  -ms-overflow-style: none;
+}
