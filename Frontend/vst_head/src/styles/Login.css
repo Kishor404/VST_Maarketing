@@ -5,6 +5,8 @@
     display: flex;
     justify-content: center;
     align-items: center;
+    position: fixed;
+    
 }
 .Login-box{
     background-color: white;

@@ -43,8 +43,8 @@ const staff = () => {
         }
     ]
 
-    const edit= (cid)=> {
-        console.log("Edit", cid)
+    const edit= ()=> {
+        console.log("Edit")
     }
 
     return (
@@ -58,7 +58,7 @@ const staff = () => {
                 <div className='staff-count-cont'>
                     <div className='staff-count-box'>
                         <p className="staff-count-value">{staff_count}</p>
-                        <p className="staff-count-title">staffs</p>
+                        <p className="staff-count-title">Total Staffs</p>
                     </div>
                     <FaUsers className="staff-count-icon" size={50}/>
                 </div>
@@ -66,8 +66,8 @@ const staff = () => {
                 {/* EDIT staff */}
                 <div className='staff-edit-cont'>
                     <div className='staff-edit-box'>
-                        <input placeholder='Enter staff ID' className='staff-edit-input'/>
-                        <button className='staff-edit-button'>Fetch</button>
+                        <input placeholder='Enter staff ID' id="input_sid" className='staff-edit-input'/>
+                        <button className='staff-edit-button' onClick={edit()}>Fetch</button>
                     </div>
                 </div>
 

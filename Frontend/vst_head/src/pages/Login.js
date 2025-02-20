@@ -28,6 +28,7 @@ const Login = () => {
     if(data.login===1){
         if(data.data.role==='head'){
             Cookies.set('refresh_token', data.refresh_token, { expires: 7 });
+            Cookies.set('region', data.data.region, { expires: 7 });
             alert("Login Sucessfull")
             navigate("/dashboard")
         }else{

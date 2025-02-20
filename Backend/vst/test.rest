@@ -179,3 +179,21 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiY
     "from_date":"2025-02-15",
     "to_date":"2025-02-17"
 }
+
+### ======== EDIT USER ============
+
+POST http://127.0.0.1:8000/utils/edituserxxx/
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzQwMDM2MTgyLCJpYXQiOjE3NDAwMzQzODIsImp0aSI6ImMxMWRkNWY4MDY1NjQ0NTdhMjM2ODdkNjdjNDQ5MTRhIiwidXNlcl9pZCI6MjR9.8bUuLInHGPNZqDf7hzY06wcq5rX8ScN76gWNYYRk4xs
+
+{
+    "id": 25,
+    "name": "Kishor",
+    "phone": "9078563412",
+    "email": "kishor3780@gmail.com",
+    "address": "58, Fisherman Street,",
+    "city": "Chandrapady,",
+    "district": "Maiyladuthurai",
+    "postal_code": "609 307",
+    "region": "rajapalayam"
+}

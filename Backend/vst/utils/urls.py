@@ -9,7 +9,9 @@ from .views import (
     RoleCountView,
     HeadEdit,
     AssignAvailableStaffView,
-    EditReqView
+    EditReqView,
+    GetAllUsersByRoleAndRegion,
+    EditUsersByHeadAndAdmin
     )
 
 urlpatterns = [
@@ -20,6 +22,8 @@ urlpatterns = [
     path('currentservice/', CurrentServiceView.as_view(), name='current-service-info'),
     path('completedservice/', CompletedServiceView.as_view(), name='completed-service-info'),
     path('getuserbyid/<int:id>', GetUserByID.as_view(), name='get-user-by-id'),
+    path('getalluser/', GetAllUsersByRoleAndRegion.as_view(), name='get-all-user-by-head-admin'),
+    path('edituserxxx/', EditUsersByHeadAndAdmin.as_view(), name='edit-user-by-head-admin'),
     path('headeditreq/<int:id>', HeadEdit.as_view(), name='head-edit-by-id'),
     path('headvieweditreq/', EditReqView.as_view(), name='view-edit-by-head'),
     path('role-count/', RoleCountView.as_view(), name='role-count'),
