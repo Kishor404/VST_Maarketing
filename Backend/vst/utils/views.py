@@ -473,3 +473,41 @@ class EditUsersByHeadAndAdmin(APIView):
         
         return Response(user_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+# =========== GET STAFF BY ID ==========
+
+from rest_framework.views import APIView
+from rest_framework.response import Response
+from rest_framework import status
+from rest_framework.permissions import IsAuthenticated
+from django.shortcuts import get_object_or_404
+from user.models import User
+from user.serializers import UserSerializer
+
+class GetStaffByID(APIView):
+    """Fetch user by ID with role-based access control"""
+    
+    permission_classes = [IsAuthenticated]  # Ensure only authenticated users can access
+
+    def get(self, request, *args, **kwargs):
+        user_id = kwargs.get('id')
+        print(user_id)
+        # Extract user role from the authenticated request
+        user_role = request.user.role  # Assuming `request.user` is linked to `User` model
+        print(user_role)
+
+        # Define allowed roles
+        allowed_roles = ["head", "admin"]
+
+        # Check if the role is authorized
+        if user_role not in allowed_roles:
+            return Response({"error": "Permission denied"}, status=status.HTTP_403_FORBIDDEN)
+
+        # Fetch the requested user
+        user = get_object_or_404(User, id=user_id)
+        if user.role in allowed_roles:
+            return Response({"error": "Permission denied"}, status=status.HTTP_403_FORBIDDEN)
+        
+        serializer = UserSerializer(user)
+
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
