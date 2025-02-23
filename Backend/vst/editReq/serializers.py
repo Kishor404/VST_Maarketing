@@ -9,6 +9,7 @@ class EditReqSerializer(serializers.ModelSerializer):
             'customer',
             'customerData',
             'staff',
+            'staff_name',
         ]
         read_only_fields = ['id']
 

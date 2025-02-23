@@ -195,7 +195,7 @@ class RoleCountView(APIView):
         })
 
 
-# ================ HEAD ACCEPT AND EDIT THE EDITREQ ===========
+# ================ HEAD ACCEPT AND DELETE THE EDITREQ ===========
 
 
 from rest_framework.views import APIView
@@ -214,6 +214,7 @@ class HeadEdit(APIView):
     def get(self, request, *args, **kwargs):
 
         reqSender_region=request.user.region
+        print(reqSender_region)
         editreq_id = kwargs.get('id')
 
         # Ensure only 'head' can access this API
@@ -228,7 +229,7 @@ class HeadEdit(APIView):
 
         # Get the user linked to that customer ID
         user = get_object_or_404(User, id=customer_id)
-
+        print(edit_req.staff.region)
         # Update the user with the new customer data
         user_serializer = UserSerializer(user, data=edit_req.customerData, partial=True)
 
@@ -241,6 +242,79 @@ class HeadEdit(APIView):
             return Response({"message": "User updated successfully and EditReq deleted."}, status=status.HTTP_200_OK)
         
         return Response(user_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+# ================ HEAD REJECT EDITREQ ===========
+
+
+from rest_framework.views import APIView
+from rest_framework.response import Response
+from rest_framework import status
+from rest_framework.permissions import IsAuthenticated
+from django.shortcuts import get_object_or_404
+from editReq.models import EditReq
+from user.models import User
+from user.serializers import UserSerializer
+
+class RejectEditReq(APIView):
+    
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request, *args, **kwargs):
+
+        reqSender_region=request.user.region
+        print(reqSender_region)
+        editreq_id = kwargs.get('id')
+
+        # Ensure only 'head' can access this API
+        if request.user.role != 'head':
+            return Response({"error": "Permission denied"}, status=status.HTTP_403_FORBIDDEN)
+
+        # Get the EditReq object
+        edit_req = get_object_or_404(EditReq, id=editreq_id)
+
+        if (edit_req.staff.region==reqSender_region):
+            edit_req.delete()
+
+            return Response({"message": "User updated successfully and EditReq deleted."}, status=status.HTTP_200_OK)
+        
+        return Response("Rejected Successfully", status=status.HTTP_400_BAD_REQUEST)
+
+# ================ HEAD REJECT UNAVAILABLEREQ ===========
+
+
+from rest_framework.views import APIView
+from rest_framework.response import Response
+from rest_framework import status
+from rest_framework.permissions import IsAuthenticated
+from django.shortcuts import get_object_or_404
+from unavailableReq.models import UnavailableReq
+from user.models import User
+from user.serializers import UserSerializer
+
+class RejectUnavaReq(APIView):
+    
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request, *args, **kwargs):
+
+        reqSender_region=request.user.region
+        print(reqSender_region)
+        Unavailablereq_id = kwargs.get('id')
+
+        # Ensure only 'head' can access this API
+        if request.user.role != 'head':
+            return Response({"error": "Permission denied"}, status=status.HTTP_403_FORBIDDEN)
+
+        # Get the UnavailableReq object
+        unava_req = get_object_or_404(UnavailableReq, id=Unavailablereq_id)
+
+        if (unava_req.staff.region==reqSender_region):
+            unava_req.delete()
+
+            return Response({"message": "User updated successfully and UnavailableReq deleted."}, status=status.HTTP_200_OK)
+        
+        return Response("Rejected Successfully", status=status.HTTP_400_BAD_REQUEST)
     
 # =========== GET USER BY ID ==========
 
@@ -396,6 +470,30 @@ class EditReqView(APIView):
         edit_requests = EditReq.objects.filter(staff__region=reqSender_region)
         serializer = EditReqSerializer(edit_requests, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
+    
+# =========== GET UNAVAILABLEREQ BY HEAD ===========
+
+from rest_framework.views import APIView
+from rest_framework.response import Response
+from rest_framework.permissions import IsAuthenticated
+from rest_framework import status
+from unavailableReq.models import UnavailableReq
+from unavailableReq.serializers import UnavailableReqSerializer
+
+class UnavailableReqView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        """Fetch edit requests if the role is head"""
+        role = request.user.role
+        reqSender_region=request.user.region
+
+        if role != "head":
+            return Response({"detail": "Unauthorized"}, status=status.HTTP_403_FORBIDDEN)
+
+        edit_requests = UnavailableReq.objects.filter(staff__region=reqSender_region)
+        serializer = UnavailableReqSerializer(edit_requests, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
 
 # =========== GET ALL USER BY HEAD AND ADMIN ==========
 
@@ -432,7 +530,7 @@ class GetAllUsersByRoleAndRegion(APIView):
 
         return Response(serializer.data, status=status.HTTP_200_OK)
 
-# =========== GET EDIT USER BY HEAD AND ADMIN ==========
+# =========== EDIT USER BY HEAD AND ADMIN ==========
 
 from rest_framework.views import APIView
 from rest_framework.response import Response

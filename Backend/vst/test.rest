@@ -9,7 +9,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiY
 POST http://127.0.0.1:8000/log/login/
 Content-Type: application/json
 
-{"phone":"9078563412","password":"123"}
+{"phone":"7856341290","password":"123"}
 
 # ====== DEMO 1 ========
 
@@ -66,9 +66,9 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiY
 
 ### ======== HEAD ACCEPT REQUESTED EDIT ==========
 
-GET http://127.0.0.1:8000/utils/headeditreq/9
+GET http://127.0.0.1:8000/utils/headeditreq/2
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzM5NzYxMjc5LCJpYXQiOjE3Mzk3NTk0NzksImp0aSI6ImQxZDI1ZTE5NDI5MTQ4NmZhZjg3ZWMyNjU5MDcyZDNlIiwidXNlcl9pZCI6MjR9.uqZ9kAi5MOE87vxxHapsO-Ywn1227U_tj1cS-CR66oU
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzQwMjg1ODU3LCJpYXQiOjE3NDAyODQwNTcsImp0aSI6ImJjMGQ4MWFiMzFlZDRmMzRhZTcxNjVkODRiN2JjZmNmIiwidXNlcl9pZCI6MjR9.lynpxwa9tVbFi_ki9axQKy-BmYUJaeby8Uh9CuGJWrI
 
 ### ======== CREATE CARD BY HEAD ==========
 
@@ -155,9 +155,9 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiY
 
 ### ========= REASSIGN REQ ============
 
-POST http://127.0.0.1:8000/utils/reassingstaff/2
+POST http://127.0.0.1:8000/utils/reassingstaff/3
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzM5NjE0Mzk1LCJpYXQiOjE3Mzk2MTI1OTUsImp0aSI6ImQyOTcwZTRiOTMzYTQzNDA4Mjc5YTIxYzM3MmI1Y2E4IiwidXNlcl9pZCI6MjF9.X6mUpmKDwGbtzPKnJ0xr2mLhAgC0LB5Fp0UrMDjUYqg
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzQwMjkwNDIwLCJpYXQiOjE3NDAyODg2MjAsImp0aSI6IjhlYTg2ODJhMzZhYTRkZGY4NjIwNmEyODJhYjkwODY3IiwidXNlcl9pZCI6MjR9.p4gYFCudg0z5BXJKpQywlKailb67W2Bz4yY6K4Jpb4Q
 
 {}
 
@@ -197,3 +197,10 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiY
     "postal_code": "609 307",
     "region": "rajapalayam"
 }
+
+### ======== GET ALL EDIT REQ =========
+
+GET http://127.0.0.1:8000/utils/headvieweditreq/
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzQwMTk0MzQ3LCJpYXQiOjE3NDAxOTI1NDcsImp0aSI6ImM1MjA1ODAxNmQyNjRkYTdiM2M2OTY3NzM2Nzg0ZGNjIiwidXNlcl9pZCI6MjR9.K7pYdaSjvIYv_PoXJ5t_7-6M22uFgmBRH9-nJWZukTI
+

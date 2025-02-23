@@ -4,6 +4,8 @@ import Login from "./pages/Login";
 import Home from "./pages/Home";
 import Customer from "./pages/customer";
 import Staff from "./pages/staff";
+import EditReq from "./pages/editReq";
+import UnavaReq from "./pages/unavaReq";
 import Sidebar from "./components/Sidebar";
 import "./App.css";
 
@@ -28,6 +30,8 @@ const App = () => {
           <Route path="/dashboard" element={<Home />} />
           <Route path="/customer" element={<Customer />} />
           <Route path="/staff" element={<Staff />} />
+          <Route path="/editreq" element={<EditReq />} />
+          <Route path="/unavareq" element={<UnavaReq />} />
         </Routes>
       </Layout>
     </Router>

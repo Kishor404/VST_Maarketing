@@ -7,6 +7,7 @@ class UnavailableReqSerializer(serializers.ModelSerializer):
         fields = [
             'id',
             'staff',
+            'staff_name',
             'service'
         ]
         read_only_fields = ['id']

@@ -31,13 +31,13 @@ return (
                     </Link>
                 </div>
                 <div className="sidebar-item">
-                    <Link to="/dashboard" className="sidebar-link">
+                    <Link to="/editreq" className="sidebar-link">
                         <FaEdit className="sidebar-item-icon" size={20}/>
                         Edit Requests
                     </Link>
                 </div>
                 <div className="sidebar-item">
-                    <Link to="/dashboard" className="sidebar-link">
+                    <Link to="/unavareq" className="sidebar-link">
                         <FaInfo className="sidebar-item-icon" size={20}/>
                         Unavailable Requests
                     </Link>
