@@ -29,8 +29,9 @@ const Login = () => {
         if(data.data.role==='head'){
             Cookies.set('refresh_token', data.refresh_token, { expires: 7 });
             Cookies.set('region', data.data.region, { expires: 7 });
+            Cookies.set('name', data.data.name, { expires: 7 });
             alert("Login Sucessfull")
-            navigate("/dashboard")
+            navigate("/customer")
         }else{
             alert("Invaild Role !")
         }

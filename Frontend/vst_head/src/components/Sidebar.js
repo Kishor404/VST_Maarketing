@@ -3,8 +3,11 @@ import { Link } from "react-router-dom";
 import { FaUsers, FaIdBadge, FaEdit, FaInfo, FaAddressCard, FaPlus } from "react-icons/fa";
 import '../styles/sidebar.css';
 import Logo from '../assets/logo.jpg';
+import Cookies from 'js-cookie';
 
 const Sidebar = () => {
+    const name = Cookies.get('name');
+    const region = Cookies.get('region');
 return (
     <div className="sidebar">
         <div className="sidebar-main">
@@ -51,8 +54,8 @@ return (
             </div>
             <div className="sidebar-profile-cont">
                 <div className="sidebar-profile">
-                    <p className="sidebar-profile-name">Arun Kumar</p>
-                    <p className="sidebar-profile-city">Rajapalayam</p>
+                    <p className="sidebar-profile-name">{name}</p>
+                    <p className="sidebar-profile-city">{region}</p>
                 </div>
             </div>
         </div>
