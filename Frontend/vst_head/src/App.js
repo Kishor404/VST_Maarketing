@@ -1,11 +1,11 @@
 import React from "react";
 import { BrowserRouter as Router, Routes, Route, useLocation } from "react-router-dom";
 import Login from "./pages/Login";
-import Home from "./pages/Home";
 import Customer from "./pages/customer";
 import Staff from "./pages/staff";
 import EditReq from "./pages/editReq";
 import UnavaReq from "./pages/unavaReq";
+import CreateCard from "./pages/createcard";
 import Sidebar from "./components/Sidebar";
 import "./App.css";
 
@@ -27,11 +27,11 @@ const App = () => {
       <Layout>
         <Routes>
           <Route path="/" element={<Login />} />
-          <Route path="/dashboard" element={<Home />} />
           <Route path="/customer" element={<Customer />} />
           <Route path="/staff" element={<Staff />} />
           <Route path="/editreq" element={<EditReq />} />
           <Route path="/unavareq" element={<UnavaReq />} />
+          <Route path="/createcard" element={<CreateCard />} />
         </Routes>
       </Layout>
     </Router>

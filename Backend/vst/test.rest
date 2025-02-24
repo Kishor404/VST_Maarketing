@@ -74,18 +74,9 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiY
 
 POST http://127.0.0.1:8000/api/headcreatecard/
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzM5NzYwNTkwLCJpYXQiOjE3Mzk3NTg3OTAsImp0aSI6ImUzNDZkZDAzY2RkNzQzYjU4OGQxNDlhMDU5Yzk0NTgzIiwidXNlcl9pZCI6MjR9.qFJPMI0VzDBWpVbQ3EkLdiA00PnskyLlkIhIOInonH4
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzQwMzU3Mzg4LCJpYXQiOjE3NDAzNTU1ODgsImp0aSI6IjljMjRhZWQ5NTA1MDQxNTA4M2NkMDZhMWI5NmMwNGMzIiwidXNlcl9pZCI6MjR9.pEBO4O1rEaOnLVIjTQK0G1hPu_pq-hBZKnw7w6f_wJU
 
-{
-    "model":"Purifier XI", 
-    "customer_code":25, 
-    "customer_name":"oo", 
-    "region":"oo", 
-    "date_of_installation":"2025-02-17", 
-    "address":"oo", 
-    "warranty_start_date":"2025-02-17", 
-    "warranty_end_date":"2025-05-16"
-}
+{"model": "Test Card", "customer_code": 25, "customer_name": "Placeholder", "region": "rajapalayam", "address": "Placeholder", "date_of_installation": "2025-02-25", "warranty_start_date": "2025-02-25", "warranty_end_date": "2025-02-27", "acm_start_date": "", "acm_end_date": "", "contract_start_date": "", "contract_end_date": ""}
 
 ### ======== GET CARD BY HEAD ==========
 

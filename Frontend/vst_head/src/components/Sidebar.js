@@ -12,7 +12,7 @@ return (
                 <img src={Logo} alt="VST Maarketing" className="sidebar-img"/>
             </div>
             <div className="sidebar-button-cont">
-                <Link to="/dashboard" className="sidebar-button">
+                <Link to="/createcard" className="sidebar-button">
                     Create Card
                     <FaPlus className="sidebar-button-icon" size={12}/>
                 </Link>
@@ -43,7 +43,7 @@ return (
                     </Link>
                 </div>
                 <div className="sidebar-item">
-                    <Link to="/dashboard" className="sidebar-link">
+                    <Link to="/customer" className="sidebar-link">
                         <FaAddressCard className="sidebar-item-icon" size={20}/>
                         Customer Card
                     </Link>

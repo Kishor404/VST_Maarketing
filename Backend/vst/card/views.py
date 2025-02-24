@@ -43,7 +43,6 @@ class CardCreateByHead(generics.CreateAPIView):
 
     def create(self, request, *args, **kwargs):
         user_role = request.user.role if hasattr(request.user, 'role') else None
-
         if user_role != 'head':
             raise PermissionDenied("You are not authorized to perform this action.")
 
