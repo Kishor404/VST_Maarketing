@@ -54,10 +54,16 @@ class CardUpdateByHead(generics.UpdateAPIView):
     lookup_field = 'id'
 
     def patch(self, request, *args, **kwargs):
+        card_id = kwargs.get('id')
         user_role = request.user.role if hasattr(request.user, 'role') else None
 
         if user_role != 'head':
             raise PermissionDenied("You are not authorized to perform this action.")
+
+        try:
+            card = Card.objects.get(id=card_id)
+        except Card.DoesNotExist:
+            raise PermissionDenied("Card not found.")
 
         return super().patch(request, *args, **kwargs)
 
@@ -73,6 +79,26 @@ class CardListByHead(generics.ListAPIView):
             raise PermissionDenied("You are not authorized to perform this action.")
 
         return super().get(request, *args, **kwargs)
+    
+class CardListByHeadByID(generics.RetrieveAPIView):
+    queryset = Card.objects.all()
+    serializer_class = CardSerializer
+    lookup_field = 'id'
+
+    def get(self, request, *args, **kwargs):
+        card_id = kwargs.get('id')
+        user_role = request.user.role if hasattr(request.user, 'role') else None
+
+        if user_role not in {"head", "worker"}:
+            raise PermissionDenied("You are not authorized to perform this action.")
+
+        try:
+            card = Card.objects.get(id=card_id)
+        except Card.DoesNotExist:
+            raise PermissionDenied("Card not found.")
+
+        serializer = self.get_serializer(card)
+        return Response(serializer.data)
 
 class ServiceEntryCreateByHeadAndWorker(generics.CreateAPIView):
     

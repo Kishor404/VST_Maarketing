@@ -43,7 +43,7 @@ return (
                     </Link>
                 </div>
                 <div className="sidebar-item">
-                    <Link to="/customer" className="sidebar-link">
+                    <Link to="/showcard" className="sidebar-link">
                         <FaAddressCard className="sidebar-item-icon" size={20}/>
                         Customer Card
                     </Link>

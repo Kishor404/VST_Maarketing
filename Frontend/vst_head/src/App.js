@@ -8,6 +8,7 @@ import UnavaReq from "./pages/unavaReq";
 import CreateCard from "./pages/createcard";
 import Sidebar from "./components/Sidebar";
 import "./App.css";
+import ShowCard from "./pages/showcard";
 
 const Layout = ({ children }) => {
   const location = useLocation();
@@ -32,6 +33,7 @@ const App = () => {
           <Route path="/editreq" element={<EditReq />} />
           <Route path="/unavareq" element={<UnavaReq />} />
           <Route path="/createcard" element={<CreateCard />} />
+          <Route path="/showcard" element={<ShowCard/>} />
         </Routes>
       </Layout>
     </Router>
