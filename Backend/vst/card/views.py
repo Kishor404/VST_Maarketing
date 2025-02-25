@@ -69,16 +69,21 @@ class CardUpdateByHead(generics.UpdateAPIView):
 
 
 class CardListByHead(generics.ListAPIView):
-    queryset = Card.objects.all()
     serializer_class = CardSerializer
 
-    def get(self, request, *args, **kwargs):
-        user_role = request.user.role if hasattr(request.user, 'role') else None
+    def get_queryset(self):
+        user = self.request.user
+        user_role = getattr(user, 'role', None)
 
         if user_role not in {"head", "worker"}:
             raise PermissionDenied("You are not authorized to perform this action.")
 
-        return super().get(request, *args, **kwargs)
+        # Assuming the user has a 'region' attribute
+        user_region = getattr(user, 'region', None)
+        if not user_region:
+            return Card.objects.none()
+
+        return Card.objects.filter(region=user_region)
     
 class CardListByHeadByID(generics.RetrieveAPIView):
     queryset = Card.objects.all()

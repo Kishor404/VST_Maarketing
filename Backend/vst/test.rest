@@ -9,7 +9,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiY
 POST http://127.0.0.1:8000/log/login/
 Content-Type: application/json
 
-{"phone":"7856341290","password":"123"}
+{"phone":"9078563411","password":"123"}
 
 # ====== DEMO 1 ========
 
@@ -23,12 +23,25 @@ Content-Type: application/json
 # ------ STAFF : 8796054321 -------
 # ------ CUSTOMER : 9078563412 ----
 
+# ======= DEMO 3 ==========
+
+# ------ HEAD : 7856341299 --------
+# ------ STAFF : 8796054322 -------
+# ------ CUSTOMER : 9078563411 ----
+
+# ======= DEMO 4 ===========
+
+# ------ HEAD : 7856341999 --------
+# ------ STAFF : 8796054202 -------
+# ------ CUSTOMER : 9078563101 ----
+
+
 ### =========== SIGNUP API =============
 
 POST http://127.0.0.1:8000/log/signup/
 Content-Type: application/json
 
-{"name":"Ram","phone":"7856341290","password":"123","region":"rajapalayam","role":"head"}
+{"name":"Vijay","phone":"7856341999","password":"123","region":"chennai","role":"head"}
 
 ### ========== CARD DETAILS API ==========
 
@@ -137,7 +150,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiY
 
 POST http://127.0.0.1:8000/unavailablereq/
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzM5NjE0Mzk1LCJpYXQiOjE3Mzk2MTI1OTUsImp0aSI6ImQyOTcwZTRiOTMzYTQzNDA4Mjc5YTIxYzM3MmI1Y2E4IiwidXNlcl9pZCI6MjF9.X6mUpmKDwGbtzPKnJ0xr2mLhAgC0LB5Fp0UrMDjUYqg
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzQwMzc1NDg1LCJpYXQiOjE3NDAzNzM2ODUsImp0aSI6ImYxMGI0NmJjMDViZjQ3OGY5M2RlNzIzZGM2NGFmZDJjIiwidXNlcl9pZCI6MjZ9.xKqb8MAPUmi5YNW5zvjYtOeJNyRjtAppcf9rK8Ka9jQ
 
 {
     "service":21,

@@ -57,6 +57,7 @@ const UnavaReq = () => {
             if (response.data) {
                 console.log(response.data);
                 setreqData(null);
+                window.alert(response.data.message)
                 window.location.reload();
             }
         } catch (error) {

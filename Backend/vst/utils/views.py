@@ -122,7 +122,8 @@ class UpcomingServiceView(APIView):
         user = request.user  
         current_date = now().date()
 
-        services = Service.objects.filter(staff=user, status='BD', available_date__lt=current_date)
+
+        services = Service.objects.filter(staff=user, status='BD', available_date__gt=current_date)
         
         serializer = ServiceSerializer(services, many=True)
         return Response(serializer.data, status=200)

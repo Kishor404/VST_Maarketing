@@ -1,10 +1,128 @@
 import 'package:flutter/material.dart';
+import 'package:dio/dio.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
-class UpcomingServiceDetails extends StatelessWidget {
+class UpcomingServiceDetails extends StatefulWidget {
   final Map<String, dynamic> service;
 
   const UpcomingServiceDetails({Key? key, required this.service})
       : super(key: key);
+
+  @override
+  State<UpcomingServiceDetails> createState() => _UpcomingServiceDetailsState();
+}
+
+class _UpcomingServiceDetailsState extends State<UpcomingServiceDetails> {
+  String _accessToken = '';
+  String _refreshToken = '';
+  String _staffid = '';
+
+  @override
+  void initState() {
+    super.initState();
+    _loadTokens();
+  }
+
+  Future<void> _loadTokens() async {
+    final prefs = await SharedPreferences.getInstance();
+    setState(() {
+      _accessToken = prefs.getString('AT') ?? '';
+      _refreshToken = prefs.getString('RT') ?? ''; // Refresh token
+      _staffid = prefs.getString('staff_id') ?? 'User Name';
+
+    });
+  }
+
+  /// **Step 1: Refresh Access Token**
+  Future<void> _refreshAccessToken() async {
+    if (_refreshToken.isEmpty) {
+      debugPrint("No refresh token found!");
+      return;
+    }
+
+    final url = 'http://127.0.0.1:8000/log/token/refresh/';
+    final requestBody = {'refresh': _refreshToken};
+
+    try {
+      final response = await Dio().post(
+        url,
+        data: requestBody,
+        options: Options(headers: {'Content-Type': 'application/json'}),
+      );
+
+      final newAccessToken = response.data['access'];
+      if (newAccessToken != null) {
+        final prefs = await SharedPreferences.getInstance();
+        await prefs.setString('AT', newAccessToken);
+
+        setState(() {
+          _accessToken = newAccessToken;
+        });
+
+        debugPrint("Access token refreshed successfully.");
+      }
+    } catch (e) {
+      debugPrint('Error refreshing token: $e');
+    }
+  }
+
+  /// **Step 2 & 3: Send Unavailability Request**
+  Future<void> _markUnavailable(BuildContext context) async {
+    try {
+      await _refreshAccessToken(); // Step 1: Refresh token
+
+      // Step 2: Retrieve updated access token
+      final prefs = await SharedPreferences.getInstance();
+      final accessToken = prefs.getString('AT') ?? '';
+
+      if (accessToken.isEmpty) {
+        debugPrint("No access token found!");
+        return;
+      }
+
+      // Step 3: Make the POST request
+      final url = 'http://127.0.0.1:8000/unavailablereq/';
+      final requestBody = {
+        'service': widget.service['id'], // Ensure 'id' exists
+        'staff': _staffid, // Ensure 'staff_id' exists
+      };
+
+      final response = await Dio().post(
+        url,
+        data: requestBody,
+        options: Options(
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer $accessToken',
+          },
+        ),
+      );
+
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text("Request Sent to Admin Successfully!"),
+            backgroundColor: Colors.green,
+          ),
+        );
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text("Failed to send request!"),
+            backgroundColor: Colors.red,
+          ),
+        );
+      }
+    } catch (e) {
+      debugPrint('Error: $e');
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text("An error occurred while sending request!"),
+          backgroundColor: Colors.red,
+        ),
+      );
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -31,44 +149,44 @@ class UpcomingServiceDetails extends StatelessWidget {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Text('Service ID: ${service['id']}',
+                    Text('Service ID: ${widget.service['id']}',
                         style: const TextStyle(
                             fontSize: 18, color: Color.fromARGB(255, 55, 99, 174))),
                   ],
                 ),
-                Text('Card ID : ${service['card']},',
+                Text('Card ID : ${widget.service['card']}',
                     style: const TextStyle(fontSize: 18)),
 
                 const SizedBox(height: 8),
 
                 /// **User Information**
-                Text('${service['customer_data']['name']},',
+                Text('${widget.service['customer_data']['name']}',
                     style: const TextStyle(fontSize: 18)),
-                Text('${service['customer_data']['address']},',
+                Text('${widget.service['customer_data']['address']}',
                     style: const TextStyle(fontSize: 18)),
-                Text('${service['customer_data']['city']},',
+                Text('${widget.service['customer_data']['city']}',
                     style: const TextStyle(fontSize: 16)),
-                Text('${service['customer_data']['district']}.',
+                Text('${widget.service['customer_data']['district']}',
                     style: const TextStyle(fontSize: 18)),
                 const SizedBox(height: 16),
 
                 /// **Contact Details**
-                Text('Phone: ${service['customer_data']['phone']}',
+                Text('Phone: ${widget.service['customer_data']['phone']}',
                     style: const TextStyle(fontSize: 18)),
-                Text('Email: ${service['customer_data']['email']}',
+                Text('Email: ${widget.service['customer_data']['email']}',
                     style: const TextStyle(fontSize: 18)),
                 const SizedBox(height: 16),
 
                 /// **Service Details**
-                Text('Complaint: ${service['complaint']}',
+                Text('Complaint: ${widget.service['complaint']}',
                     style: const TextStyle(fontSize: 18)),
-                Text('Description: ${service['description']}',
+                Text('Description: ${widget.service['description']}',
                     style: const TextStyle(fontSize: 18)),
                 const SizedBox(height: 16),
 
-                Text('Service Date: ${service['available_date']}',
+                Text('Service Date: ${widget.service['available_date']}',
                     style: const TextStyle(fontSize: 18, color: Color.fromARGB(255, 55, 99, 174))),
-                Text('Date Of Booking: ${service['created_at'].toString().split("T")[0]}',
+                Text('Date Of Booking: ${widget.service['created_at'].toString().split("T")[0]}',
                     style: const TextStyle(fontSize: 18)),
                 const SizedBox(height: 36),
 
@@ -89,7 +207,8 @@ class UpcomingServiceDetails extends StatelessWidget {
                         builder: (BuildContext context) {
                           return AlertDialog(
                             title: const Text("Confirm Unavailability"),
-                            content: const Text("Are you sure you want to mark this service as unavailable? By Clicking confrim the request was send to admin for confrimation."),
+                            content: const Text(
+                                "Are you sure you want to mark this service as unavailable? By Clicking confirm, the request will be sent to admin for confirmation."),
                             actions: [
                               TextButton(
                                 onPressed: () {
@@ -98,14 +217,9 @@ class UpcomingServiceDetails extends StatelessWidget {
                                 child: const Text("Cancel"),
                               ),
                               TextButton(
-                                onPressed: () {
-                                  Navigator.of(context).pop();
-                                  ScaffoldMessenger.of(context).showSnackBar(
-                                    const SnackBar(
-                                      content: Text("Request Send To Admin !"),
-                                      backgroundColor: Colors.red,
-                                    ),
-                                  );
+                                onPressed: () async {
+                                  Navigator.of(context).pop(); // Close dialog
+                                  await _markUnavailable(context);
                                 },
                                 child: const Text("Confirm", style: TextStyle(color: Colors.red)),
                               ),

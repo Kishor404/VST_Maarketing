@@ -261,7 +261,6 @@ Future<void> _confirmBooking(int workerId, String avaDate, String complaintText,
           title: "Service Booked !",
           body: "The Service Booking was sucessfull",
         );
-      Navigator.pop(context);
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text("Failed to book service")),

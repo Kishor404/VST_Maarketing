@@ -74,7 +74,8 @@ const Customer = () => {
             city: fetchData.city,
             district: fetchData.district,
             postal_code: fetchData.postal_code,
-            region: fetchData.region
+            region: fetchData.region,
+            role: fetchData.role,
         };
     
         axios
@@ -163,6 +164,7 @@ const Customer = () => {
                             <DetailBox label="City" value={fetchData.city} field="city" setFetchData={setFetchData} />
                             <DetailBox label="District" value={fetchData.district} field="district" setFetchData={setFetchData} />
                             <DetailBox label="Postal Code" value={fetchData.postal_code} field="postal_code" setFetchData={setFetchData} />
+                            <DetailBox label="Role" value={fetchData.role} field="role" setFetchData={setFetchData} />
                         </>
                     ) : <p>No Customer Selected</p>}
 
