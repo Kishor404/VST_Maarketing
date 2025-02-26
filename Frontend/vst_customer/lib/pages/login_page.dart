@@ -3,6 +3,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'index.dart';
 import 'package:dio/dio.dart';
 import 'data.dart';
+import './Lang/lang.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -22,6 +23,9 @@ class LoginPageState extends State<LoginPage> {
   final _districtController = TextEditingController();
   final _postalCodeController = TextEditingController();
   String _selectedRegion = 'rajapalayam';
+  int langCode = 0;
+
+
 
   @override
   void dispose() {
@@ -51,30 +55,30 @@ class LoginPageState extends State<LoginPage> {
               Align(
                 alignment: Alignment.center,
                 child: Text(
-                  _isLogin ? "Login To Your Account" : "Create A New Account",
+                  _isLogin ? LoginLang.loginHead[langCode] : LoginLang.signupHead[langCode],
                   style: TextStyle(fontSize: 20),
                 ),
               ),
               SizedBox(height: 20),
               if (!_isLogin) ...[
-                _buildTextField(_nameController, 'Name'),
+                _buildTextField(_nameController, LoginLang.loginData[langCode][0]),
                 SizedBox(height: 10),
-                _buildTextField(_emailController, 'Email (Optional)'),
+                _buildTextField(_emailController, LoginLang.loginData[langCode][1]),
                 SizedBox(height: 10),
                 _buildDropdownField(),
                 SizedBox(height: 10),
-                _buildTextField(_addressController, 'Address'),
+                _buildTextField(_addressController, LoginLang.loginData[langCode][2]),
                 SizedBox(height: 10),
-                _buildTextField(_cityController, 'City'),
+                _buildTextField(_cityController, LoginLang.loginData[langCode][3]),
                 SizedBox(height: 10),
-                _buildTextField(_districtController, 'District'),
+                _buildTextField(_districtController, LoginLang.loginData[langCode][4]),
                 SizedBox(height: 10),
-                _buildTextField(_postalCodeController, 'Postal Code', isNumber: true),
+                _buildTextField(_postalCodeController, LoginLang.loginData[langCode][5], isNumber: true),
                 SizedBox(height: 10),
               ],
-              _buildTextField(_phoneController, 'Phone Number', isNumber: true),
+              _buildTextField(_phoneController, LoginLang.loginData[langCode][6], isNumber: true),
               SizedBox(height: 10),
-              _buildTextField(_passwordController, 'Password', obscureText: true),
+              _buildTextField(_passwordController, LoginLang.loginData[langCode][7], obscureText: true),
               SizedBox(height: 20),
               ElevatedButton(
                 onPressed: _isLogin ? _login : _signUp,
@@ -85,14 +89,14 @@ class LoginPageState extends State<LoginPage> {
                   shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
                   elevation: 5,
                 ),
-                child: Text(_isLogin ? 'Login' : 'Sign Up', style: TextStyle(fontSize: 16)),
+                child: Text(_isLogin ? LoginLang.loginBut[langCode] : LoginLang.signupBut[langCode], style: TextStyle(fontSize: 16)),
               ),
               SizedBox(height: 20),
               TextButton(
                 onPressed: () => setState(() => _isLogin = !_isLogin),
                 child: Text(_isLogin
-                    ? "Don't have an account? Sign Up"
-                    : 'Already have an account? Login'),
+                    ? LoginLang.loginAltBut[langCode]
+                    : LoginLang.signupAltBut[langCode],)
               ),
             ],
           ),
