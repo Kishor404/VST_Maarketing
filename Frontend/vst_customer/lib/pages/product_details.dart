@@ -15,21 +15,22 @@ class ProductDetailsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color.fromARGB(255, 255, 255, 255),
+      backgroundColor: Colors.white,
       appBar: AppBar(
         backgroundColor: const Color.fromARGB(255, 55, 99, 174),
         title: Text(
           productName,
           style: const TextStyle(
-            color: Color.fromARGB(255, 255, 255, 255),
+            color: Colors.white,
             fontSize: 18,
           ),
         ),
       ),
-      body: Center(
-        child: SingleChildScrollView(
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.all(32.0),
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               Image.network(
                 productImg,
@@ -44,21 +45,18 @@ class ProductDetailsPage extends StatelessWidget {
               const SizedBox(height: 20),
               Text(
                 productName,
+                textAlign: TextAlign.center,
                 style: const TextStyle(
                   fontSize: 24.0,
                   fontWeight: FontWeight.bold,
                   color: Color.fromARGB(255, 55, 99, 174),
                 ),
-                textAlign: TextAlign.center,
               ),
               const SizedBox(height: 10),
-              Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: Text(
-                  productDet,
-                  textAlign: TextAlign.center,
-                  style: const TextStyle(fontSize: 16.0),
-                ),
+              Text(
+                productDet,
+                textAlign: TextAlign.center,
+                style: const TextStyle(fontSize: 16.0),
               ),
             ],
           ),

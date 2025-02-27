@@ -45,7 +45,7 @@ class HomePageState extends State<HomePage> {
     final List<Map<String, dynamic>> buttonData = [
       {'icon': Icons.construction, 'label': 'Service', 'onTap': () => widget.onNavigateToIndex(1)},
       {'icon': Icons.phone, 'label': 'Contact', 'onTap': () => Navigator.push(context, MaterialPageRoute(builder: (context) => ContactPage()))},
-      {'icon': Icons.article, 'label': 'Completed', 'onTap': () => widget.onNavigateToIndex(3)},
+      {'icon': Icons.article, 'label': 'Card', 'onTap': () => widget.onNavigateToIndex(3)},
       {'icon': Icons.settings, 'label': 'Settings', 'onTap': () => print('Settings tapped')},
       {'icon': Icons.notifications, 'label': 'Alerts', 'onTap': () => print('Alerts tapped')},
       {'icon': Icons.shopping_bag, 'label': 'Products', 'onTap': () => widget.onNavigateToIndex(2)},

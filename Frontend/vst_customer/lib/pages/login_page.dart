@@ -251,7 +251,7 @@ class LoginPageState extends State<LoginPage> {
             prefs.setString('email', logData['email'] ?? 'Unavailable'); // Set 'Unavailable' if null
             prefs.setString('address', logData['address'] ?? 'Unavailable'); // Set 'Unavailable' if null
             prefs.setString('city', logData['city'] ?? 'Unavailable'); // Set 'Unavailable' if null
-            prefs.setString('state', logData['state'] ?? 'Unavailable'); // Set 'Unavailable' if null
+            prefs.setString('district', logData['district'] ?? 'Unavailable'); // Set 'Unavailable' if null
             prefs.setString('country', logData['country'] ?? 'Unavailable'); // Set 'Unavailable' if null
             prefs.setString('postal_code', logData['postal_code'] ?? 'Unavailable'); // Set 'Unavailable' if null
             prefs.setString('region', logData['region'] ?? 'Unavailable'); // Set 'Unavailable' if null
