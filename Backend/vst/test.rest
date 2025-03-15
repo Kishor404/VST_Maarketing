@@ -220,3 +220,29 @@ GET http://127.0.0.1:8000/utils/headvieweditreq/
 Content-Type: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzQwMTk0MzQ3LCJpYXQiOjE3NDAxOTI1NDcsImp0aSI6ImM1MjA1ODAxNmQyNjRkYTdiM2M2OTY3NzM2Nzg0ZGNjIiwidXNlcl9pZCI6MjR9.K7pYdaSjvIYv_PoXJ5t_7-6M22uFgmBRH9-nJWZukTI
 
+### ===== FIREBASE NOTI ===========
+
+POST https://fcm.googleapis.com/v1/projects/vst-maarketing-41a2b/messages:send
+Content-Type: application/json
+Authorization: Bearer \nMIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQDEfcfDpEXlVc2F\naXmaDOpxWAH2m/t/1u29cJkwHIwTq+BdC+Vy31XLuHtZp9jaWcB2k7BYA07pv88m\nZgRa3tQGH7KSbnMT8Ajmf3cyt+YGgTViYi5JUaR0r0St+06a37Pken1OWdDDKa7C\nwVm0Vvikg0Pzv8d1g9vXWehmCHTI8lgw+tC5k7JZJqxjVl52xM14uQ3eq3hXYLTp\nGVZSCT9HnKbuhcWetSAaalIpF1xgrBi18qq3fDnzg7fg10ne2QMQ3gTQxYFkgqMf\nxkwJyScxHdY977Wkj3grQUiXizot4jPvnNJES93/iwRhCKRTflx8DfLQovFzq9jq\nTMmdQKHnAgMBAAECggEACILfEyBogd8BM6HP/KMWlkMW3Eg0neMBEhwKGd8CsLXY\n1oiPYpxxKo2BLYieiHn4YxDrdve3UVskbY6TUOrAcGURgFPi2p6ivalD0CFn7o9m\nPchW81VJmsXrMBLn4r/rgOtO+WsQJrc4tLYlw2QJCfp0CEW3lBjA5K3zHSHv1rLL\nmIdyI4A5NnotPX8oO9gpOI24kJu7RpZ8KLGKIbrraXcEnGXKUEBN91Rgm/qa1cZe\nXy/ZoWQNJK3VaagIyVUbQVonzmiFlpRxbn9zC+Qv0ppmEprAkfANv5DeUkU9VIsB\nLRhY8LHDk5w6DkqWnnp1uHIPr2biYmfzONyWMMsbwQKBgQDwwzcIQdOjj5mK1Uel\n16/MsNP8nAiGg+adTG4gdgPkqwl4kiiEUKWfBKbeZr4yPMR9n0M4wlOUIyiwHppi\nzD5XbopVoeiwi5MFYulhZ+krmA42L1t9mhyeiWJPiLiHi4sKOxDZVVpF/+u1kg2/\nHvMBTDT4e2/fWryylai73z8X9wKBgQDQ7UrGXMWoGbiorCQ1REEYPC1BBoO3k+eA\ni9CBkUIIFMx984pHy0gLfRPcepnEfgwY1pDtUZpVTvNsqS6UDpLl66QzJ3lwXWNV\nL2IGkzoUTs5GVB9r4raxaSWcd7kDx1sVfwX/1ln/HIiKbJdBc8nsJin7m49TMs2s\nOi55QV6pkQKBgQDGt5mYixxvh3qniFnWnCtRuzF88hxnSj7x3b+Xs1CLUFBE3/3p\nF9dbZK+GKS8ar+VN+kG1e08YmdxfYSL0ILfj2iz7eONhtBHpBDa0WtutS5ePSY8u\nICE3CRXHp4UG+zoLe6zwdO5JkG2wM5h9AsJ3c7rUzK0NoQrWK4hVaHHfCQKBgCmr\nWiGL+UQYtTK2+pXBIjaCMghpEzY3ApIp0JE29nOEKnDodOjyy1C3RpHPxgFhnmoJ\nyWf7wYtILta6O3b+HSBMSjiFo/vcNGaWB7gF/yxzt0Jhns62rfdeYEj/u9/cD/eO\nmRS4nMR73WO2WsiMHnbB+deb5A8U795s0D4Q4p9xAoGAD6JDXsq0RyFdm58aMX4G\nQFaqUcrK5Vh/JpQ0ccZZEQhx4iKhkUEjc4vro3lLgYbWJ286XnRMHPNBDzDea0VZ\ng97U4HVPcyzYbLdOV1v1yWCmmobbJvgTcXOe2XQS2WTJqSLd0CRdgxeG3lc7mt8u\nrqDn9bQajtpQEozAjP2F3GY=\n
+
+{
+  "message": {
+    "token": "dMh8KxNeQgyPjUWjb5tldF:APA91bHFVhozgstzfqUFsomANiwnS1a4xB2Iuuh5G2z4POzVC30itDjQpztD8DuyY1eeRh_34jG84MN-hFvkErqtOO-wwPw-4bx9scpU-ZfO1mErrndSKzE",
+    "notification": {
+      "title": "Test",
+      "body": "Test Message"
+    }
+  }
+}
+
+###
+
+POST http://127.0.0.1:3000/send-notification
+Content-Type: application/json
+
+{
+  "token": "dMh8KxNeQgyPjUWjb5tldF:APA91bHFVhozgstzfqUFsomANiwnS1a4xB2Iuuh5G2z4POzVC30itDjQpztD8DuyY1eeRh_34jG84MN-hFvkErqtOO-wwPw-4bx9scpU-ZfO1mErrndSKzE",
+  "title": "Sample Notification",
+  "body": "This is a test message"
+}

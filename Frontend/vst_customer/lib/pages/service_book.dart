@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:dio/dio.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'data.dart';
-import '../notification_service.dart';
 import 'index.dart';
 
 class ServiceBook extends StatefulWidget {
@@ -256,11 +255,6 @@ Future<void> _confirmBooking(int workerId, String avaDate, String complaintText,
         MaterialPageRoute(builder: (context) => IndexPage()),
         (Route<dynamic> route) => false, // Remove all previous routes
       );
-      NotificationService().showNotification(
-          id: 0,
-          title: "Service Booked !",
-          body: "The Service Booking was sucessfull",
-        );
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text("Failed to book service")),
