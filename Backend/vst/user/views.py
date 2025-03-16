@@ -7,6 +7,8 @@ from .serializers import UserSerializer
 from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework.permissions import IsAuthenticated, AllowAny
 from rest_framework.decorators import api_view, permission_classes
+import requests
+from django.http import JsonResponse
 
 
 @api_view(['GET'])
@@ -31,7 +33,8 @@ class LoginView(APIView):
     def post(self, request):
         phone = request.data.get('phone')
         password = request.data.get('password')
-        fcm_token = request.data.get('fcm_token')
+        fcm_token = request.data.get('FCM_Token')
+        print(fcm_token)
         
         if not phone or not password:
             return Response({"message": "Phone and password are required"}, status=status.HTTP_400_BAD_REQUEST)
@@ -43,6 +46,18 @@ class LoginView(APIView):
                 if fcm_token:
                     user.fcm_token = fcm_token
                     user.save()
+                    print("FCM Token updated")
+                try:
+                    payload = {
+                            "token": user.FCM_Token,
+                            "title": "Login Successful",
+                            "body": "You have successfully logged in!"
+                        }
+                    response = requests.post("http://192.168.155.222:8000/firebase/send-notification/", json=payload)
+                    data = response.json()
+                    print(data)
+                except Exception as e:
+                    print(JsonResponse({"error": str(e)}))
                 
                 refresh = RefreshToken.for_user(user)
                 access_token = str(refresh.access_token)

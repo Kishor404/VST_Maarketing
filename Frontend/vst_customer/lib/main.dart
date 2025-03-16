@@ -99,6 +99,8 @@ Future<void> getToken() async {
     if (token != null) {
       print("✅ FCM Token: $token");
       await prefs.setString('FCM_Token', token);
+      print("???????????????????????????????");
+      print(prefs.getString('FCM_Token'));
     } else {
       print("❌ Failed to retrieve FCM token.");
     }
