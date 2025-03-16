@@ -1,13 +1,13 @@
 {
   "project_info": {
-    "project_number": "682127086409",
-    "project_id": "vst-notification",
-    "storage_bucket": "vst-notification.firebasestorage.app"
+    "project_number": "540992161676",
+    "project_id": "vst-maarketing-41a2b",
+    "storage_bucket": "vst-maarketing-41a2b.firebasestorage.app"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:682127086409:android:5414128a6344185827c098",
+        "mobilesdk_app_id": "1:540992161676:android:188a2fc8bb4dc34c8e38a9",
         "android_client_info": {
           "package_name": "com.example.vst_customer"
         }
@@ -15,7 +15,7 @@
       "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyAax_I6ErmmmUDv_JKv__qLJKsSgvvOVDU"
+          "current_key": "AIzaSyCa80J3YNeMIBD9njKnRF_eZCH7MeP97UM"
         }
       ],
       "services": {

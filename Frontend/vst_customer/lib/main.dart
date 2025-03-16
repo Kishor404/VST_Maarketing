@@ -33,41 +33,14 @@ void main() async {
 
   await NotificationService().initNotifications(); // Initialize notifications
 
-  FirebaseMessaging messaging = FirebaseMessaging.instance;
-
   // Setting up background message handler
   FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
 
   // Request permission for push notifications
-  try {
-    NotificationSettings settings = await messaging.requestPermission(
-      alert: true,
-      badge: true,
-      sound: true,
-    );
-    print("🔔 User granted permission: ${settings.authorizationStatus}");
-  } catch (e) {
-    print("❌ Error requesting notification permission: $e");
-  }
+  await requestNotificationPermission();
 
-  // Get the FCM token
-  void getToken() async {
-    try {
-      String? token = await FirebaseMessaging.instance.getToken();
-      if (token != null) {
-        print("✅ FCM Token: $token");
-        final prefs = await SharedPreferences.getInstance();
-        prefs.setString('FCM_Token', token);
-      } else {
-        print("❌ Failed to retrieve FCM token.");
-      }
-    } catch (e) {
-      print("❌ Error fetching FCM token: $e");
-    }
-  }
-
-  // Call the token fetching function
-  getToken();
+  // Get the FCM token and store it
+  await getToken();
 
   // Listen for foreground messages
   FirebaseMessaging.onMessage.listen((RemoteMessage message) {
@@ -85,7 +58,7 @@ void main() async {
     }
   });
 
-  // Listen for message when the app is in the background but not terminated
+  // Handle messages when the app is opened via a notification
   FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {
     print("🚪 Message clicked: ${message.messageId}");
     if (message.notification != null) {
@@ -97,13 +70,50 @@ void main() async {
   runApp(const MyApp());
 }
 
+// Function to request notification permission
+Future<void> requestNotificationPermission() async {
+  try {
+    NotificationSettings settings = await FirebaseMessaging.instance.requestPermission(
+      alert: true,
+      badge: true,
+      sound: true,
+    );
+
+    if (settings.authorizationStatus == AuthorizationStatus.authorized) {
+      print("🔔 Notifications authorized");
+    } else if (settings.authorizationStatus == AuthorizationStatus.provisional) {
+      print("🔔 Provisional authorization granted");
+    } else {
+      print("❌ Notifications not authorized");
+    }
+  } catch (e) {
+    print("❌ Error requesting notification permission: $e");
+  }
+}
+
+// Function to get and store the FCM token
+Future<void> getToken() async {
+  try {
+    final prefs = await SharedPreferences.getInstance();
+    String? token = await FirebaseMessaging.instance.getToken();
+    if (token != null) {
+      print("✅ FCM Token: $token");
+      await prefs.setString('FCM_Token', token);
+    } else {
+      print("❌ Failed to retrieve FCM token.");
+    }
+  } catch (e) {
+    print("❌ Error fetching FCM token: $e");
+  }
+}
+
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'VST Maarketing',
+      title: 'VST Marketing',
       theme: ThemeData(
         scaffoldBackgroundColor: Colors.white,
         primarySwatch: Colors.blue,
