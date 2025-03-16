@@ -238,7 +238,7 @@ Authorization: Bearer \nMIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQDEfcfD
 
 ###
 
-POST http://127.0.0.1:3000/send-notification
+POST http://127.0.0.1:8000/firebase/send-notification/
 Content-Type: application/json
 
 {

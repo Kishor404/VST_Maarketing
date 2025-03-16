@@ -164,6 +164,8 @@ class LoginPageState extends State<LoginPage> {
     final district = _districtController.text;
     final postalCode = _postalCodeController.text;
     final region = _selectedRegion;
+    final prefs = await SharedPreferences.getInstance();
+    final fcm=prefs.getString('FCM_Token');
 
     if (name.isNotEmpty &&
         phone.isNotEmpty &&
@@ -183,7 +185,8 @@ class LoginPageState extends State<LoginPage> {
         'city': city,
         'district': district,
         'postal_code': postalCode,
-        'role': 'customer'
+        'role': 'customer',
+        'FCM_Token': fcm,
       };
 
       try {
@@ -214,11 +217,13 @@ class LoginPageState extends State<LoginPage> {
   Future<void> _login() async {
      final phone = _phoneController.text;
     final password = _passwordController.text;
+    final prefs = await SharedPreferences.getInstance();
+    final fcm=prefs.getString('FCM_Token');
 
     if (phone.isNotEmpty && password.isNotEmpty) {
       // Handle login logic with API call
       final url = '${Data.baseUrl}/log/login/';
-      final requestBody = {'phone': phone, 'password': password};
+      final requestBody = {'phone': phone, 'password': password, "FCM_Token":fcm};
       
       try {
         // Initialize Dio

@@ -44,6 +44,8 @@ class User(AbstractBaseUser, PermissionsMixin):
     region = models.CharField(max_length=255, choices=REGION_CHOICES)
     role = models.CharField(max_length=10, choices=ROLE_CHOICES, default="user")
 
+    FCM_Token = models.CharField(max_length=255, blank=True)
+
     #  FOR WORKERS ONLY
     availability=models.JSONField(default=default_availability)
     last_service=models.CharField(default="None", max_length=50)

@@ -31,6 +31,7 @@ class LoginView(APIView):
     def post(self, request):
         phone = request.data.get('phone')
         password = request.data.get('password')
+        fcm_token = request.data.get('fcm_token')
         
         if not phone or not password:
             return Response({"message": "Phone and password are required"}, status=status.HTTP_400_BAD_REQUEST)
@@ -39,6 +40,10 @@ class LoginView(APIView):
             user = User.objects.get(phone=phone)
             
             if check_password(password, user.password):  # Check if password matches the hashed one
+                if fcm_token:
+                    user.fcm_token = fcm_token
+                    user.save()
+                
                 refresh = RefreshToken.for_user(user)
                 access_token = str(refresh.access_token)
                 serializer = UserSerializer(user)

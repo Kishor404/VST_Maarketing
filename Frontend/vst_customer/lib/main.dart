@@ -3,6 +3,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'notification_service.dart'; // Import the notification service
 import 'pages/index.dart'; // Import the HomePage from index.dart
+import 'package:shared_preferences/shared_preferences.dart';
 
 // Background message handler
 Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
@@ -55,6 +56,8 @@ void main() async {
       String? token = await FirebaseMessaging.instance.getToken();
       if (token != null) {
         print("✅ FCM Token: $token");
+        final prefs = await SharedPreferences.getInstance();
+        prefs.setString('FCM_Token', token);
       } else {
         print("❌ Failed to retrieve FCM token.");
       }
