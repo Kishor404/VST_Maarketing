@@ -166,6 +166,7 @@ class LoginPageState extends State<LoginPage> {
     final region = _selectedRegion;
     final prefs = await SharedPreferences.getInstance();
     final fcm=prefs.getString('FCM_Token');
+    print(fcm);
 
     if (name.isNotEmpty &&
         phone.isNotEmpty &&
