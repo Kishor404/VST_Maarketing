@@ -43,7 +43,9 @@ class ProfilePageState extends State<ProfilePage> {
 
   Future<void> _logout() async {
     final prefs = await SharedPreferences.getInstance();
+    String fcmToken = prefs.getString('FCM_Token') ?? '';
     await prefs.clear();
+    prefs.setString('FCM_Token', fcmToken);
     Navigator.pushReplacement(
       context,
       MaterialPageRoute(builder: (context) => LoginPage()),

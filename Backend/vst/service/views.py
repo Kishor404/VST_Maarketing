@@ -59,7 +59,7 @@ class ServiceViewSet(viewsets.ModelViewSet):
                 "body": f"Your service (ID: {service.id}) has been successfully created."
             }
             try:
-                response = requests.post("http://192.168.62.222:8000/firebase/send-notification/", json=payload)
+                response = requests.post("http://192.168.141.222:8000/firebase/send-notification/", json=payload)
                 response.raise_for_status()
                 print("Notification sent successfully:", response.json())
             except requests.exceptions.RequestException as e:
@@ -94,7 +94,7 @@ class CancelServiceByCustomer(APIView):
                 "body": f"Your service (ID: {service.id}) has been cancelled successfully."
             }
             try:
-                response = requests.post("http://192.168.62.222:8000/firebase/send-notification/", json=payload)
+                response = requests.post("http://192.168.141.222:8000/firebase/send-notification/", json=payload)
                 response.raise_for_status()
                 print("Notification sent successfully:", response.json())
             except requests.exceptions.RequestException as e:

@@ -20,6 +20,7 @@ class SignupView(APIView):
     permission_classes = [AllowAny]
     
     def post(self, request):
+        print(request.data)
         serializer = UserSerializer(data=request.data)
         if serializer.is_valid():
             # No need to hash the password manually; let the serializer handle it.
@@ -53,7 +54,7 @@ class LoginView(APIView):
                             "title": "Login Successful",
                             "body": "You have successfully logged in!"
                         }
-                    response = requests.post("http://192.168.62.222:8000/firebase/send-notification/", json=payload)
+                    response = requests.post("http://192.168.141.222:8000/firebase/send-notification/", json=payload)
                     data = response.json()
                     print(data)
                 except Exception as e:
