@@ -6,6 +6,9 @@ from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.views import APIView
 from django.shortcuts import get_object_or_404
+import requests
+import json
+
 
 
 class ServiceViewSet(viewsets.ModelViewSet):
@@ -25,24 +28,42 @@ class ServiceViewSet(viewsets.ModelViewSet):
     
     def perform_create(self, serializer):
         """
-        Override perform_create to modify staff user after creating a service.
+        Override perform_create to modify staff user after creating a service and send a notification.
         """
         service = serializer.save()  # Save the service instance
-        staff = service.staff  # Directly get the staff object
-        available_date = service.available_date  # Extract available_date
+        staff = service.staff  # Get assigned staff
+        available_date = service.available_date  # Extract available date
+        user = self.request.user  # Get authenticated user
 
+        # Update staff availability
         if staff and available_date:
             try:
-                # Ensure availability is a dictionary with a key 'unavailable'
-                if not staff.availability or not isinstance(staff.availability, dict):
+                # Ensure availability is a dictionary
+                if not staff.availability:
                     staff.availability = {"unavailable": []}
-                
-                # Append new date to unavailable list
-                staff.availability["unavailable"].append(available_date)
+                else:
+                    if isinstance(staff.availability, str):
+                        staff.availability = json.loads(staff.availability)
 
-                staff.save()  # Save changes
+                # Append new date
+                staff.availability["unavailable"].append(available_date)
+                staff.save()
             except Exception as e:
-                print(f"Error updating staff availability: {e}")  # Debugging purpose
+                print(f"Error updating staff availability: {e}")
+
+        # Send notification about service creation
+        if user.FCM_Token:
+            payload = {
+                "token": user.FCM_Token,
+                "title": "Service Created",
+                "body": f"Your service (ID: {service.id}) has been successfully created."
+            }
+            try:
+                response = requests.post("http://192.168.62.222:8000/firebase/send-notification/", json=payload)
+                response.raise_for_status()
+                print("Notification sent successfully:", response.json())
+            except requests.exceptions.RequestException as e:
+                print(f"Error sending notification: {e}")
 
         return Response(serializer.data, status=status.HTTP_201_CREATED)
 
@@ -65,4 +86,18 @@ class CancelServiceByCustomer(APIView):
         service.status = 'CC'
         service.save()
         
+        # Send notification about service cancellation
+        if user.FCM_Token:
+            payload = {
+                "token": user.FCM_Token,
+                "title": "Service Cancelled",
+                "body": f"Your service (ID: {service.id}) has been cancelled successfully."
+            }
+            try:
+                response = requests.post("http://192.168.62.222:8000/firebase/send-notification/", json=payload)
+                response.raise_for_status()
+                print("Notification sent successfully:", response.json())
+            except requests.exceptions.RequestException as e:
+                print(f"Error sending notification: {e}")
+
         return Response({'message': 'Service status updated successfully'}, status=status.HTTP_200_OK)
