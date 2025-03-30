@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'data.dart';
 import 'package:dio/dio.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -40,7 +41,7 @@ class _UpcomingServiceDetailsState extends State<UpcomingServiceDetails> {
       return;
     }
 
-    final url = 'http://127.0.0.1:8000/log/token/refresh/';
+    final url = '${Data.baseUrl}/log/token/refresh/';
     final requestBody = {'refresh': _refreshToken};
 
     try {
@@ -81,7 +82,7 @@ class _UpcomingServiceDetailsState extends State<UpcomingServiceDetails> {
       }
 
       // Step 3: Make the POST request
-      final url = 'http://127.0.0.1:8000/unavailablereq/';
+      final url = '${Data.baseUrl}/unavailablereq/';
       final requestBody = {
         'service': widget.service['id'], // Ensure 'id' exists
         'staff': _staffid, // Ensure 'staff_id' exists

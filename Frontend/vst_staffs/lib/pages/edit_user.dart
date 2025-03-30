@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:dio/dio.dart';
+import 'data.dart';
 import 'index.dart';
 
 class EditUserPage extends StatefulWidget {
@@ -52,7 +53,7 @@ class _EditUserPageState extends State<EditUserPage> {
       return;
     }
 
-    final url = 'http://127.0.0.1:8000/log/token/refresh/';
+    final url = '${Data.baseUrl}/log/token/refresh/';
     final requestBody = {'refresh': _refreshToken};
 
     try {
@@ -83,7 +84,7 @@ class _EditUserPageState extends State<EditUserPage> {
     await _refreshAccessToken();
     try {
       Response response = await _dio.get(
-        'http://127.0.0.1:8000/utils/getuserbyid/${_userIdController.text}',
+        '${Data.baseUrl}/utils/getuserbyid/${_userIdController.text}',
         options: Options(headers: {
           'Content-Type': 'application/json',
           'Authorization': 'Bearer $_accessToken',
@@ -121,7 +122,7 @@ class _EditUserPageState extends State<EditUserPage> {
       setState(() => _isLoading = true);
       try {
         Response response = await _dio.post(
-          'http://127.0.0.1:8000/editreq/',
+          '${Data.baseUrl}/editreq/',
           options: Options(headers: {
             'Content-Type': 'application/json',
             'Authorization': 'Bearer $_accessToken',

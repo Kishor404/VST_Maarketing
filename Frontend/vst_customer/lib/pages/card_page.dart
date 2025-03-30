@@ -3,6 +3,8 @@ import 'card_details.dart'; // Import the CardDetailsPage
 import 'package:dio/dio.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'data.dart';
+import 'login_page.dart';
+
 
 class CardPage extends StatefulWidget {
   const CardPage({super.key});
@@ -40,7 +42,8 @@ class CardPageState extends State<CardPage> {
 
   Future<void> _refreshAccessToken() async {
     if (_refreshToken.isEmpty) {
-      debugPrint("No refresh token found!");
+      debugPrint("No refresh token found! Logging out...");
+      await _handleLogout();
       return;
     }
 
@@ -65,20 +68,26 @@ class CardPageState extends State<CardPage> {
 
         debugPrint("Access token refreshed successfully.");
       } else {
-        debugPrint("Refresh token is invalid, logging out...");
+        debugPrint("Refresh token is invalid or expired. Logging out...");
         await _handleLogout();
       }
     } catch (e) {
-      debugPrint('Error refreshing token: $e');
+      if (e is DioException && e.response?.statusCode == 401) {
+        debugPrint("Refresh token expired! Logging out...");
+      } else {
+        debugPrint('Error refreshing token: $e');
+      }
       await _handleLogout();
     }
   }
 
   Future<void> _handleLogout() async {
     final prefs = await SharedPreferences.getInstance();
-    await prefs.remove('RT');
-    await prefs.remove('AT');
-    Navigator.pushReplacementNamed(context, '/login'); // Redirect to login page
+    await prefs.clear();
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(builder: (context) => LoginPage()),
+    );
   }
 
   Future<void> fetchCards() async {
@@ -125,16 +134,6 @@ class CardPageState extends State<CardPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      // appBar: AppBar(
-      //   title: Text(
-      //     'Service Card',
-      //     style: TextStyle(color: Color.fromARGB(255, 55, 99, 174)),
-      //   ),
-      //   centerTitle: true,
-      //   backgroundColor: Colors.white,
-      //   elevation: 0,
-      //   shadowColor: Colors.transparent,
-      // ),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 60, vertical: 20),
         child: isLoading

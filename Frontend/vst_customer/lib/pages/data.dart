@@ -1,3 +1,3 @@
 class Data {
-  static const String baseUrl = "http://192.168.141.222:8000/";
+  static const String baseUrl = "http://192.168.116.222:8000/";
 }

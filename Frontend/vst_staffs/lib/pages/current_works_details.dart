@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:dio/dio.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'data.dart';
 import 'dart:convert';
 
 class CurrentWork extends StatefulWidget {
@@ -44,7 +45,7 @@ class _CurrentWorkState extends State<CurrentWork> {
       return;
     }
 
-    final url = 'http://127.0.0.1:8000/log/token/refresh/';
+    final url = '${Data.baseUrl}/log/token/refresh/';
     final requestBody = {'refresh': _refreshToken};
 
     try {
@@ -74,7 +75,7 @@ class _CurrentWorkState extends State<CurrentWork> {
     if (_accessToken.isEmpty) return;
     try {
       final response = await _dio.get(
-        'http://127.0.0.1:8000/utils/currentservice/',
+        '${Data.baseUrl}/utils/currentservice/',
         options: Options(headers: {'Authorization': 'Bearer $_accessToken'}),
       );
       setState(() {
@@ -199,7 +200,7 @@ Future<void> _createServiceEntry(Map<String, dynamic> service, Map<String, Strin
 
   try {
     final response = await Dio().post(
-      'http://127.0.0.1:8000/api/createserviceentry/',
+      '${Data.baseUrl}/api/createserviceentry/',
       data: requestBody,
       options: Options(headers: {'Authorization': 'Bearer $_accessToken'}),
     );
@@ -288,7 +289,7 @@ Future<void> _createServiceEntry(Map<String, dynamic> service, Map<String, Strin
 
               try {
                 final response = await _dio.patch(
-                  'http://127.0.0.1:8000/api/editserviceentry/${serviceEntry!['id']}/',
+                  '${Data.baseUrl}/api/editserviceentry/${serviceEntry!['id']}/',
                   data: updatedData,
                   options: Options(headers: {'Authorization': 'Bearer $_accessToken'}),
                 );

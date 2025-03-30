@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'index.dart';
+import 'data.dart';
 import 'package:dio/dio.dart';
 
 class LoginPage extends StatefulWidget {
@@ -9,7 +10,6 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
-  final urlDomain = "127.0.0.1:8000";
   final _phoneController = TextEditingController();
   final _passwordController = TextEditingController();
 
@@ -115,7 +115,7 @@ class _LoginPageState extends State<LoginPage> {
     final password = _passwordController.text;
 
     if (phone.isNotEmpty && password.isNotEmpty) {
-      final url = 'http://$urlDomain/log/login/';
+      final url = '${Data.baseUrl}/log/login/';
       final requestBody = {'phone': phone, 'password': password};
 
       try {

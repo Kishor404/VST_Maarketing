@@ -3,6 +3,8 @@ import 'package:dio/dio.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'product_details.dart';
 import 'data.dart';
+import 'login_page.dart';
+
 
 
 class ProductsPage extends StatefulWidget {
@@ -39,37 +41,53 @@ class _ProductsPageState extends State<ProductsPage> {
     });
   }
 
-  Future<void> _refreshAccessToken() async {
-    if (_refreshToken.isEmpty) {
-      debugPrint("No refresh token found!");
-      return;
-    }
-
-    final url = '${Data.baseUrl}/log/token/refresh/';
-    final requestBody = {'refresh': _refreshToken};
-
-    try {
-      final response = await _dio.post(
-        url,
-        data: requestBody,
-        options: Options(headers: {'Content-Type': 'application/json'}),
-      );
-
-      final newAccessToken = response.data['access'];
-      if (newAccessToken != null) {
-        final prefs = await SharedPreferences.getInstance();
-        await prefs.setString('AT', newAccessToken);
-
-        setState(() {
-          _accessToken = newAccessToken;
-        });
-
-        debugPrint("Access token refreshed successfully.");
-      }
-    } catch (e) {
-      debugPrint('Error refreshing token: $e');
-    }
+  Future<void> _logout() async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.clear();
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(builder: (context) => LoginPage()),
+    );
   }
+
+
+  Future<void> _refreshAccessToken() async {
+  if (_refreshToken.isEmpty) {
+    debugPrint("No refresh token found! Logging out...");
+    await _logout();
+    return;
+  }
+
+  final url = '${Data.baseUrl}/log/token/refresh/';
+  final requestBody = {'refresh': _refreshToken};
+
+  try {
+    final response = await _dio.post(
+      url,
+      data: requestBody,
+      options: Options(headers: {'Content-Type': 'application/json'}),
+    );
+
+    if (response.statusCode == 200 && response.data['access'] != null) {
+      final newAccessToken = response.data['access'];
+      final prefs = await SharedPreferences.getInstance();
+      await prefs.setString('AT', newAccessToken);
+
+      setState(() {
+        _accessToken = newAccessToken;
+      });
+
+      debugPrint("Access token refreshed successfully.");
+    } else {
+      debugPrint("Refresh token expired or invalid. Logging out...");
+      await _logout();
+    }
+  } catch (e) {
+    debugPrint('Error refreshing token: $e');
+    await _logout(); // Logout on error (e.g., expired refresh token)
+  }
+}
+
 
   Future<void> fetchProducts() async {
     if (_accessToken.isEmpty) {

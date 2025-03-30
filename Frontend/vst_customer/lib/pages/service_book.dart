@@ -3,6 +3,7 @@ import 'package:dio/dio.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'data.dart';
 import 'index.dart';
+import 'login_page.dart';
 
 class ServiceBook extends StatefulWidget {
   const ServiceBook({super.key});
@@ -71,37 +72,57 @@ class ServiceBookState extends State<ServiceBook> {
     });
   }
 
+  Future<void> _logout() async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.clear();
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(builder: (context) => LoginPage()),
+    );
+  }
+
+
   Future<void> _refreshAccessToken() async {
-    if (_refreshToken.isEmpty) {
-      debugPrint("No refresh token found!");
-      return;
-    }
+  if (_refreshToken.isEmpty) {
+    debugPrint("No refresh token found! Logging out...");
+    await _logout();
+    return;
+  }
 
-    final url =  "${Data.baseUrl}/log/token/refresh/";
-    final requestBody = {'refresh': _refreshToken};
+  final url = "${Data.baseUrl}/log/token/refresh/";
+  final requestBody = {'refresh': _refreshToken};
 
-    try {
-      final response = await _dio.post(
-        url,
-        data: requestBody,
-        options: Options(headers: {'Content-Type': 'application/json'}),
-      );
+  try {
+    final response = await _dio.post(
+      url,
+      data: requestBody,
+      options: Options(headers: {'Content-Type': 'application/json'}),
+    );
 
+    if (response.statusCode == 200 && response.data['access'] != null) {
       final newAccessToken = response.data['access'];
-      if (newAccessToken != null) {
-        final prefs = await SharedPreferences.getInstance();
-        await prefs.setString('AT', newAccessToken);
+      final prefs = await SharedPreferences.getInstance();
+      await prefs.setString('AT', newAccessToken);
 
-        setState(() {
-          _accessToken = newAccessToken;
-        });
+      setState(() {
+        _accessToken = newAccessToken;
+      });
 
-        debugPrint("Access token refreshed successfully.");
-      }
-    } catch (e) {
+      debugPrint("Access token refreshed successfully.");
+    } else {
+      debugPrint("Refresh token is invalid or expired. Logging out...");
+      await _logout();
+    }
+  } catch (e) {
+    if (e is DioException && e.response?.statusCode == 401) {
+      debugPrint("Refresh token expired. Logging out...");
+      await _logout();
+    } else {
       debugPrint('Error refreshing token: $e');
     }
   }
+}
+
 
   Future<void> fetchCards() async {
     if (_accessToken.isEmpty) {

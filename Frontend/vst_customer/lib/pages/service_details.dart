@@ -1,15 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:dio/dio.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'data.dart';
+import 'login_page.dart';
 
-class ServiceDetails extends StatelessWidget {
+class ServiceDetails extends StatefulWidget {
   final Map<String, dynamic> serviceData;
 
-  const ServiceDetails({
-    required this.serviceData,
-    super.key,
-  });
+  const ServiceDetails({required this.serviceData, super.key});
 
+  @override
+  _ServiceDetailsState createState() => _ServiceDetailsState();
+}
+
+class _ServiceDetailsState extends State<ServiceDetails> {
   static const Map<String, String> STATUS_CHOICES = {
     'BD': 'Booked',
     'SD': 'Serviced',
@@ -38,20 +42,20 @@ class ServiceDetails extends StatelessWidget {
               children: [
                 Text('Service Details', style: TextStyle(fontSize: 20)),
                 Divider(),
-                _buildDetail('Booked By', serviceData["customer_data"]?["name"]?.toString() ?? "None"),
-                _buildDetail('Card ID', serviceData["card"]?.toString() ?? "None"),
-                _buildDetail('Staff Name', serviceData["staff_name"]?.toString() ?? "None"),
-                _buildDetail('Staff ID', serviceData["staff"]?.toString() ?? "None"),
-                _buildDetail('Complaint', serviceData['complaint']?.toString() ?? "None"),
-                _buildDetail('Description', serviceData['description']?.toString() ?? "None"),
-                _buildDetail('Appointed Date', serviceData['available_date']?.toString() ?? "None"),
-                _buildDetail('Status', _getStatusLabel(serviceData['status']?.toString() ?? "None")),
+                _buildDetail('Booked By', widget.serviceData["customer_data"]?["name"]?.toString() ?? "None"),
+                _buildDetail('Card ID', widget.serviceData["card"]?.toString() ?? "None"),
+                _buildDetail('Staff Name', widget.serviceData["staff_name"]?.toString() ?? "None"),
+                _buildDetail('Staff ID', widget.serviceData["staff"]?.toString() ?? "None"),
+                _buildDetail('Complaint', widget.serviceData['complaint']?.toString() ?? "None"),
+                _buildDetail('Description', widget.serviceData['description']?.toString() ?? "None"),
+                _buildDetail('Appointed Date', widget.serviceData['available_date']?.toString() ?? "None"),
+                _buildDetail('Status', _getStatusLabel(widget.serviceData['status']?.toString() ?? "None")),
                 SizedBox(height: 32),
                 Text('Customer Data:', style: TextStyle(fontSize: 18)),
                 Divider(),
                 _buildCustomerDetails(),
                 SizedBox(height: 32),
-                _buildCancelButton(context, serviceData["id"].toString()), // Pass service ID
+                _buildCancelButton(context, widget.serviceData["id"].toString()), // Pass service ID
               ],
             ),
           ),
@@ -79,14 +83,14 @@ class ServiceDetails extends StatelessWidget {
 
   Widget _buildCustomerDetails() {
     Map<String, String> customerData = {
-      "City": serviceData["customer_data"]?["city"]?.toString() ?? "None",
-      "Name": serviceData["customer_data"]?["name"]?.toString() ?? "None",
-      "Email": serviceData["customer_data"]?["email"]?.toString() ?? "None",
-      "Phone": serviceData["customer_data"]?["phone"]?.toString() ?? "None",
-      "Region": serviceData["customer_data"]?["region"]?.toString() ?? "None",
-      "Address": serviceData["customer_data"]?["address"]?.toString() ?? "None",
-      "District": serviceData["customer_data"]?["district"]?.toString() ?? "None",
-      "Postal Code": serviceData["customer_data"]?["postal_code"]?.toString() ?? "None",
+      "City": widget.serviceData["customer_data"]?["city"]?.toString() ?? "None",
+      "Name": widget.serviceData["customer_data"]?["name"]?.toString() ?? "None",
+      "Email": widget.serviceData["customer_data"]?["email"]?.toString() ?? "None",
+      "Phone": widget.serviceData["customer_data"]?["phone"]?.toString() ?? "None",
+      "Region": widget.serviceData["customer_data"]?["region"]?.toString() ?? "None",
+      "Address": widget.serviceData["customer_data"]?["address"]?.toString() ?? "None",
+      "District": widget.serviceData["customer_data"]?["district"]?.toString() ?? "None",
+      "Postal Code": widget.serviceData["customer_data"]?["postal_code"]?.toString() ?? "None",
     };
 
     return Column(
@@ -130,7 +134,7 @@ class ServiceDetails extends StatelessWidget {
             TextButton(
               onPressed: () {
                 Navigator.of(context).pop();
-                _onCancelService(context, serviceId);
+                _onCancelService(serviceId);
               },
               child: Text("Yes, Cancel", style: TextStyle(color: Colors.red)),
             ),
@@ -140,20 +144,12 @@ class ServiceDetails extends StatelessWidget {
     );
   }
 
-  Future<void> _onCancelService(BuildContext context, String serviceId) async {
+  Future<void> _onCancelService(String serviceId) async {
     try {
-      // Step 1: Refresh Access Token
       String? newAccessToken = await _refreshAccessToken();
-      if (newAccessToken == null) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text("Failed to refresh access token.")),
-        );
-        return;
-      }
+      if (newAccessToken == null) return; // Logout already handled
 
-      // Step 2: Send API Request to Cancel Service
       bool success = await _cancelService(newAccessToken, serviceId);
-
       if (success) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(content: Text("Service cancelled successfully!")),
@@ -169,16 +165,28 @@ class ServiceDetails extends StatelessWidget {
     }
   }
 
+  Future<void> _logout() async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.clear();
+    if (mounted) {
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => LoginPage()),
+      );
+    }
+  }
+
   Future<String?> _refreshAccessToken() async {
     final prefs = await SharedPreferences.getInstance();
     String refreshToken = prefs.getString('RT') ?? '';
 
     if (refreshToken.isEmpty) {
-      debugPrint("No refresh token found!");
+      debugPrint("No refresh token found! Logging out...");
+      await _logout();
       return null;
     }
 
-    final String url = 'http://127.0.0.1:8000/log/token/refresh/';
+    final String url = '${Data.baseUrl}/log/token/refresh/';
     final Dio dio = Dio();
 
     try {
@@ -188,19 +196,29 @@ class ServiceDetails extends StatelessWidget {
         options: Options(headers: {'Content-Type': 'application/json'}),
       );
 
-      final String newAccessToken = response.data['access'];
-      await prefs.setString('AT', newAccessToken);
-      debugPrint("Access token refreshed successfully.");
-
-      return newAccessToken;
+      if (response.statusCode == 200 && response.data['access'] != null) {
+        final String newAccessToken = response.data['access'];
+        await prefs.setString('AT', newAccessToken);
+        debugPrint("Access token refreshed successfully.");
+        return newAccessToken;
+      } else {
+        debugPrint("Invalid refresh token. Logging out...");
+        await _logout();
+        return null;
+      }
     } catch (e) {
-      debugPrint("Error refreshing token: $e");
+      if (e is DioException && e.response?.statusCode == 401) {
+        debugPrint("Refresh token expired. Logging out...");
+        await _logout();
+      } else {
+        debugPrint("Error refreshing token: $e");
+      }
       return null;
     }
   }
 
   Future<bool> _cancelService(String accessToken, String serviceId) async {
-    final String url = 'http://127.0.0.1:8000/services/cancleservicebycustomer/$serviceId';
+    final String url = '${Data.baseUrl}/services/cancleservicebycustomer/$serviceId';
     final Dio dio = Dio();
 
     try {

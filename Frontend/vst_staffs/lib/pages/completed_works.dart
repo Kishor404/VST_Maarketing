@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'completed_works_details.dart';
 import 'package:dio/dio.dart';
+import 'data.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class CompletedWorks extends StatefulWidget {
@@ -43,7 +44,7 @@ class _CompletedWorksState extends State<CompletedWorks> {
       return;
     }
 
-    final url = 'http://127.0.0.1:8000/log/token/refresh/';
+    final url = '${Data.baseUrl}/log/token/refresh/';
     final requestBody = {'refresh': _refreshToken};
 
     try {
@@ -80,7 +81,7 @@ class _CompletedWorksState extends State<CompletedWorks> {
 
     try {
       final response = await _dio.get(
-        'http://127.0.0.1:8000/utils/completedservice/',
+        '${Data.baseUrl}/utils/completedservice/',
         options: Options(headers: {
           'Content-Type': 'application/json',
           'Authorization': 'Bearer $_accessToken',
