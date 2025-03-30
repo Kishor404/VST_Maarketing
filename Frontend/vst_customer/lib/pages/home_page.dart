@@ -3,6 +3,8 @@ import 'contact.dart';
 import 'data.dart';
 import 'help.dart';
 import 'package:dio/dio.dart';
+import 'settings.dart';
+import '../app_localizations.dart';
 
 class HomePage extends StatefulWidget {
   final Function(int) onNavigateToIndex;
@@ -46,7 +48,7 @@ class HomePageState extends State<HomePage> {
       {'icon': Icons.construction, 'label': 'Service', 'onTap': () => widget.onNavigateToIndex(1)},
       {'icon': Icons.phone, 'label': 'Contact', 'onTap': () => Navigator.push(context, MaterialPageRoute(builder: (context) => ContactPage()))},
       {'icon': Icons.article, 'label': 'Card', 'onTap': () => widget.onNavigateToIndex(3)},
-      {'icon': Icons.settings, 'label': 'Settings', 'onTap': () => print('Settings tapped')},
+      {'icon': Icons.settings, 'label': AppLocalizations.of(context).translate('settings'), 'onTap': () => Navigator.push(context, MaterialPageRoute(builder: (context) => SettingsPage()))},
       {'icon': Icons.notifications, 'label': 'Alerts', 'onTap': () => print('Alerts tapped')},
       {'icon': Icons.shopping_bag, 'label': 'Products', 'onTap': () => widget.onNavigateToIndex(2)},
       {'icon': Icons.help, 'label': 'Help', 'onTap': () => Navigator.push(context, MaterialPageRoute(builder: (context) => HelpPage()))},

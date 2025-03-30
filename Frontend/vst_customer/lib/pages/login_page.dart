@@ -4,6 +4,7 @@ import 'index.dart';
 import 'package:dio/dio.dart';
 import 'data.dart';
 import './Lang/lang.dart';
+import '../app_localizations.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -61,7 +62,7 @@ class LoginPageState extends State<LoginPage> {
               ),
               SizedBox(height: 20),
               if (!_isLogin) ...[
-                _buildTextField(_nameController, LoginLang.loginData[langCode][0]),
+                _buildTextField(_nameController, AppLocalizations.of(context).translate('name')),
                 SizedBox(height: 10),
                 _buildTextField(_emailController, LoginLang.loginData[langCode][1]),
                 SizedBox(height: 10),

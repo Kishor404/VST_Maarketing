@@ -1,9 +1,11 @@
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'notification_service.dart'; // Import the notification service
-import 'pages/index.dart'; // Import the HomePage from index.dart
+import 'notification_service.dart';
+import 'pages/index.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
+import 'app_localizations.dart';
 
 // Background message handler
 Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
@@ -14,7 +16,6 @@ Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
     print("📝 Background Notification Title: ${message.notification!.title}");
     print("📝 Background Notification Body: ${message.notification!.body}");
 
-    // Show local notification using NotificationService
     NotificationService().showNotification(
       title: message.notification!.title ?? "No Title",
       body: message.notification!.body ?? "No Body",
@@ -22,8 +23,9 @@ Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
   }
 }
 
-void main() async {
+Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
   try {
     await Firebase.initializeApp();
     print("✅ Firebase Initialized Successfully");
@@ -31,46 +33,17 @@ void main() async {
     print("❌ Firebase Initialization Error: $e");
   }
 
-  await NotificationService().initNotifications(); // Initialize notifications
-
-  // Setting up background message handler
+  await NotificationService().initNotifications();
   FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
-
-  // Request permission for push notifications
   await requestNotificationPermission();
-
-  // Get the FCM token and store it
   await getToken();
 
-  // Listen for foreground messages
-  FirebaseMessaging.onMessage.listen((RemoteMessage message) {
-    print("📩 Received a foreground message: ${message.messageId}");
-    print("🔑 Message data: ${message.data}");
-    if (message.notification != null) {
-      print("📝 Notification Title: ${message.notification!.title}");
-      print("📝 Notification Body: ${message.notification!.body}");
+  Locale locale = await getSavedLocale();
 
-      // Show local notification using NotificationService
-      NotificationService().showNotification(
-        title: message.notification!.title ?? "No Title",
-        body: message.notification!.body ?? "No Body",
-      );
-    }
-  });
-
-  // Handle messages when the app is opened via a notification
-  FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {
-    print("🚪 Message clicked: ${message.messageId}");
-    if (message.notification != null) {
-      print("📝 Clicked Notification Title: ${message.notification!.title}");
-      print("📝 Clicked Notification Body: ${message.notification!.body}");
-    }
-  });
-
-  runApp(const MyApp());
+  runApp(MyApp(locale: locale));
 }
 
-// Function to request notification permission
+// Request notification permission
 Future<void> requestNotificationPermission() async {
   try {
     NotificationSettings settings = await FirebaseMessaging.instance.requestPermission(
@@ -91,7 +64,7 @@ Future<void> requestNotificationPermission() async {
   }
 }
 
-// Function to get and store the FCM token
+// Get and store the FCM token
 Future<void> getToken() async {
   try {
     final prefs = await SharedPreferences.getInstance();
@@ -107,8 +80,47 @@ Future<void> getToken() async {
   }
 }
 
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+// Get saved locale
+Future<Locale> getSavedLocale() async {
+  final prefs = await SharedPreferences.getInstance();
+  String? languageCode = prefs.getString('language_code');
+  return Locale(languageCode ?? 'en');
+}
+
+// Save locale
+Future<void> saveLocale(Locale locale) async {
+  final prefs = await SharedPreferences.getInstance();
+  await prefs.setString('language_code', locale.languageCode);
+}
+
+class MyApp extends StatefulWidget {
+  final Locale locale;
+  const MyApp({super.key, required this.locale});
+
+  static void setLocale(BuildContext context, Locale locale) {
+    _MyAppState? state = context.findAncestorStateOfType<_MyAppState>();
+    state?.changeLocale(locale);
+  }
+
+  @override
+  _MyAppState createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+  late Locale _locale;
+
+  @override
+  void initState() {
+    super.initState();
+    _locale = widget.locale;
+  }
+
+  void changeLocale(Locale locale) {
+    setState(() {
+      _locale = locale;
+    });
+    saveLocale(locale);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -119,7 +131,26 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
         fontFamily: 'Poppins',
       ),
-      home: const IndexPage(), // Reference the HomePage
+      locale: _locale,
+      supportedLocales: const [
+        Locale('en', ''),
+        Locale('ta', ''),
+      ],
+      localizationsDelegates: const [
+        AppLocalizations.delegate,
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+      ],
+      localeResolutionCallback: (locale, supportedLocales) {
+        for (var supportedLocale in supportedLocales) {
+          if (supportedLocale.languageCode == locale?.languageCode) {
+            return supportedLocale;
+          }
+        }
+        return supportedLocales.first;
+      },
+      home: const IndexPage(),
     );
   }
 }

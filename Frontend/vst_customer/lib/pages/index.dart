@@ -6,6 +6,8 @@ import 'service_page.dart';
 import 'products_page.dart';
 import 'card_page.dart';
 import 'profile_page.dart';
+import 'welcome.dart';
+import '../main.dart';
 
 class IndexPage extends StatefulWidget {
   const IndexPage({super.key});
@@ -38,7 +40,7 @@ class IndexPageState extends State<IndexPage> {
       // If no login info is found, redirect to the LoginPage
       Navigator.pushReplacement(
         context,
-        MaterialPageRoute(builder: (context) => LoginPage()),
+        MaterialPageRoute(builder: (context) => WelcomePage( onLanguageChange: (Locale newLocale) {MyApp.setLocale(context, newLocale);},)),
       );
     }
   }
