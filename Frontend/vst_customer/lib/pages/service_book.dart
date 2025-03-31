@@ -4,6 +4,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'data.dart';
 import 'index.dart';
 import 'login_page.dart';
+import '../app_localizations.dart';
 
 class ServiceBook extends StatefulWidget {
   const ServiceBook({super.key});
@@ -189,7 +190,7 @@ class ServiceBookState extends State<ServiceBook> {
   Future<void> _bookService() async {
   if (fromDate == null || toDate == null || selectedComplaint == null || _customerId == null) {
     ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(content: Text("Please fill all required fields")),
+      SnackBar(content: Text(AppLocalizations.of(context).translate('service_book_fill_fields'))),
     );
     return;
   }
@@ -225,7 +226,7 @@ class ServiceBookState extends State<ServiceBook> {
       await _confirmBooking(workerId, avaDate, complaintText, complaintDescription);
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text("No workers available during this period")),
+        SnackBar(content: Text(AppLocalizations.of(context).translate('service_book_no_worker'))),
       );
     }
   } catch (e) {
@@ -269,7 +270,7 @@ Future<void> _confirmBooking(int workerId, String avaDate, String complaintText,
 
     if (response.statusCode == 201 || response.statusCode == 200) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text("Service booked successfully!")),
+        SnackBar(content: Text(AppLocalizations.of(context).translate('service_book_success'))),
       );
       Navigator.pushAndRemoveUntil(
         context,
@@ -278,7 +279,7 @@ Future<void> _confirmBooking(int workerId, String avaDate, String complaintText,
       );
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text("Failed to book service")),
+        SnackBar(content: Text(AppLocalizations.of(context).translate('service_book_fail'))),
       );
     }
   } catch (e) {
@@ -293,8 +294,8 @@ Future<void> _confirmBooking(int workerId, String avaDate, String complaintText,
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text(
-          "Service Booking",
+        title: Text(
+          AppLocalizations.of(context).translate('service_book_title'),
           style: TextStyle(color: Colors.white, fontSize: 20),
         ),
         backgroundColor: const Color.fromARGB(255, 55, 99, 174),
@@ -320,8 +321,8 @@ Future<void> _confirmBooking(int workerId, String avaDate, String complaintText,
                 ),
               ),
               const SizedBox(height: 20),
-              const Text(
-                "Available Period",
+              Text(
+                AppLocalizations.of(context).translate('service_book_available_period'),
                 style: TextStyle(
                   fontSize: 18,
                 ),
@@ -336,7 +337,7 @@ Future<void> _confirmBooking(int workerId, String avaDate, String complaintText,
                         child: TextField(
                           decoration: InputDecoration(
                             labelText: fromDate == null
-                                ? "From"
+                                ? AppLocalizations.of(context).translate('service_book_from')
                                 : "${fromDate!.day}/${fromDate!.month}/${fromDate!.year}",
                             border: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(10.0),
@@ -354,7 +355,7 @@ Future<void> _confirmBooking(int workerId, String avaDate, String complaintText,
                         child: TextField(
                           decoration: InputDecoration(
                             labelText: toDate == null
-                                ? "To"
+                                ? AppLocalizations.of(context).translate('service_book_to')
                                 : "${toDate!.day}/${toDate!.month}/${toDate!.year}",
                             border: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(10.0),
@@ -367,14 +368,14 @@ Future<void> _confirmBooking(int workerId, String avaDate, String complaintText,
                 ],
               ),
               const SizedBox(height: 20),
-              const Text(
-                "Select Your Card",
+              Text(
+                AppLocalizations.of(context).translate('service_book_select_card'),
                 style: TextStyle(fontSize: 18),
               ),
               const SizedBox(height: 10),
               DropdownButtonFormField<String>(
                 decoration: InputDecoration(
-                  labelText: "Card",
+                  labelText: AppLocalizations.of(context).translate('service_book_card'),
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(10.0),
                   ),
@@ -394,8 +395,8 @@ Future<void> _confirmBooking(int workerId, String avaDate, String complaintText,
                 },
               ),
               const SizedBox(height: 30),
-              const Text(
-                "Service Details",
+              Text(
+                AppLocalizations.of(context).translate('service_book_details'),
                 style: TextStyle(
                   fontSize: 18,
                 ),
@@ -405,7 +406,7 @@ Future<void> _confirmBooking(int workerId, String avaDate, String complaintText,
               const SizedBox(height: 20),
               DropdownButtonFormField<String>(
                 decoration: InputDecoration(
-                  labelText: "Type of Complaint",
+                  labelText: AppLocalizations.of(context).translate('service_book_complaint_type'),
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(10.0),
                   ),
@@ -428,7 +429,7 @@ Future<void> _confirmBooking(int workerId, String avaDate, String complaintText,
                 TextField(
                   controller: otherComplaintController,
                   decoration: InputDecoration(
-                    labelText: "Enter your complaint",
+                    labelText: AppLocalizations.of(context).translate('service_book_enter_complaint'),
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(10.0),
                     ),
@@ -440,7 +441,7 @@ Future<void> _confirmBooking(int workerId, String avaDate, String complaintText,
                 TextField(
                   controller: complaintDetailsController,
                   decoration: InputDecoration(
-                    labelText: "Briefly describe your complaint",
+                    labelText: AppLocalizations.of(context).translate('service_book_brief_des'),
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(10.0),
                     ),
@@ -459,8 +460,8 @@ Future<void> _confirmBooking(int workerId, String avaDate, String complaintText,
                       borderRadius: BorderRadius.circular(10),
                     ),
                   ),
-                  child: const Text(
-                    "Book Now",
+                  child: Text(
+                    AppLocalizations.of(context).translate('service_book_but'),
                     style: TextStyle(fontSize: 18, color: Colors.white),
                   ),
                 ),

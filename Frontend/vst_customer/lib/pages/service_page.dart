@@ -6,6 +6,7 @@ import 'package:dio/dio.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'data.dart';
 import 'login_page.dart';
+import '../app_localizations.dart';
 
 class ServicePage extends StatefulWidget {
   const ServicePage({super.key});
@@ -235,21 +236,21 @@ class ServicePageState extends State<ServicePage> {
               ),
               child: Column(
                 children: [
-                  const Text(
-                    'Service',
+                  Text(
+                    AppLocalizations.of(context).translate('service_title'),
                     style: TextStyle(fontSize: 24.0, color: Colors.white),
                   ),
                   const SizedBox(height: 15.0),
                   Text(
-                    'Last Service: $lastServiceDate',
+                    '${AppLocalizations.of(context).translate('service_last_service')} $lastServiceDate',
                     style: const TextStyle(fontSize: 16.0, color: Colors.white),
                   ),
                   Text(
-                    'Next Service For Card Id: $nextServiceCard',
+                    '${AppLocalizations.of(context).translate('service_next_service')} $nextServiceCard',
                     style: const TextStyle(fontSize: 16.0, color: Colors.white),
                   ),
                   Text(
-                    'Next Service In: $nextService Days',
+                    '${AppLocalizations.of(context).translate('service_next_service_in')} $nextService ${AppLocalizations.of(context).translate('service_next_service_days')}',
                     style: const TextStyle(fontSize: 16.0, color: Colors.white),
                   ),
                 ],
@@ -263,7 +264,7 @@ class ServicePageState extends State<ServicePage> {
 
             lastButton
                 ? buildServiceButton(
-                    label: 'Cancelled Service',
+                    label: AppLocalizations.of(context).translate('service_cancelled_service'),
                     onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => ServiceLast(serviceData: cancelServices.last))),
                   )
                 : Container(),
@@ -272,11 +273,11 @@ class ServicePageState extends State<ServicePage> {
 
             bookButton
                 ? buildServiceButton(
-                    label: 'Book Service',
+                    label: AppLocalizations.of(context).translate('service_book_service'),
                     onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => ServiceBook())),
                   )
                 : buildServiceButton(
-                    label: 'Service Details',
+                    label: AppLocalizations.of(context).translate('service_details'),
                     onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => ServiceDetails(serviceData: bookedServices.last))),
                   ),
           ],

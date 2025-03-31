@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:dio/dio.dart';
 import 'data.dart';
+import '../app_localizations.dart';
 
 class HelpPage extends StatefulWidget {
   @override
@@ -40,7 +41,7 @@ class _HelpPageState extends State<HelpPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Help & Instructions'),
+        title: Text(AppLocalizations.of(context).translate('help_title')),
         backgroundColor: Color.fromARGB(255, 55, 99, 174),
         foregroundColor: Colors.white,
       ),

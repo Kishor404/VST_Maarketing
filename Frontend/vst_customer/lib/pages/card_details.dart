@@ -4,6 +4,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'data.dart';
 import 'index.dart';
 import 'login_page.dart';
+import '../app_localizations.dart';
 
 
 class CardDetailsPage extends StatefulWidget {
@@ -108,13 +109,13 @@ class _CardDetailsPageState extends State<CardDetailsPage> {
     return StatefulBuilder(
       builder: (context, setDialogState) {
         return AlertDialog(
-          title: const Text("Confirm Signature"),
+          title: Text(AppLocalizations.of(context).translate('card_confrim_sign')),
           content: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              const Text("Are you sure you want to sign this service?"),
+              Text(AppLocalizations.of(context).translate('card_confrim_sign_text')),
               const SizedBox(height: 16),
-              const Text("Please provide your rating:"),
+              Text(AppLocalizations.of(context).translate('card_rating')),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: List.generate(5, (index) {
@@ -134,8 +135,8 @@ class _CardDetailsPageState extends State<CardDetailsPage> {
               const SizedBox(height: 16),
               TextField(
                 controller: feedbackController,
-                decoration: const InputDecoration(
-                  labelText: "Feedback",
+                decoration: InputDecoration(
+                  labelText: AppLocalizations.of(context).translate('card_feedback'),
                   border: OutlineInputBorder(),
                 ),
                 maxLines: 3,
@@ -145,14 +146,14 @@ class _CardDetailsPageState extends State<CardDetailsPage> {
           actions: [
             TextButton(
               onPressed: () => Navigator.pop(context),
-              child: const Text("Cancel"),
+              child: Text(AppLocalizations.of(context).translate('card_cancel')),
             ),
             ElevatedButton(
               onPressed: () {
                 Navigator.pop(context);
                 _signService(serviceId, rating, feedbackController.text, context);
               },
-              child: const Text("Confirm"),
+              child: Text(AppLocalizations.of(context).translate('card_confrim')),
             ),
           ],
         );
@@ -183,7 +184,7 @@ void _signService(int serviceId, double rating, String feedback, BuildContext co
 
     if (response.statusCode == 200) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text("Signed successfully")),
+        SnackBar(content: Text(AppLocalizations.of(context).translate('card_sign_success'))),
       );
       Navigator.pushAndRemoveUntil(
         context,
@@ -194,7 +195,7 @@ void _signService(int serviceId, double rating, String feedback, BuildContext co
       // Navigator.pop(context);
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text("Failed to sign: ${response.data}")),
+        SnackBar(content: Text(AppLocalizations.of(context).translate('card_sign_fail'))),
       );
     }
   } catch (e) {
@@ -207,7 +208,7 @@ void _signService(int serviceId, double rating, String feedback, BuildContext co
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Service Card'),
+        title: Text(AppLocalizations.of(context).translate('card_title')),
         centerTitle: true,
         backgroundColor: Colors.white,
       ),
@@ -229,21 +230,21 @@ void _signService(int serviceId, double rating, String feedback, BuildContext co
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        'Model : ${widget.cardData['model']}',
+                        '${AppLocalizations.of(context).translate('card_model')} ${widget.cardData['model']}',
                         style: const TextStyle(
                             fontSize: 16, fontWeight: FontWeight.bold),
                       ),
                       const SizedBox(height: 8),
-                      Text('Customer ID : ${widget.cardData['customer_code']}'),
+                      Text('${AppLocalizations.of(context).translate('card_customer_id')}${widget.cardData['customer_code']}'),
                       const SizedBox(height: 8),
-                      Text('Date Of Installation : ${widget.cardData['date_of_installation']}'),
+                      Text('${AppLocalizations.of(context).translate('card_date_of_installation')} ${widget.cardData['date_of_installation']}'),
                       const SizedBox(height: 8),
-                      Text('Customer Name : ${widget.cardData['customer_name']}'),
+                      Text('${AppLocalizations.of(context).translate('card_customer_name')} ${widget.cardData['customer_name']}'),
                       const SizedBox(height: 8),
-                      Text('Customer Region : ${widget.cardData['region']}'),
+                      Text('${AppLocalizations.of(context).translate('card_customer_region')} ${widget.cardData['region']}'),
                       const SizedBox(height: 16),
                       Text(
-                        'Period : ${widget.cardData['warranty_start_date']} - ${widget.cardData['warranty_end_date']}',
+                        '${AppLocalizations.of(context).translate('card_warrenty_period')} ${widget.cardData['warranty_start_date']} - ${widget.cardData['warranty_end_date']}',
                         style: const TextStyle(
                             color: Color.fromARGB(255, 55, 99, 174),
                             fontWeight: FontWeight.bold),
@@ -283,34 +284,34 @@ void _signService(int serviceId, double rating, String feedback, BuildContext co
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    Text('Service No ${service['id']} Details',
+                                    Text('${AppLocalizations.of(context).translate('card_service_no')} ${service['id']} ${AppLocalizations.of(context).translate('card_service_details')}',
                                         style: Theme.of(context).textTheme.headlineMedium),
                                     const SizedBox(height: 16),
-                                    Text('Date: ${service['date']}'),
+                                    Text('${AppLocalizations.of(context).translate('card_service_date')} ${service['date']}'),
                                     const SizedBox(height: 6),
-                                    Text('Visit Type: ${service['visit_type']}'),
+                                    Text('${AppLocalizations.of(context).translate('card_service_visit_type')} ${service['visit_type']}'),
                                     const SizedBox(height: 6),
-                                    Text('Nature of Complaint: ${service['nature_of_complaint']}'),
+                                    Text('${AppLocalizations.of(context).translate('card_service_nature_of_complaint')} ${service['nature_of_complaint']}'),
                                     const SizedBox(height: 6),
-                                    Text('Work Details: ${service['work_details']}'),
+                                    Text('${AppLocalizations.of(context).translate('card_service_work_details')} ${service['work_details']}'),
                                     const SizedBox(height: 6),
-                                    Text('Parts Replaced: ${service['parts_replaced']}'),
+                                    Text('${AppLocalizations.of(context).translate('card_service_parts_replaced')} ${service['parts_replaced']}'),
                                     const SizedBox(height: 6),
-                                    Text('ICR Number: ${service['icr_number']}'),
+                                    Text('${AppLocalizations.of(context).translate('card_service_ICR_no')} ${service['icr_number']}'),
                                     const SizedBox(height: 6),
-                                    Text('Amount Charged: ${service['amount_charged']}'),
+                                    Text('${AppLocalizations.of(context).translate('card_service_amount_charged')} ${service['amount_charged']}'),
                                     const SizedBox(height: 16),
 
                                     // Customer & CSE Signatures (if applicable)
                                     if (service['customer_signature'] != null &&
                                         service['customer_signature']['sign'] != 0)
-                                      Text('Customer Signature: Verified',style: TextStyle(color: Colors.green),),
+                                      Text(AppLocalizations.of(context).translate('card_service_customer_signed'),style: TextStyle(color: Colors.green),),
                                     
                                     if (service['customer_signature'] != null &&
                                         service['customer_signature']['sign'] != 0)
                                       TextButton(
                                           onPressed: () => Navigator.pop(context),
-                                          child: const Text('Close'),
+                                          child: Text(AppLocalizations.of(context).translate('card_service_close')),
                                         ),
 
                                     if (service['customer_signature'] == null ||
@@ -321,11 +322,11 @@ void _signService(int serviceId, double rating, String feedback, BuildContext co
                                         ElevatedButton(
                                           onPressed: () =>
                                               _showSignConfirmationDialog(context, service['id']),
-                                          child: const Text('Sign'),
+                                          child: Text(AppLocalizations.of(context).translate('card_service_sign')),
                                         ),
                                         TextButton(
                                           onPressed: () => Navigator.pop(context),
-                                          child: const Text('Close'),
+                                          child: Text(AppLocalizations.of(context).translate('card_service_close')),
                                         ),
                                       ],
                                     ),
@@ -339,7 +340,7 @@ void _signService(int serviceId, double rating, String feedback, BuildContext co
                       },
 
 
-                      child: Text('Service No ${service['id']} - ${service['date']}'),
+                      child: Text('${AppLocalizations.of(context).translate('card_service_no')} ${service['id']} - ${service['date']}'),
                     ),
                   ),
             ],

@@ -3,6 +3,7 @@ import 'package:dio/dio.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'data.dart';
 import 'login_page.dart';
+import '../app_localizations.dart';
 
 class ServiceDetails extends StatefulWidget {
   final Map<String, dynamic> serviceData;
@@ -26,7 +27,7 @@ class _ServiceDetailsState extends State<ServiceDetails> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Service Details'),
+        title: Text(AppLocalizations.of(context).translate('service_details_title')),
         backgroundColor: Color.fromARGB(255, 55, 99, 174),
         foregroundColor: Colors.white,
       ),
@@ -40,18 +41,18 @@ class _ServiceDetailsState extends State<ServiceDetails> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text('Service Details', style: TextStyle(fontSize: 20)),
+                Text(AppLocalizations.of(context).translate('service_details_title'), style: TextStyle(fontSize: 20)),
                 Divider(),
-                _buildDetail('Booked By', widget.serviceData["customer_data"]?["name"]?.toString() ?? "None"),
-                _buildDetail('Card ID', widget.serviceData["card"]?.toString() ?? "None"),
-                _buildDetail('Staff Name', widget.serviceData["staff_name"]?.toString() ?? "None"),
-                _buildDetail('Staff ID', widget.serviceData["staff"]?.toString() ?? "None"),
-                _buildDetail('Complaint', widget.serviceData['complaint']?.toString() ?? "None"),
-                _buildDetail('Description', widget.serviceData['description']?.toString() ?? "None"),
-                _buildDetail('Appointed Date', widget.serviceData['available_date']?.toString() ?? "None"),
-                _buildDetail('Status', _getStatusLabel(widget.serviceData['status']?.toString() ?? "None")),
+                _buildDetail(AppLocalizations.of(context).translate('service_details_booked_by'), widget.serviceData["customer_data"]?["name"]?.toString() ?? "None"),
+                _buildDetail(AppLocalizations.of(context).translate('service_details_card_id'), widget.serviceData["card"]?.toString() ?? "None"),
+                _buildDetail(AppLocalizations.of(context).translate('service_details_staff_name'), widget.serviceData["staff_name"]?.toString() ?? "None"),
+                _buildDetail(AppLocalizations.of(context).translate('service_details_staff_id'), widget.serviceData["staff"]?.toString() ?? "None"),
+                _buildDetail(AppLocalizations.of(context).translate('service_details_complaint'), widget.serviceData['complaint']?.toString() ?? "None"),
+                _buildDetail(AppLocalizations.of(context).translate('service_details_description'), widget.serviceData['description']?.toString() ?? "None"),
+                _buildDetail(AppLocalizations.of(context).translate('service_details_date'), widget.serviceData['available_date']?.toString() ?? "None"),
+                _buildDetail(AppLocalizations.of(context).translate('service_details_status'), _getStatusLabel(widget.serviceData['status']?.toString() ?? "None")),
                 SizedBox(height: 32),
-                Text('Customer Data:', style: TextStyle(fontSize: 18)),
+                Text(AppLocalizations.of(context).translate('service_details_customer_details'), style: TextStyle(fontSize: 18)),
                 Divider(),
                 _buildCustomerDetails(),
                 SizedBox(height: 32),
@@ -83,14 +84,14 @@ class _ServiceDetailsState extends State<ServiceDetails> {
 
   Widget _buildCustomerDetails() {
     Map<String, String> customerData = {
-      "City": widget.serviceData["customer_data"]?["city"]?.toString() ?? "None",
-      "Name": widget.serviceData["customer_data"]?["name"]?.toString() ?? "None",
-      "Email": widget.serviceData["customer_data"]?["email"]?.toString() ?? "None",
-      "Phone": widget.serviceData["customer_data"]?["phone"]?.toString() ?? "None",
-      "Region": widget.serviceData["customer_data"]?["region"]?.toString() ?? "None",
-      "Address": widget.serviceData["customer_data"]?["address"]?.toString() ?? "None",
-      "District": widget.serviceData["customer_data"]?["district"]?.toString() ?? "None",
-      "Postal Code": widget.serviceData["customer_data"]?["postal_code"]?.toString() ?? "None",
+      AppLocalizations.of(context).translate('service_details_customer_city'): widget.serviceData["customer_data"]?["city"]?.toString() ?? "None",
+      AppLocalizations.of(context).translate('service_details_customer_name'): widget.serviceData["customer_data"]?["name"]?.toString() ?? "None",
+      AppLocalizations.of(context).translate('service_details_customer_email'): widget.serviceData["customer_data"]?["email"]?.toString() ?? "None",
+      AppLocalizations.of(context).translate('service_details_customer_phone'): widget.serviceData["customer_data"]?["phone"]?.toString() ?? "None",
+      AppLocalizations.of(context).translate('service_details_customer_region'): widget.serviceData["customer_data"]?["region"]?.toString() ?? "None",
+      AppLocalizations.of(context).translate('service_details_customer_address'): widget.serviceData["customer_data"]?["address"]?.toString() ?? "None",
+      AppLocalizations.of(context).translate('service_details_customer_district'): widget.serviceData["customer_data"]?["district"]?.toString() ?? "None",
+      AppLocalizations.of(context).translate('service_details_customer_postal'): widget.serviceData["customer_data"]?["postal_code"]?.toString() ?? "None",
     };
 
     return Column(
@@ -112,7 +113,7 @@ class _ServiceDetailsState extends State<ServiceDetails> {
               backgroundColor: Colors.red,
               padding: EdgeInsets.symmetric(horizontal: 24, vertical: 20),
             ),
-            child: Text('Cancel Service', style: TextStyle(fontSize: 16, color: Colors.white)),
+            child: Text(AppLocalizations.of(context).translate('service_details_cancel_service'), style: TextStyle(fontSize: 16, color: Colors.white)),
           ),
         ],
       ),
@@ -124,19 +125,19 @@ class _ServiceDetailsState extends State<ServiceDetails> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text("Cancel Service"),
-          content: Text("Are you sure you want to cancel this service?"),
+          title: Text(AppLocalizations.of(context).translate('service_details_cancel_service')),
+          content: Text(AppLocalizations.of(context).translate('service_details_cancel_service_text')),
           actions: [
             TextButton(
               onPressed: () => Navigator.of(context).pop(),
-              child: Text("No"),
+              child: Text(AppLocalizations.of(context).translate('service_details_cancel_service_no')),
             ),
             TextButton(
               onPressed: () {
                 Navigator.of(context).pop();
                 _onCancelService(serviceId);
               },
-              child: Text("Yes, Cancel", style: TextStyle(color: Colors.red)),
+              child: Text(AppLocalizations.of(context).translate('service_details_cancel_service_yes'), style: TextStyle(color: Colors.red)),
             ),
           ],
         );
@@ -152,12 +153,12 @@ class _ServiceDetailsState extends State<ServiceDetails> {
       bool success = await _cancelService(newAccessToken, serviceId);
       if (success) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text("Service cancelled successfully!")),
+          SnackBar(content: Text(AppLocalizations.of(context).translate('service_details_cancel_service_success'))),
         );
         Navigator.pop(context); // Close the details page
       } else {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text("Failed to cancel service!")),
+          SnackBar(content: Text(AppLocalizations.of(context).translate('service_details_cancel_service_fail'))),
         );
       }
     } catch (e) {

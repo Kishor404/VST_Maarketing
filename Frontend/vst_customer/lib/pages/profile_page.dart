@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'login_page.dart';
+import '../app_localizations.dart';
 
 class ProfilePage extends StatefulWidget {
   final Function(int) onNavigateToIndex; // Callback to update index in IndexPage
@@ -116,12 +117,12 @@ class ProfilePageState extends State<ProfilePage> {
                     children: [
                       ListTile(
                         leading: Icon(Icons.email, color: Color.fromARGB(255, 55, 99, 174)),
-                        title: Text('Email'),
+                        title: Text(AppLocalizations.of(context).translate('profile_email')),
                         subtitle: Text(_email)
                       ),
                       ListTile(
                         leading: Icon(Icons.location_on, color: Color.fromARGB(255, 55, 99, 174)),
-                        title: Text('Address'),
+                        title: Text(AppLocalizations.of(context).translate('profile_address')),
                         subtitle: Text(_address),
                       ),
                       Spacer(),
@@ -137,7 +138,7 @@ class ProfilePageState extends State<ProfilePage> {
                           ),
                         ),
                         child: Text(
-                          'Service Info',
+                          AppLocalizations.of(context).translate('profile_service_but'),
                           style: TextStyle(fontSize: 18, color: Colors.white),
                         ),
                       ),
@@ -152,7 +153,7 @@ class ProfilePageState extends State<ProfilePage> {
                           ),
                         ),
                         child: Text(
-                          'Log Out',
+                          AppLocalizations.of(context).translate('profile_logout_but'),
                           style: TextStyle(fontSize: 18, color: Colors.white),
                         ),
                       ),

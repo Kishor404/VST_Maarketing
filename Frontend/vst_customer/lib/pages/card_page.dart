@@ -3,7 +3,8 @@ import 'card_details.dart'; // Import the CardDetailsPage
 import 'package:dio/dio.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'data.dart';
-import 'login_page.dart';
+import 'login_page.dart'; 
+import '../app_localizations.dart';
 
 
 class CardPage extends StatefulWidget {
@@ -141,7 +142,7 @@ class CardPageState extends State<CardPage> {
             : cardData.isEmpty
                 ? Center(
                     child: Text(
-                      "No service cards found.",
+                      AppLocalizations.of(context).translate('card_no_card'),
                       style: TextStyle(fontSize: 18, color: Colors.grey),
                     ),
                   )
@@ -210,15 +211,15 @@ class ServiceCard extends StatelessWidget {
           ),
           SizedBox(height: 15),
           Text(
-            'Customer Code: ${data['customer_code']}',
+            '${AppLocalizations.of(context).translate('card_customer_id')} ${data['customer_code']}',
             style: TextStyle(color: Colors.white, fontSize: 18),
           ),
           Text(
-            'Model Name: ${data['model']}',
+            '${AppLocalizations.of(context).translate('card_model')} ${data['model']}',
             style: TextStyle(color: Colors.white70, fontSize: 16),
           ),
           Text(
-            'Date Of Installation: ${data['date_of_installation']}',
+            '${AppLocalizations.of(context).translate('card_date_of_installation')} ${data['date_of_installation']}',
             style: TextStyle(color: Colors.white70, fontSize: 16),
           ),
           SizedBox(height: 25),
@@ -232,7 +233,7 @@ class ServiceCard extends StatelessWidget {
                 borderRadius: BorderRadius.circular(10),
               ),
             ),
-            child: Text('View Service Card'),
+            child: Text(AppLocalizations.of(context).translate('card_view_card')),
           ),
         ],
       ),

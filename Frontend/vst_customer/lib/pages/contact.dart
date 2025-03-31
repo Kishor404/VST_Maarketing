@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:dio/dio.dart';
 import 'data.dart';
+import '../app_localizations.dart';
 
 class ContactPage extends StatefulWidget {
   const ContactPage({super.key});
@@ -52,7 +53,7 @@ class _ContactPageState extends State<ContactPage> {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
-        title: const Text('Contact Us'),
+        title: Text(AppLocalizations.of(context).translate('contact_title')),
         backgroundColor: const Color.fromARGB(255, 55, 99, 174),
         foregroundColor: Colors.white,
       ),
@@ -100,11 +101,11 @@ class _ContactPageState extends State<ContactPage> {
 
                   // Email & Website
                   Text(
-                    "Email: ${cardData["company"]["email"]}",
+                    "${AppLocalizations.of(context).translate('contact_email')} ${cardData["company"]["email"]}",
                     style: const TextStyle(fontSize: 18),
                   ),
                   Text(
-                    "Web: ${cardData["company"]["web"]}",
+                    "${AppLocalizations.of(context).translate('contact_web')} ${cardData["company"]["web"]}",
                     style: const TextStyle(fontSize: 18),
                   ),
                 ],

@@ -2,7 +2,177 @@
     "hello": "Hello",
     "welcome": "Welcome to our app",
 
-    "name":"Name",
+
+
+
+    "login_title":"Login",
+    "signup_title":"Sign Up",
+    "login_name":"Name",
+    "login_email":"Email",
+    "login_address":"Address",
+    "login_city":"City",
+    "login_district":"District",
+    "login_postal":"Postal Code",
+    "login_phone":"Phone Number",
+    "login_password":"Password",
+    
+    "login_but":"Login",
+    "signup_but":"Sign Up",
+    "login_alt_but":"Don't have an account? Sign Up",
+    "signup_alt_but":"Already have an account? Login",
+
+
+
+    
+
+    "home_service":"Service",
+    "home_contact":"Contact",
+    "home_card":"Card",
+    "home_setting":"Setting",
+    "home_alert":"Alert",
+    "home_profile":"Profile",
+    "home_product":"Product",
+    "home_help":"Help",
+
+    "home_loading":"Loading...",
+
+
+
+
+    "card_title":"Service Card",
+    "card_model":"Model : ",
+    "card_customer_id":"Customer ID : ",
+    "card_date_of_installation":"Date of Installation : ",
+    "card_customer_name":"Customer Name : ",
+    "card_customer_region":"Customer Region : ",
+    "card_warrenty_period":"Warrenty Period : ",
+
+    "card_service_no":"Service No",
+    "card_service_details":"Details",
+    "card_service_date":"Date : ",
+    "card_service_visit_type":"Visit Type : ",
+    "card_service_nature_of_complaint":"Nature of Complaint : ",
+    "card_service_work_details":"Work Details : ",
+    "card_service_parts_replaced":"Parts Replaced : ",
+    "card_service_ICR_no":"ICR No : ",
+    "card_service_amount_charged":"Amount Charged : ",
+    "card_service_customer_signed":"Customer Signature : Verified",
+    "card_service_sign":"Sign",
+    "card_service_close":"Close",
+
+    "card_confrim_sign":"Confirm Signature",
+    "card_confrim_sign_text":"Are you sure you want to sign this service?",
+    "card_rating":"Please provide your rating:",
+    "card_feedback":"Feedback",
+    "card_cancel":"Cancel",
+    "card_confirm":"Confirm",
+    "card_sign_success":"Signed successful",
+    "card_sign_fail":"Failed to sign",
+
+    "card_no_card":"No service card found",
+    "card_view_card":"View Service Card",
+
+
+
+
+    "contact_title":"Contact Us",
+    "contact_email":"Email",
+    "contact_web":"Web",
+
+
+
+    "help_title":"Help & Instructions",
+
+
+
+    "product_title":"Product Information",
+    "product_no_product":"No Product is currently available",
+
+
+
+    "profile_email":"Email",
+    "profile_address":"Address",
+    "profile_service_but":"Service Info",
+    "profile_logout_but":"Logout",
+
+
+    "service_book_fill_fields":"Please fill all fields",
+    "service_book_no_worker":"No worker available during this period",
+    "service_book_success":"Service booked successfully",
+    "service_book_fail":"Failed to book service",
+    "service_book_title":"Book Service",
+    "service_book_available_period":"Available Period",
+    "service_book_from":"From",
+    "service_book_to":"To",
+    "service_book_select_card":"Select your service card",
+    "service_book_card":"Service Card",
+    "service_book_details":"Service Details",
+    "service_book_complaint_type":"Complaint Type",
+    "service_book_enter_complaint":"Enter your complaint",
+    "service_book_brief_desc":"Brief Description",
+    "service_book_but":"Book Service",
+
+
+
+    "service_details_title":"Service Details",
+    "service_details_booked_by":"Booked By : ",
+    "service_details_card_id":"Card ID : ",
+    "service_details_staff_name":"Staff Name : ",
+    "service_details_staff_id":"Staff ID : ",
+    "service_details_complaint":"Complaint : ",
+    "service_details_description":"Description : ",
+    "service_details_date":"Appointed Date : ",
+    "service_details_status":"Status : ",
+    "service_details_customer_details":"Customer Details : ",
+    "service_details_customer_city":"City : ",
+    "service_details_customer_name":"Name : ",
+    "service_details_customer_phone":"Phone : ",
+    "service_details_customer_email":"Email : ",
+    "service_details_customer_region":"Region : ",
+    "service_details_customer_address":"Address : ",
+    "service_details_customer_postal":"Postal Code : ",
+    "service_details_customer_district":"District : ",
+    "service_details_cancel_service":"Cancel Service",
+    "service_details_cancel_service_text":"Are you sure you want to cancel this service?",
+    "service_details_cancel_service_no":"No",
+    "service_details_cancel_service_yes":"Yes, Cancel",
+    "service_details_cancel_service_success":"Service cancelled successfully",
+    "service_details_cancel_service_fail":"Failed to cancel service",
+
+
+
+
+    "service_last_title":"Cancelled Service Details",
+    "service_last_service_details":"Service Details",
+    "service_last_booked_by":"Booked By : ",
+    "service_last_card_id":"Card ID : ",
+    "service_last_staff_name":"Staff Name : ",
+    "service_last_staff_id":"Staff ID : ",
+    "service_last_complaint":"Complaint : ",
+    "service_last_description":"Description : ",
+    "service_last_date":"Appointed Date : ",
+    "service_last_status":"Status : ",
+    "service_last_customer_details":"Customer Details : ",
+    "service_last_customer_city":"City : ",
+    "service_last_customer_name":"Name : ",
+    "service_last_customer_phone":"Phone : ",
+    "service_last_customer_email":"Email : ",
+    "service_last_customer_region":"Region : ",
+    "service_last_customer_address":"Address : ",
+    "service_last_customer_postal":"Postal Code : ",
+    "service_last_customer_district":"District : ",
+
+
+
+    "service_title":"Service",
+    "service_last_service":"Last Service",
+    "service_next_service":"Next Service For Card ID : ",
+    "service_next_service_in":"Next Service In : ",
+    "service_next_service_days":"days",
+    "service_cancelled_service":"Cancelled Service",
+    "service_book_service":"Book Service",
+    "service_details":"Service Details",
+
 
     "lets_go":"Let's go !",
 

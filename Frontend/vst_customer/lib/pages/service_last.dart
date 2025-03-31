@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
+import '../app_localizations.dart';
 
-class ServiceLast extends StatelessWidget {
+class ServiceLast extends StatefulWidget {
   final Map<String, dynamic> serviceData;
 
   const ServiceLast({
@@ -8,6 +9,11 @@ class ServiceLast extends StatelessWidget {
     super.key,
   });
 
+  @override
+  State<ServiceLast> createState() => _ServiceLastState();
+}
+
+class _ServiceLastState extends State<ServiceLast> {
   // Map for status choices
   static const Map<String, String> STATUS_CHOICES = {
     'BD': 'Booked',
@@ -21,7 +27,7 @@ class ServiceLast extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Cancelled Service Details'),
+        title: Text(AppLocalizations.of(context).translate('service_last_title')),
         backgroundColor: Color.fromARGB(255, 55, 99, 174),
         foregroundColor: Colors.white,
       ),
@@ -35,18 +41,18 @@ class ServiceLast extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text('Service Details', style: TextStyle(fontSize: 20)),
+                Text(AppLocalizations.of(context).translate('service_last_service_details'), style: TextStyle(fontSize: 20)),
                 Divider(),
-                _buildDetail('Booked By', serviceData["customer_data"]?["name"]?.toString() ?? "None"),
-                _buildDetail('Card ID', serviceData["card"]?.toString() ?? "None"),
-                _buildDetail('Staff Name', serviceData["staff_name"]?.toString() ?? "None"),
-                _buildDetail('Staff ID', serviceData["staff"]?.toString() ?? "None"),
-                _buildDetail('Complaint', serviceData['complaint']?.toString() ?? "None"),
-                _buildDetail('Description', serviceData['description']?.toString() ?? "None"),
-                _buildDetail('Appointed Date', serviceData['available_date']?.toString() ?? "None"),
-                _buildDetail('Status', _getStatusLabel(serviceData['status']?.toString() ?? "None")),
+                _buildDetail(AppLocalizations.of(context).translate('service_last_booked_by'), widget.serviceData["customer_data"]?["name"]?.toString() ?? "None"),
+                _buildDetail(AppLocalizations.of(context).translate('service_last_card_id'), widget.serviceData["card"]?.toString() ?? "None"),
+                _buildDetail(AppLocalizations.of(context).translate('service_last_staff_name'), widget.serviceData["staff_name"]?.toString() ?? "None"),
+                _buildDetail(AppLocalizations.of(context).translate('service_last_staff_id'), widget.serviceData["staff"]?.toString() ?? "None"),
+                _buildDetail(AppLocalizations.of(context).translate('service_last_complaint'), widget.serviceData['complaint']?.toString() ?? "None"),
+                _buildDetail(AppLocalizations.of(context).translate('service_last_description'), widget.serviceData['description']?.toString() ?? "None"),
+                _buildDetail(AppLocalizations.of(context).translate('service_last_date'), widget.serviceData['available_date']?.toString() ?? "None"),
+                _buildDetail(AppLocalizations.of(context).translate('service_last_status'), _getStatusLabel(widget.serviceData['status']?.toString() ?? "None")),
                 SizedBox(height: 32),
-                Text('Customer Data:', style: TextStyle(fontSize: 18)),
+                Text(AppLocalizations.of(context).translate('service_last_customer_details'), style: TextStyle(fontSize: 18)),
                 Divider(),
                 _buildCustomerDetails(),
               ],
@@ -75,25 +81,23 @@ class ServiceLast extends StatelessWidget {
     );
   }
 
-    Widget _buildCustomerDetails() {
+  Widget _buildCustomerDetails() {
     Map<String, String> customerData = {
-      "City": serviceData["customer_data"]?["city"]?.toString() ?? "None",
-      "Name": serviceData["customer_data"]?["name"]?.toString() ?? "None",
-      "Email": serviceData["customer_data"]?["email"]?.toString() ?? "None",
-      "Phone": serviceData["customer_data"]?["phone"]?.toString() ?? "None",
-      "Region": serviceData["customer_data"]?["region"]?.toString() ?? "None",
-      "Address": serviceData["customer_data"]?["address"]?.toString() ?? "None",
-      "District": serviceData["customer_data"]?["district"]?.toString() ?? "None",
-      "Postal Code": serviceData["customer_data"]?["postal_code"]?.toString() ?? "None",
+      AppLocalizations.of(context).translate('service_last_customer_city'): widget.serviceData["customer_data"]?["city"]?.toString() ?? "None",
+      AppLocalizations.of(context).translate('service_last_customer_name'): widget.serviceData["customer_data"]?["name"]?.toString() ?? "None",
+      AppLocalizations.of(context).translate('service_last_customer_email'): widget.serviceData["customer_data"]?["email"]?.toString() ?? "None",
+      AppLocalizations.of(context).translate('service_last_customer_phone'): widget.serviceData["customer_data"]?["phone"]?.toString() ?? "None",
+      AppLocalizations.of(context).translate('service_last_customer_region'): widget.serviceData["customer_data"]?["region"]?.toString() ?? "None",
+      AppLocalizations.of(context).translate('service_last_customer_address'): widget.serviceData["customer_data"]?["address"]?.toString() ?? "None",
+      AppLocalizations.of(context).translate('service_last_customer_district'): widget.serviceData["customer_data"]?["district"]?.toString() ?? "None",
+      AppLocalizations.of(context).translate('service_last_customer_postal'): widget.serviceData["customer_data"]?["postal_code"]?.toString() ?? "None",
     };
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
-      children: customerData.entries
-          .map((entry) => _buildDetail(entry.key, entry.value))
-          .toList(),
+      children: customerData.entries.map((entry) {
+        return _buildDetail(entry.key, entry.value);
+      }).toList(),
     );
   }
-
-
 }

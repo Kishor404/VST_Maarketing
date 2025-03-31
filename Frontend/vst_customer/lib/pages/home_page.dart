@@ -45,14 +45,14 @@ class HomePageState extends State<HomePage> {
     double screenWidth = MediaQuery.of(context).size.width;
 
     final List<Map<String, dynamic>> buttonData = [
-      {'icon': Icons.construction, 'label': 'Service', 'onTap': () => widget.onNavigateToIndex(1)},
-      {'icon': Icons.phone, 'label': 'Contact', 'onTap': () => Navigator.push(context, MaterialPageRoute(builder: (context) => ContactPage()))},
-      {'icon': Icons.article, 'label': 'Card', 'onTap': () => widget.onNavigateToIndex(3)},
-      {'icon': Icons.settings, 'label': AppLocalizations.of(context).translate('settings'), 'onTap': () => Navigator.push(context, MaterialPageRoute(builder: (context) => SettingsPage()))},
-      {'icon': Icons.notifications, 'label': 'Alerts', 'onTap': () => print('Alerts tapped')},
-      {'icon': Icons.shopping_bag, 'label': 'Products', 'onTap': () => widget.onNavigateToIndex(2)},
-      {'icon': Icons.help, 'label': 'Help', 'onTap': () => Navigator.push(context, MaterialPageRoute(builder: (context) => HelpPage()))},
-      {'icon': Icons.person, 'label': 'Profile', 'onTap': () => widget.onNavigateToIndex(4)},
+      {'icon': Icons.construction, 'label': AppLocalizations.of(context).translate('home_service'), 'onTap': () => widget.onNavigateToIndex(1)},
+      {'icon': Icons.phone, 'label': AppLocalizations.of(context).translate('home_contact'), 'onTap': () => Navigator.push(context, MaterialPageRoute(builder: (context) => ContactPage()))},
+      {'icon': Icons.article, 'label': AppLocalizations.of(context).translate('home_card'), 'onTap': () => widget.onNavigateToIndex(3)},
+      {'icon': Icons.settings, 'label': AppLocalizations.of(context).translate('home_setting'), 'onTap': () => Navigator.push(context, MaterialPageRoute(builder: (context) => SettingsPage()))},
+      {'icon': Icons.notifications, 'label': AppLocalizations.of(context).translate('home_alert'), 'onTap': () => print('Alerts tapped')},
+      {'icon': Icons.shopping_bag, 'label': AppLocalizations.of(context).translate('home_product'), 'onTap': () => widget.onNavigateToIndex(2)},
+      {'icon': Icons.help, 'label': AppLocalizations.of(context).translate('home_help'), 'onTap': () => Navigator.push(context, MaterialPageRoute(builder: (context) => HelpPage()))},
+      {'icon': Icons.person, 'label': AppLocalizations.of(context).translate('home_profile'), 'onTap': () => widget.onNavigateToIndex(4)},
     ];
 
     return Scaffold(
@@ -107,7 +107,7 @@ class HomePageState extends State<HomePage> {
                       mainAxisSize: MainAxisSize.min,
                       children: [
                         Text(
-                          '"${quotes.isNotEmpty ? quotes[0] : "Loading..."}"',
+                          '"${quotes.isNotEmpty ? quotes[0] : AppLocalizations.of(context).translate('home_loading')}"',
                           textAlign: TextAlign.center,
                           style: TextStyle(fontSize: 16, fontStyle: FontStyle.italic, color: Colors.black87),
                         ),

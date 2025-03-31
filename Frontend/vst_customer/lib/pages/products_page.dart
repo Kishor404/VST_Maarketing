@@ -4,6 +4,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'product_details.dart';
 import 'data.dart';
 import 'login_page.dart';
+import '../app_localizations.dart';
 
 
 
@@ -130,10 +131,10 @@ class _ProductsPageState extends State<ProductsPage> {
           ? const Center(child: CircularProgressIndicator())
           : Column(
               children: [
-                const Padding(
+                Padding(
                   padding: EdgeInsets.all(20.0),
                   child: Text(
-                    'Products',
+                    AppLocalizations.of(context).translate('product_title'),
                     style: TextStyle(
                       fontSize: 24.0,
                       color: Color.fromARGB(255, 55, 99, 174),
@@ -142,9 +143,9 @@ class _ProductsPageState extends State<ProductsPage> {
                 ),
                 Expanded(
                   child: products.isEmpty
-                      ? const Center(
+                      ? Center(
                           child: Text(
-                            'No products available',
+                            AppLocalizations.of(context).translate('product_no_product'),
                             style: TextStyle(fontSize: 18.0, color: Colors.grey),
                           ),
                         )

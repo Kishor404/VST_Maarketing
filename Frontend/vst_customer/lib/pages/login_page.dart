@@ -3,7 +3,6 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'index.dart';
 import 'package:dio/dio.dart';
 import 'data.dart';
-import './Lang/lang.dart';
 import '../app_localizations.dart';
 
 class LoginPage extends StatefulWidget {
@@ -56,30 +55,30 @@ class LoginPageState extends State<LoginPage> {
               Align(
                 alignment: Alignment.center,
                 child: Text(
-                  _isLogin ? LoginLang.loginHead[langCode] : LoginLang.signupHead[langCode],
+                  _isLogin ? AppLocalizations.of(context).translate('login_title') : AppLocalizations.of(context).translate('signup_title'),
                   style: TextStyle(fontSize: 20),
                 ),
               ),
               SizedBox(height: 20),
               if (!_isLogin) ...[
-                _buildTextField(_nameController, AppLocalizations.of(context).translate('name')),
+                _buildTextField(_nameController, AppLocalizations.of(context).translate('login_name')),
                 SizedBox(height: 10),
-                _buildTextField(_emailController, LoginLang.loginData[langCode][1]),
+                _buildTextField(_emailController, AppLocalizations.of(context).translate('login_email')),
                 SizedBox(height: 10),
                 _buildDropdownField(),
                 SizedBox(height: 10),
-                _buildTextField(_addressController, LoginLang.loginData[langCode][2]),
+                _buildTextField(_addressController, AppLocalizations.of(context).translate('login_address')),
                 SizedBox(height: 10),
-                _buildTextField(_cityController, LoginLang.loginData[langCode][3]),
+                _buildTextField(_cityController, AppLocalizations.of(context).translate('login_city')),
                 SizedBox(height: 10),
-                _buildTextField(_districtController, LoginLang.loginData[langCode][4]),
+                _buildTextField(_districtController, AppLocalizations.of(context).translate('login_district')),
                 SizedBox(height: 10),
-                _buildTextField(_postalCodeController, LoginLang.loginData[langCode][5], isNumber: true),
+                _buildTextField(_postalCodeController, AppLocalizations.of(context).translate('login_postal'), isNumber: true),
                 SizedBox(height: 10),
               ],
-              _buildTextField(_phoneController, LoginLang.loginData[langCode][6], isNumber: true),
+              _buildTextField(_phoneController, AppLocalizations.of(context).translate('login_phone'), isNumber: true),
               SizedBox(height: 10),
-              _buildTextField(_passwordController, LoginLang.loginData[langCode][7], obscureText: true),
+              _buildTextField(_passwordController, AppLocalizations.of(context).translate('login_password'), obscureText: true),
               SizedBox(height: 20),
               ElevatedButton(
                 onPressed: _isLogin ? _login : _signUp,
@@ -90,14 +89,14 @@ class LoginPageState extends State<LoginPage> {
                   shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
                   elevation: 5,
                 ),
-                child: Text(_isLogin ? LoginLang.loginBut[langCode] : LoginLang.signupBut[langCode], style: TextStyle(fontSize: 16)),
+                child: Text(_isLogin ? AppLocalizations.of(context).translate('login_but') : AppLocalizations.of(context).translate('signup_but'), style: TextStyle(fontSize: 16)),
               ),
               SizedBox(height: 20),
               TextButton(
                 onPressed: () => setState(() => _isLogin = !_isLogin),
                 child: Text(_isLogin
-                    ? LoginLang.loginAltBut[langCode]
-                    : LoginLang.signupAltBut[langCode],)
+                    ? AppLocalizations.of(context).translate('login_alt_but')
+                    : AppLocalizations.of(context).translate('signup_alt_but'),)
               ),
             ],
           ),
