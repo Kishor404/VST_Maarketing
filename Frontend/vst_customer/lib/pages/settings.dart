@@ -43,7 +43,7 @@ class _SettingsPageState extends State<SettingsPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(AppLocalizations.of(context)!.translate('settings')),
+        title: Text(AppLocalizations.of(context).translate('settings')),
       ),
       body: Padding(
         padding: const EdgeInsets.all(20.0),
@@ -51,7 +51,7 @@ class _SettingsPageState extends State<SettingsPage> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              AppLocalizations.of(context)!.translate('select_language'),
+              AppLocalizations.of(context).translate('select_language'),
               style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 10),

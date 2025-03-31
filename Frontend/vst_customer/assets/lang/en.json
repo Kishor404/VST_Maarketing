@@ -1,6 +1,7 @@
 {
-    "hello": "Hello",
-    "welcome": "Welcome to our app",
+    "welcome": "Welcome !",
+    "lets_go":"Let's go !",
+    "welcome_text":"This photography contest celebrates the rich tapestry of folk culture from around the world, featuring categories.",
 
 
 
@@ -174,7 +175,7 @@
     "service_details":"Service Details",
 
 
-    "lets_go":"Let's go !",
+    
 
     "settings": "Settings",
     "select_language": "Select Language"

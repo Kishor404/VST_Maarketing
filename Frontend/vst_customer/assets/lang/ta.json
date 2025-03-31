@@ -1,6 +1,7 @@
 {
-    "hello": "வணக்கம்",
-    "welcome": "எங்கள் பயன்பாட்டிற்கு வரவேற்கிறோம்",
+    "welcome": "வரவேற்கிறோம் !",
+    "lets_go": "போலாம் !",
+    "welcome_text": "இந்த புகைப்பட போட்டி உலகம் முழுவதும் உள்ள மக்கள் கலாச்சாரத்தின் செழுமையான துண்டுகளை கொண்டாடுகிறது, இது வகைகளை உள்ளடக்கியது.",
 
     "login_title": "உள்நுழைவு",
     "signup_title": "பதிவு செய்யவும்",
@@ -154,8 +155,15 @@
     "service_last_customer_district": "மாவட்டம் : ",
 
 
+    "service_title": "சேவை",
+    "service_last_service": "கடைசி சேவை",
+    "service_next_service": "அடுத்த சேவை அட்டை ஐடி : ",
+    "service_next_service_in": "அடுத்த சேவை : ",
+    "service_next_service_days": "நாட்கள்",
+    "service_cancelled_service": "ரத்து செய்யப்பட்ட சேவை",
+    "service_book_service": "சேவையை பதிவு செய்யவும்",
+    "service_details": "சேவை விவரங்கள்",
 
-    "lets_go": "போலாம் !",
 
     "settings": "அமைப்புகள்",
     "select_language": "மொழியைத் தேர்ந்தெடுக்கவும்"
