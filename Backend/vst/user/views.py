@@ -45,7 +45,7 @@ class LoginView(APIView):
             
             if check_password(password, user.password):  # Check if password matches the hashed one
                 if fcm_token and (user.role == "worker" or user.role == "customer"):
-                    user.fcm_token = fcm_token
+                    user.FCM_Token = fcm_token
                     user.save()
                     print("FCM Token updated")
                 try:
@@ -54,7 +54,7 @@ class LoginView(APIView):
                             "title": "Login Successful",
                             "body": "You have successfully logged in!"
                         }
-                    response = requests.post("http://192.168.116.222:8000/firebase/send-notification/", json=payload)
+                    response = requests.post("http://192.168.156.222:8000/firebase/send-notification/", json=payload)
                     data = response.json()
                     print(data)
                 except Exception as e:

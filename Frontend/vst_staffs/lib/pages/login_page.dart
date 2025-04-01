@@ -113,10 +113,12 @@ class _LoginPageState extends State<LoginPage> {
   Future<void> _login() async {
     final phone = _phoneController.text;
     final password = _passwordController.text;
+    final prefs = await SharedPreferences.getInstance();
+    final fcm=prefs.getString('FCM_Token');
 
     if (phone.isNotEmpty && password.isNotEmpty) {
       final url = '${Data.baseUrl}/log/login/';
-      final requestBody = {'phone': phone, 'password': password};
+      final requestBody = {'phone': phone, 'password': password, "FCM_Token":fcm};
 
       try {
         Dio dio = Dio();
@@ -128,7 +130,6 @@ class _LoginPageState extends State<LoginPage> {
 
         if (response.statusCode == 200) {
           final responseData = response.data;
-          print('Response Data: $responseData');
 
           if (responseData['login'] == 1 && responseData['data']['role'] == 'worker') {
             final logData = responseData["data"];

@@ -1,5 +1,5 @@
 name: vst_staffs
-description: "A new Flutter project."
+description: "VST Staffs Corner - A platform for VST Staffs to connect and share information."
 # The following line prevents the package from being accidentally published to
 # pub.dev using `flutter pub publish`. This is preferred for private packages.
 publish_to: 'none' # Remove this line if you wish to publish to pub.dev
@@ -46,6 +46,7 @@ dependencies:
 
 dev_dependencies:
   flutter_native_splash: ^2.3.9
+  flutter_launcher_icons: ^0.13.1
   flutter_test:
     sdk: flutter
 
@@ -112,3 +113,8 @@ flutter_native_splash:
   image: assets/splash.png  # Splash image (optional)
   android: true
   ios: true
+
+flutter_launcher_icons:
+  android: true
+  ios: true
+  image_path: "assets/logo.png"

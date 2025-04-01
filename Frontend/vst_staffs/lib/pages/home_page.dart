@@ -49,7 +49,7 @@ class HomePageState extends State<HomePage> {
       {'icon': Icons.article, 'label': 'Rating', 'onTap': () => widget.onNavigateToIndex(3)},
       {'icon': Icons.settings, 'label': 'Settings', 'onTap': () => print('Settings tapped')},
       {'icon': Icons.people_outline_outlined, 'label': 'Edit User', 'onTap': () => Navigator.push(context, MaterialPageRoute(builder: (context) => EditUserPage()),),},
-      {'icon': Icons.shopping_bag, 'label': 'Products', 'onTap': () => widget.onNavigateToIndex(2)},
+      {'icon': Icons.sailing, 'label': 'Jobs', 'onTap': () => widget.onNavigateToIndex(2)},
       {'icon': Icons.help, 'label': 'Help', 'onTap': () => Navigator.push(context, MaterialPageRoute(builder: (context) => HelpPage()))},
       {'icon': Icons.person, 'label': 'Profile', 'onTap': () => widget.onNavigateToIndex(4)},
     ];

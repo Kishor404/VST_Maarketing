@@ -25,7 +25,7 @@ def send_warranty_expiry_notifications():
                     if days_remaining > 0 else f"Your warranty for Card ID {card.id} expires today!"
                 }
                 try:
-                    response = requests.post("http://192.168.141.222:8000/firebase/send-notification/", json=payload)
+                    response = requests.post("http://192.168.156.222:8000/firebase/send-notification/", json=payload)
                     response.raise_for_status()
                     print(f"Notification sent to {user}: {response.json()}")
                 except requests.exceptions.RequestException as e:
@@ -48,7 +48,7 @@ def send_next_service():
                 "body": f"Time To Book Your Next Service"
             }
             try:
-                response = requests.post("http://192.168.141.222:8000/firebase/send-notification/", json=payload)
+                response = requests.post("http://192.168.156.222:8000/firebase/send-notification/", json=payload)
                 response.raise_for_status()
                 print(f"Notification sent to {user}: {response.json()}")
             except requests.exceptions.RequestException as e:

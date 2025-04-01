@@ -18,7 +18,7 @@ def send_service_reminder_notifications():
                 "body": f"Your scheduled service (ID: {service.id}) is today!"
             }
             try:
-                response = requests.post("http://192.168.141.222:8000/firebase/send-notification/", json=payload)
+                response = requests.post("http://192.168.156.222:8000/firebase/send-notification/", json=payload)
                 response.raise_for_status()
                 print(f"Notification sent to {user}: {response.json()}")
             except requests.exceptions.RequestException as e:
