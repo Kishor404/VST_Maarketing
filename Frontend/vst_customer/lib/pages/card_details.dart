@@ -210,7 +210,8 @@ void _signService(int serviceId, double rating, String feedback, BuildContext co
       appBar: AppBar(
         title: Text(AppLocalizations.of(context).translate('card_title')),
         centerTitle: true,
-        backgroundColor: Colors.white,
+        backgroundColor: const Color.fromARGB(255, 55, 99, 174),
+        foregroundColor: Colors.white,
       ),
       body: SingleChildScrollView(
         child: Padding(
@@ -222,8 +223,13 @@ void _signService(int serviceId, double rating, String feedback, BuildContext co
               Card(
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(12),
+                  side: const BorderSide(
+                    color: Color.fromARGB(255, 55, 99, 174), // Border color
+                    width: 1.5, // Border width
+                  ),
                 ),
-                elevation: 4,
+                color: Color.fromARGB(255, 255, 255, 255),
+                elevation: 0,
                 child: Padding(
                   padding: const EdgeInsets.all(16.0),
                   child: Column(
@@ -277,9 +283,10 @@ void _signService(int serviceId, double rating, String feedback, BuildContext co
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(12),
                               ),
-                              child: Container(
-                                width: 400, // Set the width of the dialog here
-                                height: 600,
+                              child: SingleChildScrollView(
+                              
+                                child: Container(
+                                width: 400,
                                 padding: const EdgeInsets.all(25.0),
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -334,6 +341,7 @@ void _signService(int serviceId, double rating, String feedback, BuildContext co
                                   ],
                                 ),
                               ),
+                            )
                             );
                           },
                         );

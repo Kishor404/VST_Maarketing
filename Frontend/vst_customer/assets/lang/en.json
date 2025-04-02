@@ -175,6 +175,11 @@
     "service_details":"Service Details",
 
 
+    "nav_home":"Home",
+    "nav_service":"Service",
+    "nav_products":"Products",
+    "nav_card":"Card",
+    "nav_profile":"Profile",
     
 
     "settings": "Settings",

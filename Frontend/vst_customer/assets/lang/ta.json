@@ -165,6 +165,13 @@
     "service_details": "சேவை விவரங்கள்",
 
 
+    "nav_home": "முகப்பு",
+    "nav_service": "சேவை",
+    "nav_product": "தயாரிப்பு",
+    "nav_card": "சேவை அட்டை",
+    "nav_profile": "சுயவிவரம்",
+
+
     "settings": "அமைப்புகள்",
     "select_language": "மொழியைத் தேர்ந்தெடுக்கவும்"
 }

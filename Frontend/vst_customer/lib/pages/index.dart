@@ -7,6 +7,7 @@ import 'card_page.dart';
 import 'profile_page.dart';
 import 'welcome.dart';
 import '../main.dart';
+import '../app_localizations.dart';
 
 class IndexPage extends StatefulWidget {
   const IndexPage({super.key});
@@ -89,23 +90,23 @@ class IndexPageState extends State<IndexPage> {
           items: [
             BottomNavigationBarItem(
               icon: Icon(Icons.home),
-              label: 'Home',
+              label: AppLocalizations.of(context).translate('nav_home'),
             ),
             BottomNavigationBarItem(
               icon: Icon(Icons.construction),
-              label: 'Service',
+              label: AppLocalizations.of(context).translate('nav_service'),
             ),
             BottomNavigationBarItem(
               icon: Icon(Icons.shopping_bag),
-              label: 'Products',
+              label: AppLocalizations.of(context).translate('nav_products'),
             ),
             BottomNavigationBarItem(
               icon: Icon(Icons.article),
-              label: 'Card',
+              label: AppLocalizations.of(context).translate('nav_card'),
             ),
             BottomNavigationBarItem(
               icon: Icon(Icons.person),
-              label: 'Profile',
+              label: AppLocalizations.of(context).translate('nav_profile'),
             ),
           ],
         ),

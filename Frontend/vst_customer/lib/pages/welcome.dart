@@ -28,7 +28,7 @@ class WelcomePage extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 20),
-            Image.network('${Data.baseUrl}/media/utils/Service_Illus.jpg', height: 300),
+            Image.network('${Data.baseUrl}/media/utils/Home_Illus.png', height: 300),
             const SizedBox(height: 20),
             Text(
               AppLocalizations.of(context).translate('welcome_text'),

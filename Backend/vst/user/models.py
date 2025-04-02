@@ -34,6 +34,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     def default_availability():
         return {"unavailable": []} 
 
+
     name = models.CharField(max_length=100)
     email = models.EmailField(blank=True, null=True)
     phone = models.CharField(max_length=15, unique=True)

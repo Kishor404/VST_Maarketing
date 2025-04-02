@@ -267,9 +267,10 @@ class LoginPageState extends State<LoginPage> {
             
 
             // Navigate to IndexPage after successful login
-            Navigator.pushReplacement(
+            Navigator.pushAndRemoveUntil(
               context,
-              MaterialPageRoute(builder: (context) => IndexPage()),
+              MaterialPageRoute(builder: (context) => const IndexPage()),
+              (Route<dynamic> route) => false, // Remove all previous routes
             );
           } else {
             // Handle login failure based on response
