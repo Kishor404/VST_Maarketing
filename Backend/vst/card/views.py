@@ -7,6 +7,7 @@ from rest_framework.viewsets import ReadOnlyModelViewSet
 from rest_framework import generics
 from rest_framework.exceptions import PermissionDenied
 from service.models import Service
+import requests
 
 class CardViewSet(viewsets.ModelViewSet):
     """
@@ -117,6 +118,29 @@ class ServiceEntryCreateByHeadAndWorker(generics.CreateAPIView):
             raise PermissionDenied("You are not authorized to perform this action.")
 
         return super().create(request, *args, **kwargs)
+    
+    def perform_create(self, serializer):
+        """
+        Override perform_create to send a notification to the customer after creating a ServiceEntry.
+        """
+        service_entry = serializer.save()  # Save the new ServiceEntry instance
+        customer = service_entry.customer  # Get the customer associated with this service entry
+
+        # Send notification to the customer
+        if customer and customer.FCM_Token:
+            payload = {
+                "token": customer.FCM_Token,
+                "title": "Service Entry",
+                "body": f"A new service entry (ID: {service_entry.id}) has been added to your service."
+            }
+            try:
+                response = requests.post("http://192.168.42.222:8000/firebase/send-notification/", json=payload)
+                response.raise_for_status()
+                print(f"Notification sent to customer {customer}: {response.json()}")
+            except requests.exceptions.RequestException as e:
+                print(f"Error sending notification to customer {customer}: {e}")
+
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
     
 class ServiceEntryUpdateByHeadAndWorker(generics.UpdateAPIView):
     

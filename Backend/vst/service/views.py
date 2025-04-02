@@ -65,6 +65,19 @@ class ServiceViewSet(viewsets.ModelViewSet):
             except requests.exceptions.RequestException as e:
                 print(f"Error sending notification: {e}")
 
+        if staff and staff.FCM_Token:
+            staff_payload = {
+                "token": staff.FCM_Token,
+                "title": "New Service Assigned",
+                "body": f"A new service (ID: {service.id}) has been assigned to you."
+            }
+            try:
+                response = requests.post("http://192.168.42.222:8000/firebase/send-notification/", json=staff_payload)
+                response.raise_for_status()
+                print("Staff notification sent successfully:", response.json())
+            except requests.exceptions.RequestException as e:
+                print(f"Error sending staff notification: {e}")
+
         return Response(serializer.data, status=status.HTTP_201_CREATED)
 
 
