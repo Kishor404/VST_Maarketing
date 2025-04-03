@@ -54,7 +54,7 @@ class LoginView(APIView):
                             "title": "Login Successful",
                             "body": "You have successfully logged in!"
                         }
-                    response = requests.post("http://192.168.42.222:8000/firebase/send-notification/", json=payload)
+                    response = requests.post("http://192.168.108.222:8000/firebase/send-notification/", json=payload)
                     data = response.json()
                     print(data)
                 except Exception as e:

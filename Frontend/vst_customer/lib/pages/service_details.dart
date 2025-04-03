@@ -34,7 +34,7 @@ class _ServiceDetailsState extends State<ServiceDetails> {
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Card(
-          elevation: 5,
+          elevation: 0,
           margin: EdgeInsets.all(8),
           child: Padding(
             padding: const EdgeInsets.all(32.0),
