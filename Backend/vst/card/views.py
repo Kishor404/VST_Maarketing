@@ -134,7 +134,7 @@ class ServiceEntryCreateByHeadAndWorker(generics.CreateAPIView):
                 "body": f"A new service entry (ID: {service_entry.id}) has been added to your service."
             }
             try:
-                response = requests.post("http://192.168.108.222:8000/firebase/send-notification/", json=payload)
+                response = requests.post("http://157.173.220.208/firebase/send-notification/", json=payload)
                 response.raise_for_status()
                 print(f"Notification sent to customer {customer}: {response.json()}")
             except requests.exceptions.RequestException as e:

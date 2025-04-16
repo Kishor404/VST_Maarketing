@@ -59,7 +59,7 @@ class ServiceViewSet(viewsets.ModelViewSet):
                 "body": f"Your service (ID: {service.id}) has been successfully created."
             }
             try:
-                response = requests.post("http://192.168.108.222:8000/firebase/send-notification/", json=payload)
+                response = requests.post("http://157.173.220.208/firebase/send-notification/", json=payload)
                 response.raise_for_status()
                 print("Notification sent successfully:", response.json())
             except requests.exceptions.RequestException as e:
@@ -72,7 +72,7 @@ class ServiceViewSet(viewsets.ModelViewSet):
                 "body": f"A new service (ID: {service.id}) has been assigned to you."
             }
             try:
-                response = requests.post("http://192.168.108.222:8000/firebase/send-notification/", json=staff_payload)
+                response = requests.post("http://157.173.220.208/firebase/send-notification/", json=staff_payload)
                 response.raise_for_status()
                 print("Staff notification sent successfully:", response.json())
             except requests.exceptions.RequestException as e:
@@ -107,7 +107,7 @@ class CancelServiceByCustomer(APIView):
                 "body": f"Your service (ID: {service.id}) has been cancelled successfully."
             }
             try:
-                response = requests.post("http://192.168.108.222:8000/firebase/send-notification/", json=payload)
+                response = requests.post("http://157.173.220.208/firebase/send-notification/", json=payload)
                 response.raise_for_status()
                 print("Notification sent successfully:", response.json())
             except requests.exceptions.RequestException as e:
