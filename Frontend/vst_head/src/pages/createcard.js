@@ -21,7 +21,7 @@ const CreateCard=()=>{
     // Refresh Token Function
     const refresh_token = async () => {
         try {
-            const res = await axios.post("http://127.0.0.1:8000/log/token/refresh/", { 'refresh': refreshToken }, { headers: { "Content-Type": "application/json" } });
+            const res = await axios.post("http://157.173.220.208/log/token/refresh/", { 'refresh': refreshToken }, { headers: { "Content-Type": "application/json" } });
             Cookies.set('refresh_token', res.data.refresh, { expires: 7 });
             return res.data.access;
         } catch (error) {
@@ -54,7 +54,7 @@ const CreateCard=()=>{
         if (csd.trim() !== "") data.contract_start_date = csd;
         if (ced.trim() !== "") data.contract_end_date = ced;
         try {
-            const response = await axios.post(`http://127.0.0.1:8000/api/headcreatecard/`,data ,{
+            const response = await axios.post(`http://157.173.220.208/api/headcreatecard/`,data ,{
                 headers: { 
                     Authorization: `Bearer ${accessToken}`,
                     'Content-Type': 'application/json'

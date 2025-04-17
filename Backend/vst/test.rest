@@ -50,10 +50,10 @@ Content-Type: application/json
 
 ### =========== SIGNUP API =============
 
-POST http://127.0.0.1:8000/log/signup/
+POST http://157.173.220.208/log/signup/
 Content-Type: application/json
 
-{"name":"Vijay","phone":"7856341999","password":"123","region":"chennai","role":"head"}
+{"name":"Vijay","phone":"1234599999","password":"123","region":"chennai","role":"head"}
 
 ### ========== CARD DETAILS API ==========
 

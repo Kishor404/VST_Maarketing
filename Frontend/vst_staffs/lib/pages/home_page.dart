@@ -74,7 +74,7 @@ class HomePageState extends State<HomePage> {
                       color: Colors.grey[300],
                       borderRadius: BorderRadius.circular(10),
                       image: DecorationImage(
-                        image: NetworkImage('${Data.baseUrl}/media/banners/banner$actualIndex.jpg'),
+                        image: NetworkImage('${Data.baseUrl}/media/Banners/banner$actualIndex.jpg'),
                         fit: BoxFit.cover,
                       ),
                     ),

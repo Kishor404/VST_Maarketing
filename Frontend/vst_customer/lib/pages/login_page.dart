@@ -209,6 +209,7 @@ class LoginPageState extends State<LoginPage> {
         }
       } catch (e) {
         _showError('An error occurred. Please try again later.');
+        print('==================================> $e');
       }
     } else {
       _showError('Please fill in all required fields.');

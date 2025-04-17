@@ -14,7 +14,7 @@ const Staff = () => {
     // Refresh Token Function
     const refresh_token = async () => {
         try {
-            const res = await axios.post("http://127.0.0.1:8000/log/token/refresh/", { 'refresh': refreshToken }, { headers: { "Content-Type": "application/json" } });
+            const res = await axios.post("http://157.173.220.208/log/token/refresh/", { 'refresh': refreshToken }, { headers: { "Content-Type": "application/json" } });
             Cookies.set('refresh_token', res.data.refresh, { expires: 7 });
             return res.data.access;
         } catch (error) {
@@ -26,7 +26,7 @@ const Staff = () => {
     // Fetch Single staff by ID
     const fetch_user = async (cid, accessToken) => {
         try {
-            const response = await axios.get(`http://127.0.0.1:8000/utils/getstaffbyid/${cid}`, {
+            const response = await axios.get(`http://157.173.220.208/utils/getstaffbyid/${cid}`, {
                 headers: { Authorization: `Bearer ${accessToken}` }
             });
             if (response.data.region === headRegion) {
@@ -53,7 +53,7 @@ const Staff = () => {
             const accessToken = await refresh_token();
             if (!accessToken) return;
             try {
-                const response = await axios.post("http://127.0.0.1:8000/utils/getalluser/", { role: 'worker', region: headRegion }, { headers: { Authorization: `Bearer ${accessToken}` } });
+                const response = await axios.post("http://157.173.220.208/utils/getalluser/", { role: 'worker', region: headRegion }, { headers: { Authorization: `Bearer ${accessToken}` } });
                 setstaffList(response.data);
             } catch (error) {
                 console.error("Error fetching staffs:", error);
@@ -78,7 +78,7 @@ const Staff = () => {
         };
     
         axios
-            .post("http://127.0.0.1:8000/utils/edituserxxx/", updatedData, {
+            .post("http://157.173.220.208/utils/edituserxxx/", updatedData, {
                 headers: {
                     "Content-Type": "application/json",
                     Authorization: `Bearer ${AT}`,

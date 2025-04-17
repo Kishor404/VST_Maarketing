@@ -10,7 +10,7 @@ const EditReq = () => {
 
     const refresh_token = async () => {
         try {
-            const res = await axios.post("http://127.0.0.1:8000/log/token/refresh/", 
+            const res = await axios.post("http://157.173.220.208/log/token/refresh/", 
                 { 'refresh': refreshToken }, 
                 { headers: { "Content-Type": "application/json" } }
             );
@@ -24,7 +24,7 @@ const EditReq = () => {
 
     const fetch_req = async (accessToken) => {
         try {
-            const response = await axios.get("http://127.0.0.1:8000/utils/headvieweditreq/", {
+            const response = await axios.get("http://157.173.220.208/utils/headvieweditreq/", {
                 headers: { Authorization: `Bearer ${accessToken}` }
             });
             if (response.data) {
@@ -51,7 +51,7 @@ const EditReq = () => {
 
         const AT = await refresh_token();
         try {
-            const response = await axios.get(`http://127.0.0.1:8000/utils/headeditreq/${req_id}`, {
+            const response = await axios.get(`http://157.173.220.208/utils/headeditreq/${req_id}`, {
                 headers: { Authorization: `Bearer ${AT}` }
             });
             if (response.data) {
@@ -70,7 +70,7 @@ const EditReq = () => {
 
         const AT = await refresh_token();
         try {
-            const response = await axios.get(`http://127.0.0.1:8000/utils/headrejecteditreq/${req_id}`, {
+            const response = await axios.get(`http://157.173.220.208/utils/headrejecteditreq/${req_id}`, {
                 headers: { Authorization: `Bearer ${AT}` }
             });
             if (response.data) {

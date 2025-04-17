@@ -14,7 +14,7 @@ const ShowCard = () => {
     // Refresh Token Function
     const refresh_token = async () => {
         try {
-            const res = await axios.post("http://127.0.0.1:8000/log/token/refresh/", { 'refresh': refreshToken }, { headers: { "Content-Type": "application/json" } });
+            const res = await axios.post("http://157.173.220.208/log/token/refresh/", { 'refresh': refreshToken }, { headers: { "Content-Type": "application/json" } });
             Cookies.set('refresh_token', res.data.refresh, { expires: 7 });
             return res.data.access;
         } catch (error) {
@@ -26,7 +26,7 @@ const ShowCard = () => {
     // Fetch Single Customer by ID
     const fetch_user = async (cid, accessToken) => {
         try {
-            const response = await axios.get(`http://127.0.0.1:8000/api/headcardgetid/${cid}/`, {
+            const response = await axios.get(`http://157.173.220.208/api/headcardgetid/${cid}/`, {
                 headers: { Authorization: `Bearer ${accessToken}` }
             });
             if (response.data.region === headRegion) {
@@ -53,7 +53,7 @@ const ShowCard = () => {
             const accessToken = await refresh_token();
             if (!accessToken) return;
             try {
-                const response = await axios.get("http://127.0.0.1:8000/api/headcardlist/", { headers: { Authorization: `Bearer ${accessToken}` } });
+                const response = await axios.get("http://157.173.220.208/api/headcardlist/", { headers: { Authorization: `Bearer ${accessToken}` } });
                 setshowcardList(response.data);
             } catch (error) {
                 console.error("Error fetching customers:", error);
@@ -82,7 +82,7 @@ const ShowCard = () => {
         if (fetchData.address.trim() !== "") updatedData.address = fetchData.address;
     
         axios
-            .patch('http://127.0.0.1:8000/api/headeditcard/'+fetchData.id+'/', updatedData, {
+            .patch('http://157.173.220.208/api/headeditcard/'+fetchData.id+'/', updatedData, {
                 headers: {
                     "Content-Type": "application/json",
                     Authorization: `Bearer ${AT}`,
