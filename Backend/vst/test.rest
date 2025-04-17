@@ -238,11 +238,11 @@ Authorization: Bearer \nMIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQDEfcfD
 
 ###
 
-POST http://127.0.0.1:8000/firebase/send-notification/
+POST http://157.173.220.208/firebase/send-notification/
 Content-Type: application/json
 
 {
-  "token": "dvzkAGcpTvC1FmlTtO7CQT:APA91bFx09aLVLuqWTB4LuldY8hKgliYxH-CoHPZmBrsfMFgYtgjgoaA8Y_lAKncuPVEdOCAS4bDlB5v94nIZxRulIDz_OQYmXCue2Ts66z48w7Be-2dWW4",
-  "title": "Happy Pongal",
-  "body": "Wishing you a Happy Pongal From VST Maarketing"
+  "token": "dugtkxjMRTKOKdiMTZZiKc:APA91bFUwzfSxVZDv8SYAR5xfTIw1hgHL3nW5QB_qjDOxQrvJ2gmG7_1iKZBkcy_Rx3ZuwlAc5UxSqMBMPEwSdJOhwmH2Et6G9OLaQnq4wC5tdkKFaufzhM",
+  "title": "Why Not !",
+  "body": "Choose Venus Water Purifier From VST Maarketing"
 }

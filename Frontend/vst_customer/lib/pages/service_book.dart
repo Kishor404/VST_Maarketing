@@ -316,7 +316,7 @@ Future<void> _confirmBooking(int workerId, String avaDate, String complaintText,
             children: [
               Center(
                 child: Image.network(
-                   "${Data.baseUrl}media/utils/Service_Book.jpg",
+                   "${Data.baseUrl}/media/utils/Service_Book.jpg",
                   height: 250,
                 ),
               ),

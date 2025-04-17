@@ -23,6 +23,7 @@ Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
   }
 }
 
+
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
@@ -37,6 +38,17 @@ Future<void> main() async {
   FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
   await requestNotificationPermission();
   await getToken();
+
+  FirebaseMessaging.onMessage.listen((RemoteMessage message) {
+  print("📩 Foreground message received: ${message.messageId}");
+    if (message.notification != null) {
+      NotificationService().showNotification(
+        title: message.notification!.title ?? "No Title",
+        body: message.notification!.body ?? "No Body",
+      );
+    }
+  });
+
 
   Locale locale = await getSavedLocale();
 
