@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../app_localizations.dart';
 
 class ServiceLast extends StatefulWidget {
@@ -32,27 +33,37 @@ class _ServiceLastState extends State<ServiceLast> {
         foregroundColor: Colors.white,
       ),
       body: Padding(
-        padding: const EdgeInsets.all(16.0),
+        padding: EdgeInsets.all(16.0.w), // Responsive padding
         child: Card(
           elevation: 5,
-          margin: EdgeInsets.all(8),
+          margin: EdgeInsets.all(8.0.w), // Responsive margin
           child: Padding(
-            padding: const EdgeInsets.all(32.0),
+            padding: EdgeInsets.all(32.0.w), // Responsive padding
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(AppLocalizations.of(context).translate('service_last_service_details'), style: TextStyle(fontSize: 20)),
+                Text(AppLocalizations.of(context).translate('service_last_service_details'),
+                    style: TextStyle(fontSize: 18.sp)), // Responsive font size
                 Divider(),
-                _buildDetail(AppLocalizations.of(context).translate('service_last_booked_by'), widget.serviceData["customer_data"]?["name"]?.toString() ?? "None"),
-                _buildDetail(AppLocalizations.of(context).translate('service_last_card_id'), widget.serviceData["card"]?.toString() ?? "None"),
-                _buildDetail(AppLocalizations.of(context).translate('service_last_staff_name'), widget.serviceData["staff_name"]?.toString() ?? "None"),
-                _buildDetail(AppLocalizations.of(context).translate('service_last_staff_id'), widget.serviceData["staff"]?.toString() ?? "None"),
-                _buildDetail(AppLocalizations.of(context).translate('service_last_complaint'), widget.serviceData['complaint']?.toString() ?? "None"),
-                _buildDetail(AppLocalizations.of(context).translate('service_last_description'), widget.serviceData['description']?.toString() ?? "None"),
-                _buildDetail(AppLocalizations.of(context).translate('service_last_date'), widget.serviceData['available_date']?.toString() ?? "None"),
-                _buildDetail(AppLocalizations.of(context).translate('service_last_status'), _getStatusLabel(widget.serviceData['status']?.toString() ?? "None")),
-                SizedBox(height: 32),
-                Text(AppLocalizations.of(context).translate('service_last_customer_details'), style: TextStyle(fontSize: 18)),
+                _buildDetail(AppLocalizations.of(context).translate('service_last_booked_by'),
+                    widget.serviceData["customer_data"]?["name"]?.toString() ?? "None"),
+                _buildDetail(AppLocalizations.of(context).translate('service_last_card_id'),
+                    widget.serviceData["card"]?.toString() ?? "None"),
+                _buildDetail(AppLocalizations.of(context).translate('service_last_staff_name'),
+                    widget.serviceData["staff_name"]?.toString() ?? "None"),
+                _buildDetail(AppLocalizations.of(context).translate('service_last_staff_id'),
+                    widget.serviceData["staff"]?.toString() ?? "None"),
+                _buildDetail(AppLocalizations.of(context).translate('service_last_complaint'),
+                    widget.serviceData['complaint']?.toString() ?? "None"),
+                _buildDetail(AppLocalizations.of(context).translate('service_last_description'),
+                    widget.serviceData['description']?.toString() ?? "None"),
+                _buildDetail(AppLocalizations.of(context).translate('service_last_date'),
+                    widget.serviceData['available_date']?.toString() ?? "None"),
+                _buildDetail(AppLocalizations.of(context).translate('service_last_status'),
+                    _getStatusLabel(widget.serviceData['status']?.toString() ?? "None")),
+                SizedBox(height: 32.h), // Responsive spacing
+                Text(AppLocalizations.of(context).translate('service_last_customer_details'),
+                    style: TextStyle(fontSize: 18.sp)), // Responsive font size
                 Divider(),
                 _buildCustomerDetails(),
               ],
@@ -70,12 +81,12 @@ class _ServiceLastState extends State<ServiceLast> {
 
   Widget _buildDetail(String title, String value) {
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 4.0),
+      padding: EdgeInsets.symmetric(vertical: 4.0.h), // Responsive padding
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Text(title, style: TextStyle(color: Color.fromARGB(255, 55, 99, 174), fontSize: 17)),
-          Text(value, style: TextStyle(fontSize: 17)),
+          Text(title, style: TextStyle(color: Color.fromARGB(255, 55, 99, 174), fontSize: 15.sp)), // Responsive font size
+          Text(value, style: TextStyle(fontSize: 15.sp)), // Responsive font size
         ],
       ),
     );
@@ -83,14 +94,22 @@ class _ServiceLastState extends State<ServiceLast> {
 
   Widget _buildCustomerDetails() {
     Map<String, String> customerData = {
-      AppLocalizations.of(context).translate('service_last_customer_city'): widget.serviceData["customer_data"]?["city"]?.toString() ?? "None",
-      AppLocalizations.of(context).translate('service_last_customer_name'): widget.serviceData["customer_data"]?["name"]?.toString() ?? "None",
-      AppLocalizations.of(context).translate('service_last_customer_email'): widget.serviceData["customer_data"]?["email"]?.toString() ?? "None",
-      AppLocalizations.of(context).translate('service_last_customer_phone'): widget.serviceData["customer_data"]?["phone"]?.toString() ?? "None",
-      AppLocalizations.of(context).translate('service_last_customer_region'): widget.serviceData["customer_data"]?["region"]?.toString() ?? "None",
-      AppLocalizations.of(context).translate('service_last_customer_address'): widget.serviceData["customer_data"]?["address"]?.toString() ?? "None",
-      AppLocalizations.of(context).translate('service_last_customer_district'): widget.serviceData["customer_data"]?["district"]?.toString() ?? "None",
-      AppLocalizations.of(context).translate('service_last_customer_postal'): widget.serviceData["customer_data"]?["postal_code"]?.toString() ?? "None",
+      AppLocalizations.of(context).translate('service_last_customer_city'):
+          widget.serviceData["customer_data"]?["city"]?.toString() ?? "None",
+      AppLocalizations.of(context).translate('service_last_customer_name'):
+          widget.serviceData["customer_data"]?["name"]?.toString() ?? "None",
+      AppLocalizations.of(context).translate('service_last_customer_email'):
+          widget.serviceData["customer_data"]?["email"]?.toString() ?? "None",
+      AppLocalizations.of(context).translate('service_last_customer_phone'):
+          widget.serviceData["customer_data"]?["phone"]?.toString() ?? "None",
+      AppLocalizations.of(context).translate('service_last_customer_region'):
+          widget.serviceData["customer_data"]?["region"]?.toString() ?? "None",
+      AppLocalizations.of(context).translate('service_last_customer_address'):
+          widget.serviceData["customer_data"]?["address"]?.toString() ?? "None",
+      AppLocalizations.of(context).translate('service_last_customer_district'):
+          widget.serviceData["customer_data"]?["district"]?.toString() ?? "None",
+      AppLocalizations.of(context).translate('service_last_customer_postal'):
+          widget.serviceData["customer_data"]?["postal_code"]?.toString() ?? "None",
     };
 
     return Column(

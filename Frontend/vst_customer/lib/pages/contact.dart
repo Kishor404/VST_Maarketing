@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:dio/dio.dart';
-import 'data.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../app_localizations.dart';
+import 'data.dart';
 
 class ContactPage extends StatefulWidget {
   const ContactPage({super.key});
@@ -58,91 +59,93 @@ class _ContactPageState extends State<ContactPage> {
         foregroundColor: Colors.white,
       ),
       body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            // Business Card
-            Container(
-              padding: const EdgeInsets.all(16),
-              margin: const EdgeInsets.symmetric(horizontal: 30),
-              decoration: BoxDecoration(
-                border: Border.all(color: const Color.fromARGB(255, 55, 99, 174), width: 3),
-                borderRadius: BorderRadius.circular(12),
-              ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  // Logo (Centered)
-                  Image.asset(
-                    cardData["company"]["logo"],
-                    width: 380, // Adjust logo size
-                    height: 80,
-                    fit: BoxFit.contain,
-                  ),
-                  const SizedBox(height: 20),
-
-                  // Address
-                  Text(
-                    "${cardData["company"]["address_line1"]},\n"
-                    "${cardData["company"]["address_line2"]},\n"
-                    "${cardData["company"]["address_line3"]}",
-                    textAlign: TextAlign.center,
-                    style: const TextStyle(fontSize: 18),
-                  ),
-                  const SizedBox(height: 12),
-
-                  // Phone Numbers
-                  Text(
-                    cardData["company"]["phone"].join("\n"),
-                    style: const TextStyle(fontSize: 18),
-                    textAlign: TextAlign.center,
-                  ),
-                  const SizedBox(height: 12),
-
-                  // Email & Website
-                  Text(
-                    "${AppLocalizations.of(context).translate('contact_email')} ${cardData["company"]["email"]}",
-                    style: const TextStyle(fontSize: 18),
-                  ),
-                  Text(
-                    "${AppLocalizations.of(context).translate('contact_web')} ${cardData["company"]["web"]}",
-                    style: const TextStyle(fontSize: 18),
-                  ),
-                ],
-              ),
-            ),
-
-            const SizedBox(height: 20),
-
-            // Admin Card
-            Container(
-              width: double.infinity,
-              margin: const EdgeInsets.symmetric(horizontal: 40),
-              padding: const EdgeInsets.all(16),
-              decoration: BoxDecoration(
-                color: const Color.fromARGB(255, 55, 99, 174),
-                borderRadius: BorderRadius.circular(12),
-              ),
-              child: Column(
-                children: [
-                  Text(
-                    cardData["admin"]["name"],
-                    style: const TextStyle(
-                      fontSize: 20,
-                      color: Colors.white,
+        child: SingleChildScrollView(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              // Business Card
+              Container(
+                padding: EdgeInsets.all(16.sp),
+                margin: EdgeInsets.symmetric(horizontal: 30.w),
+                decoration: BoxDecoration(
+                  border: Border.all(color: const Color.fromARGB(255, 55, 99, 174), width: 3.w),
+                  borderRadius: BorderRadius.circular(12.sp),
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    // Logo (Centered)
+                    Image.asset(
+                      cardData["company"]["logo"],
+                      width: 380.w, // Adjust logo size
+                      height: 45.h,
+                      fit: BoxFit.contain,
                     ),
-                  ),
-                  Text(
-                    cardData["admin"]["phone"],
-                    style: const TextStyle(
-                      fontSize: 18,
-                      color: Colors.white,
+                    SizedBox(height: 20.h),
+
+                    // Address
+                    Text(
+                      "${cardData["company"]["address_line1"]},\n"
+                      "${cardData["company"]["address_line2"]},\n"
+                      "${cardData["company"]["address_line3"]}",
+                      textAlign: TextAlign.center,
+                      style: TextStyle(fontSize: 16.sp),
                     ),
-                  ),
-                ],
+                    SizedBox(height: 12.h),
+
+                    // Phone Numbers
+                    Text(
+                      cardData["company"]["phone"].join("\n"),
+                      style: TextStyle(fontSize: 16.sp),
+                      textAlign: TextAlign.center,
+                    ),
+                    SizedBox(height: 12.h),
+
+                    // Email & Website
+                    Text(
+                      "${AppLocalizations.of(context).translate('contact_email')} ${cardData["company"]["email"]}",
+                      style: TextStyle(fontSize: 16.sp),
+                    ),
+                    Text(
+                      "${AppLocalizations.of(context).translate('contact_web')} ${cardData["company"]["web"]}",
+                      style: TextStyle(fontSize: 16.sp),
+                    ),
+                  ],
+                ),
               ),
-            ),
-          ],
+
+              SizedBox(height: 20.h),
+
+              // Admin Card
+              Container(
+                width: double.infinity,
+                margin: EdgeInsets.symmetric(horizontal: 40.w),
+                padding: EdgeInsets.all(16.sp),
+                decoration: BoxDecoration(
+                  color: const Color.fromARGB(255, 55, 99, 174),
+                  borderRadius: BorderRadius.circular(12.sp),
+                ),
+                child: Column(
+                  children: [
+                    Text(
+                      cardData["admin"]["name"],
+                      style: TextStyle(
+                        fontSize: 17.sp,
+                        color: Colors.white,
+                      ),
+                    ),
+                    Text(
+                      cardData["admin"]["phone"],
+                      style: TextStyle(
+                        fontSize: 16.sp,
+                        color: Colors.white,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );

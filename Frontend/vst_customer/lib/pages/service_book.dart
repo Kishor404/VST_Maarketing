@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:dio/dio.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+
 import 'data.dart';
 import 'index.dart';
 import 'login_page.dart';
@@ -8,7 +10,6 @@ import '../app_localizations.dart';
 
 class ServiceBook extends StatefulWidget {
   const ServiceBook({super.key});
-
 
   @override
   ServiceBookState createState() => ServiceBookState();
@@ -27,8 +28,7 @@ class ServiceBookState extends State<ServiceBook> {
   final Dio _dio = Dio();
   String? selectedCard;
 
-
-  List<String> complaints = ["General Visit","Others"];
+  List<String> complaints = ["General Visit", "Others"];
 
   @override
   void initState() {
@@ -49,7 +49,7 @@ class ServiceBookState extends State<ServiceBook> {
       Response response = await _dio.get('${Data.baseUrl}/media/data.json');
       if (response.statusCode == 200) {
         setState(() {
-          complaints = List<String>.from(response.data['complaints'] ?? ["General Visit","Others"]);
+          complaints = List<String>.from(response.data['complaints'] ?? ["General Visit", "Others"]);
         });
       }
     } catch (e) {
@@ -64,7 +64,6 @@ class ServiceBookState extends State<ServiceBook> {
       _accessToken = prefs.getString('AT') ?? ''; 
     });
   }
-
 
   Future<void> _loadCustomerId() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -82,48 +81,46 @@ class ServiceBookState extends State<ServiceBook> {
     );
   }
 
-
   Future<void> _refreshAccessToken() async {
-  if (_refreshToken.isEmpty) {
-    debugPrint("No refresh token found! Logging out...");
-    await _logout();
-    return;
-  }
-
-  final url = "${Data.baseUrl}/log/token/refresh/";
-  final requestBody = {'refresh': _refreshToken};
-
-  try {
-    final response = await _dio.post(
-      url,
-      data: requestBody,
-      options: Options(headers: {'Content-Type': 'application/json'}),
-    );
-
-    if (response.statusCode == 200 && response.data['access'] != null) {
-      final newAccessToken = response.data['access'];
-      final prefs = await SharedPreferences.getInstance();
-      await prefs.setString('AT', newAccessToken);
-
-      setState(() {
-        _accessToken = newAccessToken;
-      });
-
-      debugPrint("Access token refreshed successfully.");
-    } else {
-      debugPrint("Refresh token is invalid or expired. Logging out...");
+    if (_refreshToken.isEmpty) {
+      debugPrint("No refresh token found! Logging out...");
       await _logout();
+      return;
     }
-  } catch (e) {
-    if (e is DioException && e.response?.statusCode == 401) {
-      debugPrint("Refresh token expired. Logging out...");
-      await _logout();
-    } else {
-      debugPrint('Error refreshing token: $e');
+
+    final url = "${Data.baseUrl}/log/token/refresh/";
+    final requestBody = {'refresh': _refreshToken};
+
+    try {
+      final response = await _dio.post(
+        url,
+        data: requestBody,
+        options: Options(headers: {'Content-Type': 'application/json'}),
+      );
+
+      if (response.statusCode == 200 && response.data['access'] != null) {
+        final newAccessToken = response.data['access'];
+        final prefs = await SharedPreferences.getInstance();
+        await prefs.setString('AT', newAccessToken);
+
+        setState(() {
+          _accessToken = newAccessToken;
+        });
+
+        debugPrint("Access token refreshed successfully.");
+      } else {
+        debugPrint("Refresh token is invalid or expired. Logging out...");
+        await _logout();
+      }
+    } catch (e) {
+      if (e is DioException && e.response?.statusCode == 401) {
+        debugPrint("Refresh token expired. Logging out...");
+        await _logout();
+      } else {
+        debugPrint('Error refreshing token: $e');
+      }
     }
   }
-}
-
 
   Future<void> fetchCards() async {
     if (_accessToken.isEmpty) {
@@ -143,31 +140,29 @@ class ServiceBookState extends State<ServiceBook> {
       if (response.statusCode == 200 && response.data is List) {
         setState(() {
           cardData = List<Map<String, dynamic>>.from(response.data);
-
         });
       } else {
         debugPrint("Unexpected response format: ${response.data}");
-        setState(() {
-
-        });
       }
     } catch (e) {
       if (e is DioException && e.response?.statusCode == 401) {
         debugPrint("Access token expired. Refreshing token...");
         await _refreshAccessToken();
-        return fetchCards(); // Retry fetching after token refresh
+        return fetchCards();
       }
-
-      setState(() {
-      });
       debugPrint('Error fetching cards: $e');
     }
   }
 
   Future<void> _selectDate(BuildContext context, bool isFrom) async {
-    DateTime initialDate = DateTime.now();
-    DateTime firstDate = DateTime(2000);
-    DateTime lastDate = DateTime(2100);
+    DateTime initialDate = isFrom
+        ? DateTime.now().add(Duration(days: 3)) // "From date" should be at least 10 days from now
+        : fromDate != null ? fromDate!.add(Duration(days: 1)) : DateTime.now();
+
+    DateTime firstDate = DateTime(2000); // Allow dates from year 2000
+    DateTime lastDate = isFrom
+        ? DateTime.now().add(Duration(days: 60)) // "From date" can be up to 60 days ahead
+        : (fromDate != null ? fromDate!.add(Duration(days: 10)) : DateTime.now().add(Duration(days: 10))); // "To" date within 10 days of the "From" date
 
     final DateTime? pickedDate = await showDatePicker(
       context: context,
@@ -179,116 +174,132 @@ class ServiceBookState extends State<ServiceBook> {
     if (pickedDate != null) {
       setState(() {
         if (isFrom) {
-          fromDate = pickedDate;
+          // Check if the "from date" is at least 10 days from today
+          if (pickedDate.isBefore(DateTime.now().add(Duration(days: 3)))) {
+            // If "from date" is not at least 10 days from now, show an error
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(content: Text('The "From Date" must be at least 10 days from today.')),
+            );
+          } else {
+            fromDate = pickedDate;
+          }
         } else {
-          toDate = pickedDate;
+          // Ensure the "to date" is after the "from date"
+          if (fromDate != null && pickedDate.isBefore(fromDate!)) {
+            // If "to date" is before the "from date," show an error
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(content: Text('The "To Date" must be after the "From Date".')),
+            );
+          } else {
+            toDate = pickedDate;
+          }
         }
       });
     }
   }
 
+
+
+
   Future<void> _bookService() async {
-  if (fromDate == null || toDate == null || selectedComplaint == null || _customerId == null) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text(AppLocalizations.of(context).translate('service_book_fill_fields'))),
-    );
-    return;
-  }
-
-  String complaintText = selectedComplaint == "Others"
-      ? otherComplaintController.text
-      : selectedComplaint ?? "";
-
-  String complaintDescription = complaintDetailsController.text;
-
-  final String checkAvailabilityUrl = "${Data.baseUrl}/utils/checkstaffavailability/";
-
-  Map<String, dynamic> availabilityRequestBody = {
-    "from_date": "${fromDate!.year}-${fromDate!.month}-${fromDate!.day}",
-    "to_date": "${toDate!.year}-${toDate!.month}-${toDate!.day}"
-  };
-  try {
-    Response availabilityResponse = await _dio.post(
-      checkAvailabilityUrl,
-      data: availabilityRequestBody,
-      options: Options(
-        headers: {
-          "Content-Type": "application/json",
-          'Authorization': 'Bearer $_accessToken',
-        },
-      ),
-    );
-
-    if (availabilityResponse.data.containsKey("worker_id")) {
-      int workerId = availabilityResponse.data["worker_id"];
-      String avaDate = availabilityResponse.data["available"];
-      // Proceed with booking since a worker is available
-      await _confirmBooking(workerId, avaDate, complaintText, complaintDescription);
-    } else {
+    if (fromDate == null || toDate == null || selectedComplaint == null || _customerId == null) {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(AppLocalizations.of(context).translate('service_book_no_worker'))),
+        SnackBar(content: Text(AppLocalizations.of(context).translate('service_book_fill_fields'))),
+      );
+      return;
+    }
+
+    String complaintText = selectedComplaint == "Others"
+        ? otherComplaintController.text
+        : selectedComplaint ?? "";
+
+    String complaintDescription = complaintDetailsController.text;
+
+    final String checkAvailabilityUrl = "${Data.baseUrl}/utils/checkstaffavailability/";
+
+    Map<String, dynamic> availabilityRequestBody = {
+      "from_date": "${fromDate!.year}-${fromDate!.month}-${fromDate!.day}",
+      "to_date": "${toDate!.year}-${toDate!.month}-${toDate!.day}"
+    };
+    try {
+      Response availabilityResponse = await _dio.post(
+        checkAvailabilityUrl,
+        data: availabilityRequestBody,
+        options: Options(
+          headers: {
+            "Content-Type": "application/json",
+            'Authorization': 'Bearer $_accessToken',
+          },
+        ),
+      );
+
+      if (availabilityResponse.data.containsKey("worker_id")) {
+        int workerId = availabilityResponse.data["worker_id"];
+        String avaDate = availabilityResponse.data["available"];
+        await _confirmBooking(workerId, avaDate, complaintText, complaintDescription);
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text(AppLocalizations.of(context).translate('service_book_no_worker'))),
+        );
+      }
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text("Error checking staff availability: $e")),
       );
     }
-  } catch (e) {
-    print(e);
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text("Error checking staff availability: $e")),
-    );
   }
-}
 
-Future<void> _confirmBooking(int workerId, String avaDate, String complaintText, String complaintDescription) async {
-  final String apiUrl = "${Data.baseUrl}/services/";
-  int cardId = int.parse(selectedCard!.split('-')[0]);
+  Future<void> _confirmBooking(int workerId, String avaDate, String complaintText, String complaintDescription) async {
+    final String apiUrl = "${Data.baseUrl}/services/";
+    int cardId = int.parse(selectedCard!.split('-')[0]);
 
-  Map<String, dynamic> requestBody = {
-    "customer": int.parse(_customerId!),
-    "staff": workerId, // Assign the available worker
-    "staff_name": "Assigned Worker", // Modify based on API response
-    "available": {
-      "from": "${fromDate!.year}/${fromDate!.month}/${fromDate!.day}",
-      "to": "${toDate!.year}/${toDate!.month}/${toDate!.day}"
-    },
-    "available_date":avaDate,
-    "description": complaintDescription,
-    "complaint": complaintText,
-    "status": "BD",
-    "card": cardId,
-  };
+    Map<String, dynamic> requestBody = {
+      "customer": int.parse(_customerId!),
+      "staff": workerId,
+      "staff_name": "Assigned Worker",
+      "available": {
+        "from": "${fromDate!.year}/${fromDate!.month}/${fromDate!.day}",
+        "to": "${toDate!.year}/${toDate!.month}/${toDate!.day}"
+      },
+      "available_date": avaDate,
+      "description": complaintDescription,
+      "complaint": complaintText,
+      "status": "BD",
+      "card": cardId,
+    };
 
-  try {
-    Response response = await _dio.post(
-      apiUrl,
-      data: requestBody,
-      options: Options(
-        headers: {
-          "Content-Type": "application/json",
-          'Authorization': 'Bearer $_accessToken',
-        },
-      ),
-    );
-
-    if (response.statusCode == 201 || response.statusCode == 200) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(AppLocalizations.of(context).translate('service_book_success'))),
+    try {
+      Response response = await _dio.post(
+        apiUrl,
+        data: requestBody,
+        options: Options(
+          headers: {
+            "Content-Type": "application/json",
+            'Authorization': 'Bearer $_accessToken',
+          },
+        ),
       );
-      Navigator.pushAndRemoveUntil(
-        context,
-        MaterialPageRoute(builder: (context) => IndexPage()),
-        (Route<dynamic> route) => false, // Remove all previous routes
-      );
-    } else {
+
+      if (response.statusCode == 201 || response.statusCode == 200) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text(AppLocalizations.of(context).translate('service_book_success'))),
+        );
+        Navigator.pushAndRemoveUntil(
+          context,
+          MaterialPageRoute(builder: (context) => IndexPage()),
+          (Route<dynamic> route) => false,
+        );
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text(AppLocalizations.of(context).translate('service_book_fail'))),
+        );
+      }
+    } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(AppLocalizations.of(context).translate('service_book_fail'))),
+        SnackBar(content: Text("Error: $e")),
       );
     }
-  } catch (e) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text("Error: $e")),
-    );
   }
-}
-
 
   @override
   Widget build(BuildContext context) {
@@ -296,7 +307,7 @@ Future<void> _confirmBooking(int workerId, String avaDate, String complaintText,
       appBar: AppBar(
         title: Text(
           AppLocalizations.of(context).translate('service_book_title'),
-          style: TextStyle(color: Colors.white, fontSize: 20),
+          style: TextStyle(color: Colors.white, fontSize: 20.sp),
         ),
         backgroundColor: const Color.fromARGB(255, 55, 99, 174),
         leading: IconButton(
@@ -305,168 +316,163 @@ Future<void> _confirmBooking(int workerId, String avaDate, String complaintText,
             Navigator.pop(context);
           },
         ),
-        toolbarHeight: 70,
+        toolbarHeight: 50.h,
       ),
-
       body: SafeArea(
         child: Padding(
-          padding: const EdgeInsets.all(20.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Center(
-                child: Image.network(
-                   "${Data.baseUrl}/media/utils/Service_Book.jpg",
-                  height: 250,
+          padding: EdgeInsets.all(20.w),
+          child: SingleChildScrollView(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Center(
+                  child: Image.network(
+                    "${Data.baseUrl}/media/utils/Service_Book.jpg",
+                    height: 250.h,
+                  ),
                 ),
-              ),
-              const SizedBox(height: 20),
-              Text(
-                AppLocalizations.of(context).translate('service_book_available_period'),
-                style: TextStyle(
-                  fontSize: 18,
+                SizedBox(height: 20.h),
+                Text(
+                  AppLocalizations.of(context).translate('service_book_available_period'),
+                  style: TextStyle(fontSize: 16.sp),
                 ),
-              ),
-              const SizedBox(height: 10),
-              Row(
-                children: [
-                  Expanded(
-                    child: GestureDetector(
-                      onTap: () => _selectDate(context, true),
-                      child: AbsorbPointer(
-                        child: TextField(
-                          decoration: InputDecoration(
-                            labelText: fromDate == null
-                                ? AppLocalizations.of(context).translate('service_book_from')
-                                : "${fromDate!.day}/${fromDate!.month}/${fromDate!.year}",
-                            border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(10.0),
+                SizedBox(height: 10.h),
+                Row(
+                  children: [
+                    Expanded(
+                      child: GestureDetector(
+                        onTap: () => _selectDate(context, true),
+                        child: AbsorbPointer(
+                          child: TextField(
+                            decoration: InputDecoration(
+                              labelText: fromDate == null
+                                  ? AppLocalizations.of(context).translate('service_book_from')
+                                  : "${fromDate!.day}/${fromDate!.month}/${fromDate!.year}",
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(10.r),
+                              ),
                             ),
                           ),
                         ),
                       ),
                     ),
-                  ),
-                  const SizedBox(width: 10),
-                  Expanded(
-                    child: GestureDetector(
-                      onTap: () => _selectDate(context, false),
-                      child: AbsorbPointer(
-                        child: TextField(
-                          decoration: InputDecoration(
-                            labelText: toDate == null
-                                ? AppLocalizations.of(context).translate('service_book_to')
-                                : "${toDate!.day}/${toDate!.month}/${toDate!.year}",
-                            border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(10.0),
+                    SizedBox(width: 10.w),
+                    Expanded(
+                      child: GestureDetector(
+                        onTap: () => _selectDate(context, false),
+                        child: AbsorbPointer(
+                          child: TextField(
+                            decoration: InputDecoration(
+                              labelText: toDate == null
+                                  ? AppLocalizations.of(context).translate('service_book_to')
+                                  : "${toDate!.day}/${toDate!.month}/${toDate!.year}",
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(10.r),
+                              ),
                             ),
                           ),
                         ),
+                      ),
+                    ),
+                  ],
+                ),
+                SizedBox(height: 20.h),
+                Text(
+                  AppLocalizations.of(context).translate('service_book_select_card'),
+                  style: TextStyle(fontSize: 16.sp),
+                ),
+                SizedBox(height: 10.h),
+                DropdownButtonFormField<String>(
+                  decoration: InputDecoration(
+                    labelText: AppLocalizations.of(context).translate('service_book_card'),
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(10.r),
+                    ),
+                  ),
+                  value: selectedCard,
+                  items: cardData.map((card) {
+                    String displayText = "${card['id']}-${card['model']}";
+                    return DropdownMenuItem<String>(
+                      value: displayText,
+                      child: Text(displayText),
+                    );
+                  }).toList(),
+                  onChanged: (String? newValue) {
+                    setState(() {
+                      selectedCard = newValue;
+                    });
+                  },
+                ),
+                SizedBox(height: 20.h),
+                Text(
+                  AppLocalizations.of(context).translate('service_book_details'),
+                  style: TextStyle(fontSize: 16.sp),
+                ),
+                SizedBox(height: 10.h),
+                DropdownButtonFormField<String>(
+                  decoration: InputDecoration(
+                    labelText: AppLocalizations.of(context).translate('service_book_complaint_type'),
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(10.r),
+                    ),
+                  ),
+                  value: selectedComplaint,
+                  items: complaints.map((String complaint) {
+                    return DropdownMenuItem<String>(
+                      value: complaint,
+                      child: Text(complaint),
+                    );
+                  }).toList(),
+                  onChanged: (String? newValue) {
+                    setState(() {
+                      selectedComplaint = newValue;
+                    });
+                  },
+                ),
+                if (selectedComplaint == "Others") ...[
+                  SizedBox(height: 10.h),
+                  TextField(
+                    controller: otherComplaintController,
+                    decoration: InputDecoration(
+                      labelText: AppLocalizations.of(context).translate('service_book_enter_complaint'),
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(10.r),
                       ),
                     ),
                   ),
                 ],
-              ),
-              const SizedBox(height: 20),
-              Text(
-                AppLocalizations.of(context).translate('service_book_select_card'),
-                style: TextStyle(fontSize: 18),
-              ),
-              const SizedBox(height: 10),
-              DropdownButtonFormField<String>(
-                decoration: InputDecoration(
-                  labelText: AppLocalizations.of(context).translate('service_book_card'),
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(10.0),
+                if (selectedComplaint != null && selectedComplaint != "General Visit") ...[
+                  SizedBox(height: 10.h),
+                  TextField(
+                    controller: complaintDetailsController,
+                    decoration: InputDecoration(
+                      labelText: AppLocalizations.of(context).translate('service_book_brief_des'),
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(10.r),
+                      ),
+                    ),
                   ),
-                ),
-                value: selectedCard,
-                items: cardData.map((card) {
-                  String displayText = "${card['id']}-${card['model']}";
-                  return DropdownMenuItem<String>(
-                    value: displayText,
-                    child: Text(displayText),
-                  );
-                }).toList(),
-                onChanged: (String? newValue) {
-                  setState(() {
-                    selectedCard = newValue;
-                  });
-                },
-              ),
-              const SizedBox(height: 30),
-              Text(
-                AppLocalizations.of(context).translate('service_book_details'),
-                style: TextStyle(
-                  fontSize: 18,
-                ),
-              ),
-              
-
-              const SizedBox(height: 20),
-              DropdownButtonFormField<String>(
-                decoration: InputDecoration(
-                  labelText: AppLocalizations.of(context).translate('service_book_complaint_type'),
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(10.0),
-                  ),
-                ),
-                value: selectedComplaint,
-                items: complaints.map((String complaint) {
-                  return DropdownMenuItem<String>(
-                    value: complaint,
-                    child: Text(complaint),
-                  );
-                }).toList(),
-                onChanged: (String? newValue) {
-                  setState(() {
-                    selectedComplaint = newValue;
-                  });
-                },
-              ),
-              if (selectedComplaint == "Others") ...[
-                const SizedBox(height: 10),
-                TextField(
-                  controller: otherComplaintController,
-                  decoration: InputDecoration(
-                    labelText: AppLocalizations.of(context).translate('service_book_enter_complaint'),
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(10.0),
+                ],
+                SizedBox(height: 30.h),
+                SizedBox(
+                  width: double.infinity,
+                  child: ElevatedButton(
+                    onPressed: _bookService,
+                    style: ElevatedButton.styleFrom(
+                      padding: EdgeInsets.symmetric(vertical: 15.h),
+                      backgroundColor: const Color.fromARGB(255, 55, 99, 174),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10.r),
+                      ),
+                    ),
+                    child: Text(
+                      AppLocalizations.of(context).translate('service_book_but'),
+                      style: TextStyle(fontSize: 18.sp, color: Colors.white),
                     ),
                   ),
                 ),
               ],
-              if (selectedComplaint != null && selectedComplaint != "General Visit") ...[
-                const SizedBox(height: 10),
-                TextField(
-                  controller: complaintDetailsController,
-                  decoration: InputDecoration(
-                    labelText: AppLocalizations.of(context).translate('service_book_brief_des'),
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(10.0),
-                    ),
-                  ),
-                ),
-              ],
-              const SizedBox(height: 30),
-              SizedBox(
-                width: double.infinity,
-                child: ElevatedButton(
-                  onPressed: _bookService,
-                  style: ElevatedButton.styleFrom(
-                    padding: const EdgeInsets.symmetric(vertical: 15),
-                    backgroundColor: const Color.fromARGB(255, 55, 99, 174),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                  ),
-                  child: Text(
-                    AppLocalizations.of(context).translate('service_book_but'),
-                    style: TextStyle(fontSize: 18, color: Colors.white),
-                  ),
-                ),
-              ),
-            ],
+            ),
           ),
         ),
       ),

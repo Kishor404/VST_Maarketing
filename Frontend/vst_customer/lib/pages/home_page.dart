@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';  // Add this import
 import 'contact.dart';
 import 'data.dart';
 import 'help.dart';
@@ -42,7 +43,8 @@ class HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    double screenWidth = MediaQuery.of(context).size.width;
+    // Use ScreenUtil for responsive screen width
+    double screenWidth = ScreenUtil().screenWidth;
 
     final List<Map<String, dynamic>> buttonData = [
       {'icon': Icons.construction, 'label': AppLocalizations.of(context).translate('home_service'), 'onTap': () => widget.onNavigateToIndex(1)},
@@ -58,10 +60,11 @@ class HomePageState extends State<HomePage> {
     return Scaffold(
       backgroundColor: Colors.white,
       body: Padding(
-        padding: const EdgeInsets.all(16.0),
+        padding: EdgeInsets.all(16.0.sp), // Use screen scaling for padding
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
+            // Use ScreenUtil for responsive sizing
             SizedBox(
               height: screenWidth * 0.8 * 9 / 16,
               child: PageView.builder(
@@ -70,10 +73,10 @@ class HomePageState extends State<HomePage> {
                   int actualIndex = index % 3;
                   return Container(
                     width: screenWidth * 0.9,
-                    margin: const EdgeInsets.symmetric(horizontal: 8),
+                    margin: EdgeInsets.symmetric(horizontal: 8.sp),
                     decoration: BoxDecoration(
                       color: Colors.grey[300],
-                      borderRadius: BorderRadius.circular(10),
+                      borderRadius: BorderRadius.circular(10.sp),
                       image: DecorationImage(
                         image: NetworkImage('${Data.baseUrl}/media/Banners/banner$actualIndex.jpg'),
                         fit: BoxFit.cover,
@@ -83,38 +86,38 @@ class HomePageState extends State<HomePage> {
                 },
               ),
             ),
-            const SizedBox(height: 50),
+            SizedBox(height: 50.sp),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: List.generate(4, (index) => _buildIconButton(screenWidth, buttonData[index])),
             ),
-            const SizedBox(height: 30),
+            SizedBox(height: 30.sp),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: List.generate(4, (index) => _buildIconButton(screenWidth, buttonData[index + 4])),
             ),
-            const SizedBox(height: 50),
+            SizedBox(height: 50.sp),
             Expanded(
               child: Container(
                 decoration: BoxDecoration(
                   color: Colors.grey[300],
-                  borderRadius: BorderRadius.circular(10),
+                  borderRadius: BorderRadius.circular(10.sp),
                 ),
                 child: Center(
                   child: SizedBox(
-                    width: MediaQuery.of(context).size.width * 0.8,
+                    width: screenWidth * 0.8,
                     child: Column(
                       mainAxisSize: MainAxisSize.min,
                       children: [
                         Text(
                           '"${quotes.isNotEmpty ? quotes[0] : AppLocalizations.of(context).translate('home_loading')}"',
                           textAlign: TextAlign.center,
-                          style: TextStyle(fontSize: 16, fontStyle: FontStyle.italic, color: Colors.black87),
+                          style: TextStyle(fontSize: 14.sp, fontStyle: FontStyle.italic, color: Colors.black87),
                         ),
-                        const SizedBox(height: 8),
+                        SizedBox(height: 8.sp),
                         Text(
                           '- ${quotes.length > 1 ? quotes[1] : ""}',
-                          style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold, color: Colors.black54),
+                          style: TextStyle(fontSize: 14.sp, fontWeight: FontWeight.bold, color: Colors.black54),
                         ),
                       ],
                     ),
@@ -131,20 +134,20 @@ class HomePageState extends State<HomePage> {
   Widget _buildIconButton(double screenWidth, Map<String, dynamic> data) {
     return InkWell(
       onTap: data['onTap'],
-      borderRadius: BorderRadius.circular(8),
+      borderRadius: BorderRadius.circular(8.sp),
       child: Container(
         width: screenWidth / 6,
         height: screenWidth / 6,
         decoration: BoxDecoration(
-          color: const Color.fromARGB(255, 55, 99, 174),
-          borderRadius: BorderRadius.circular(8),
+          color: Color.fromARGB(255, 55, 99, 174),
+          borderRadius: BorderRadius.circular(8.sp),
         ),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Icon(data['icon'], size: screenWidth / 18, color: Colors.white70),
-            const SizedBox(height: 8),
-            Text(data['label'], style: TextStyle(fontSize: screenWidth / 35, color: Colors.white70)),
+            Icon(data['icon'], size: screenWidth / 15.sp, color: Colors.white70),
+            SizedBox(height: 8.sp),
+            Text(data['label'], style: TextStyle(fontSize: screenWidth / 28.sp, color: Colors.white70)),
           ],
         ),
       ),

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import '../app_localizations.dart';
 import './login_page.dart';
 import './data.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart'; // Import for screen utils
 
 class WelcomePage extends StatelessWidget {
   final Function(Locale) onLanguageChange;
@@ -13,32 +14,35 @@ class WelcomePage extends StatelessWidget {
     return Scaffold(
       backgroundColor: const Color(0xFF3B5998), // Blue background
       body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 24),
+        padding: EdgeInsets.symmetric(horizontal: 24.sp), // Responsive padding
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            const SizedBox(height: 50),
+            SizedBox(height: 50.h), // Responsive height
             Text(
               AppLocalizations.of(context).translate('welcome'),
               style: TextStyle(
-                fontSize: 28,
+                fontSize: 28.sp, // Responsive font size
                 fontWeight: FontWeight.bold,
                 color: Colors.white,
               ),
             ),
-            const SizedBox(height: 20),
-            Image.network('${Data.baseUrl}/media/utils/Home_Illus.png', height: 300),
-            const SizedBox(height: 20),
+            SizedBox(height: 20.h), // Responsive height
+            Image.network(
+              '${Data.baseUrl}/media/utils/Home_Illus.png',
+              height: 250.h, // Responsive image height
+            ),
+            SizedBox(height: 20.h), // Responsive height
             Text(
               AppLocalizations.of(context).translate('welcome_text'),
               textAlign: TextAlign.center,
               style: TextStyle(
-                fontSize: 16,
+                fontSize: 16.sp, // Responsive font size
                 color: Colors.white,
               ),
             ),
-            const SizedBox(height: 40),
+            SizedBox(height: 40.h), // Responsive height
             SizedBox(
               width: double.infinity,
               child: ElevatedButton(
@@ -53,15 +57,15 @@ class WelcomePage extends StatelessWidget {
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(30),
                   ),
-                  padding: const EdgeInsets.symmetric(vertical: 14),
+                  padding: EdgeInsets.symmetric(vertical: 14.sp), // Responsive padding
                 ),
                 child: Text(
                   Localizations.localeOf(context).languageCode == 'en' ? 'தமிழ்' : 'English',
-                  style: const TextStyle(fontSize: 18, color: Color(0xFF3B5998)),
+                  style: TextStyle(fontSize: 16.sp, color: const Color(0xFF3B5998)),
                 ),
               ),
             ),
-            const SizedBox(height: 20),
+            SizedBox(height: 20.h), // Responsive height
             SizedBox(
               width: double.infinity,
               child: ElevatedButton(
@@ -76,11 +80,11 @@ class WelcomePage extends StatelessWidget {
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(30),
                   ),
-                  padding: const EdgeInsets.symmetric(vertical: 14),
+                  padding: EdgeInsets.symmetric(vertical: 14.sp), // Responsive padding
                 ),
                 child: Text(
                   AppLocalizations.of(context).translate('lets_go'),
-                  style: const TextStyle(fontSize: 18, color: Color(0xFF3B5998)),
+                  style: TextStyle(fontSize: 16.sp, color: const Color(0xFF3B5998)),
                 ),
               ),
             ),

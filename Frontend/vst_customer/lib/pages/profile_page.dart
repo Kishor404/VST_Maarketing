@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'login_page.dart';
 import '../app_localizations.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class ProfilePage extends StatefulWidget {
   final Function(int) onNavigateToIndex; // Callback to update index in IndexPage
@@ -53,13 +54,10 @@ class ProfilePageState extends State<ProfilePage> {
     );
   }
 
-
-  
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color.fromARGB(255, 55, 99, 174),
+      backgroundColor: const Color.fromARGB(255, 55, 99, 174),
       body: SafeArea(
         child: Column(
           children: [
@@ -69,31 +67,31 @@ class ProfilePageState extends State<ProfilePage> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   CircleAvatar(
-                    radius: 50,
+                    radius: 40.r, // Make CircleAvatar responsive
                     backgroundColor: Colors.white,
-                    child: Icon(Icons.person, size: 60, color: Colors.grey),
+                    child: Icon(Icons.person, size: 60.sp, color: Colors.grey),
                   ),
-                  SizedBox(height: 10),
+                  SizedBox(height: 10.h), // Responsive height
                   Text(
                     _name,
                     style: TextStyle(
-                      fontSize: 24,
+                      fontSize: 24.sp, // Responsive text size
                       color: Colors.white,
                     ),
                   ),
-                  SizedBox(height: 10),
+                  SizedBox(height: 10.h), // Responsive height
                   Text(
                     '$_role - $_customerid',
                     style: TextStyle(
-                      fontSize: 16,
+                      fontSize: 18.sp, // Responsive text size
                       color: Colors.white70,
                     ),
                   ),
-                  SizedBox(height: 10),
+                  SizedBox(height: 10.h), // Responsive height
                   Text(
                     '+91 $_phone | $_region',
                     style: TextStyle(
-                      fontSize: 16,
+                      fontSize: 16.sp, // Responsive text size
                       color: Colors.white70,
                     ),
                   ),
@@ -106,24 +104,24 @@ class ProfilePageState extends State<ProfilePage> {
                 decoration: BoxDecoration(
                   color: Colors.white,
                   borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(30),
-                    topRight: Radius.circular(30),
+                    topLeft: Radius.circular(30.r), // Make border radius responsive
+                    topRight: Radius.circular(30.r),
                   ),
                 ),
                 child: Padding(
-                  padding: const EdgeInsets.all(32.0),
+                  padding: EdgeInsets.all(32.sp), // Responsive padding
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       ListTile(
-                        leading: Icon(Icons.email, color: Color.fromARGB(255, 55, 99, 174)),
-                        title: Text(AppLocalizations.of(context).translate('profile_email')),
-                        subtitle: Text(_email)
+                        leading: Icon(Icons.email, color: const Color.fromARGB(255, 55, 99, 174)),
+                        title: Text(AppLocalizations.of(context).translate('profile_email'), style: TextStyle( fontSize: 16.sp)),
+                        subtitle: Text(_email,  style: TextStyle( fontSize: 15.sp)),
                       ),
                       ListTile(
-                        leading: Icon(Icons.location_on, color: Color.fromARGB(255, 55, 99, 174)),
-                        title: Text(AppLocalizations.of(context).translate('profile_address')),
-                        subtitle: Text(_address),
+                        leading: Icon(Icons.location_on, color: const Color.fromARGB(255, 55, 99, 174)),
+                        title: Text(AppLocalizations.of(context).translate('profile_address'),  style: TextStyle( fontSize: 16.sp)),
+                        subtitle: Text(_address,  style: TextStyle( fontSize: 15.sp)),
                       ),
                       Spacer(),
                       ElevatedButton(
@@ -131,30 +129,30 @@ class ProfilePageState extends State<ProfilePage> {
                           widget.onNavigateToIndex(1); // Navigate to ServicePage
                         },
                         style: ElevatedButton.styleFrom(
-                          backgroundColor: Color.fromARGB(255, 55, 99, 174),
-                          minimumSize: Size(double.infinity, 50),
+                          backgroundColor: const Color.fromARGB(255, 55, 99, 174),
+                          minimumSize: Size(double.infinity, 50.h), // Responsive size
                           shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(8),
+                            borderRadius: BorderRadius.circular(8.r), // Make radius responsive
                           ),
                         ),
                         child: Text(
                           AppLocalizations.of(context).translate('profile_service_but'),
-                          style: TextStyle(fontSize: 18, color: Colors.white),
+                          style: TextStyle(fontSize: 18.sp, color: Colors.white), // Responsive text size
                         ),
                       ),
-                      SizedBox(height: 10),
+                      SizedBox(height: 10.h), // Responsive height
                       ElevatedButton(
                         onPressed: _logout,
                         style: ElevatedButton.styleFrom(
                           backgroundColor: Colors.red,
-                          minimumSize: Size(double.infinity, 50),
+                          minimumSize: Size(double.infinity, 50.h), // Responsive size
                           shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(8),
+                            borderRadius: BorderRadius.circular(8.r), // Make radius responsive
                           ),
                         ),
                         child: Text(
                           AppLocalizations.of(context).translate('profile_logout_but'),
-                          style: TextStyle(fontSize: 18, color: Colors.white),
+                          style: TextStyle(fontSize: 18.sp, color: Colors.white), // Responsive text size
                         ),
                       ),
                     ],

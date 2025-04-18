@@ -5,7 +5,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'data.dart';
 import 'login_page.dart'; 
 import '../app_localizations.dart';
-
+import 'package:flutter_screenutil/flutter_screenutil.dart'; // Import ScreenUtil
 
 class CardPage extends StatefulWidget {
   const CardPage({super.key});
@@ -136,14 +136,14 @@ class CardPageState extends State<CardPage> {
     return Scaffold(
       backgroundColor: Colors.white,
       body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 60, vertical: 20),
+        padding: EdgeInsets.symmetric(horizontal: 30.w, vertical: 20.h), // Updated padding for responsiveness
         child: isLoading
             ? Center(child: CircularProgressIndicator())
             : cardData.isEmpty
                 ? Center(
                     child: Text(
                       AppLocalizations.of(context).translate('card_no_card'),
-                      style: TextStyle(fontSize: 18, color: Colors.grey),
+                      style: TextStyle(fontSize: 18.sp, color: Colors.grey), // Updated font size for responsiveness
                     ),
                   )
                 : ListView.builder(
@@ -165,7 +165,7 @@ class CardPageState extends State<CardPage> {
                               },
                             ),
                           ),
-                          SizedBox(height: 45),
+                          SizedBox(height: 45.h), // Updated height for spacing
                         ],
                       );
                     },
@@ -184,56 +184,56 @@ class ServiceCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: MediaQuery.of(context).size.width,
-      padding: EdgeInsets.all(20),
+      width: double.infinity,
+      padding: EdgeInsets.all(20.w), // Updated padding for responsiveness
       decoration: BoxDecoration(
         color: Color.fromARGB(255, 55, 99, 174),
-        borderRadius: BorderRadius.circular(15),
+        borderRadius: BorderRadius.circular(15.r), // Responsive border radius
       ),
       child: Column(
         children: [
           Container(
             width: double.infinity,
-            padding: EdgeInsets.symmetric(vertical: 10),
+            padding: EdgeInsets.symmetric(vertical: 10.h), // Updated padding
             decoration: BoxDecoration(
               color: Colors.white,
-              borderRadius: BorderRadius.circular(15),
+              borderRadius: BorderRadius.circular(15.r), // Responsive border radius
             ),
             alignment: Alignment.center,
             child: Text(
               data['id'].toString(),
               style: TextStyle(
-                fontSize: 20,
+                fontSize: 20.sp, // Responsive font size
                 fontWeight: FontWeight.bold,
                 color: Color.fromARGB(255, 55, 99, 174),
               ),
             ),
           ),
-          SizedBox(height: 15),
+          SizedBox(height: 15.h), // Responsive height spacing
           Text(
             '${AppLocalizations.of(context).translate('card_customer_id')} ${data['customer_code']}',
-            style: TextStyle(color: Colors.white, fontSize: 18),
+            style: TextStyle(color: Colors.white, fontSize: 18.sp), // Responsive font size
           ),
           Text(
             '${AppLocalizations.of(context).translate('card_model')} ${data['model']}',
-            style: TextStyle(color: Colors.white70, fontSize: 16),
+            style: TextStyle(color: Colors.white70, fontSize: 16.sp), // Responsive font size
           ),
           Text(
             '${AppLocalizations.of(context).translate('card_date_of_installation')} ${data['date_of_installation']}',
-            style: TextStyle(color: Colors.white70, fontSize: 16),
+            style: TextStyle(color: Colors.white70, fontSize: 16.sp), // Responsive font size
           ),
-          SizedBox(height: 25),
+          SizedBox(height: 25.h), // Updated height for spacing
           ElevatedButton(
             onPressed: onTap,
             style: ElevatedButton.styleFrom(
               backgroundColor: Colors.white,
               foregroundColor: Color.fromARGB(255, 55, 99, 174),
-              minimumSize: Size(200, 50),
+              minimumSize: Size(180.w, 40.h), // Responsive size for button
               shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(10),
+                borderRadius: BorderRadius.circular(10.r), // Responsive border radius
               ),
             ),
-            child: Text(AppLocalizations.of(context).translate('card_view_card')),
+            child: Text(AppLocalizations.of(context).translate('card_view_card'), style: TextStyle(fontSize: 14.sp)),
           ),
         ],
       ),

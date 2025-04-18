@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart'; // Import ScreenUtil
 
 class ProductDetailsPage extends StatelessWidget {
   final String productName;
@@ -14,27 +15,30 @@ class ProductDetailsPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // Initialize ScreenUtils
+    ScreenUtil.init(context);
+
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
         backgroundColor: const Color.fromARGB(255, 55, 99, 174),
         title: Text(
           productName,
-          style: const TextStyle(
+          style: TextStyle(
             color: Colors.white,
-            fontSize: 18,
+            fontSize: 18.sp, // Use ScreenUtil for font size
           ),
         ),
       ),
       body: SingleChildScrollView(
         child: Padding(
-          padding: const EdgeInsets.all(32.0),
+          padding: EdgeInsets.all(32.w), // Use ScreenUtil for padding
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               Image.network(
                 productImg,
-                height: 200,
+                height: 200.h, // Use ScreenUtil for height
                 fit: BoxFit.contain,
                 errorBuilder: (context, error, stackTrace) => const Icon(
                   Icons.broken_image,
@@ -42,21 +46,21 @@ class ProductDetailsPage extends StatelessWidget {
                   color: Colors.grey,
                 ),
               ),
-              const SizedBox(height: 20),
+              SizedBox(height: 20.h), // Use ScreenUtil for height spacing
               Text(
                 productName,
                 textAlign: TextAlign.center,
-                style: const TextStyle(
-                  fontSize: 24.0,
+                style: TextStyle(
+                  fontSize: 24.sp, // Use ScreenUtil for font size
                   fontWeight: FontWeight.bold,
-                  color: Color.fromARGB(255, 55, 99, 174),
+                  color: const Color.fromARGB(255, 55, 99, 174),
                 ),
               ),
-              const SizedBox(height: 10),
+              SizedBox(height: 10.h), // Use ScreenUtil for height spacing
               Text(
                 productDet,
                 textAlign: TextAlign.center,
-                style: const TextStyle(fontSize: 16.0),
+                style: TextStyle(fontSize: 16.sp), // Use ScreenUtil for font size
               ),
             ],
           ),

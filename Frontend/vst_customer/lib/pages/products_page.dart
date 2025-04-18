@@ -5,8 +5,7 @@ import 'product_details.dart';
 import 'data.dart';
 import 'login_page.dart';
 import '../app_localizations.dart';
-
-
+import 'package:flutter_screenutil/flutter_screenutil.dart'; // Import ScreenUtils
 
 class ProductsPage extends StatefulWidget {
   const ProductsPage({super.key});
@@ -51,44 +50,42 @@ class _ProductsPageState extends State<ProductsPage> {
     );
   }
 
-
   Future<void> _refreshAccessToken() async {
-  if (_refreshToken.isEmpty) {
-    debugPrint("No refresh token found! Logging out...");
-    await _logout();
-    return;
-  }
-
-  final url = '${Data.baseUrl}/log/token/refresh/';
-  final requestBody = {'refresh': _refreshToken};
-
-  try {
-    final response = await _dio.post(
-      url,
-      data: requestBody,
-      options: Options(headers: {'Content-Type': 'application/json'}),
-    );
-
-    if (response.statusCode == 200 && response.data['access'] != null) {
-      final newAccessToken = response.data['access'];
-      final prefs = await SharedPreferences.getInstance();
-      await prefs.setString('AT', newAccessToken);
-
-      setState(() {
-        _accessToken = newAccessToken;
-      });
-
-      debugPrint("Access token refreshed successfully.");
-    } else {
-      debugPrint("Refresh token expired or invalid. Logging out...");
+    if (_refreshToken.isEmpty) {
+      debugPrint("No refresh token found! Logging out...");
       await _logout();
+      return;
     }
-  } catch (e) {
-    debugPrint('Error refreshing token: $e');
-    await _logout(); // Logout on error (e.g., expired refresh token)
-  }
-}
 
+    final url = '${Data.baseUrl}/log/token/refresh/';
+    final requestBody = {'refresh': _refreshToken};
+
+    try {
+      final response = await _dio.post(
+        url,
+        data: requestBody,
+        options: Options(headers: {'Content-Type': 'application/json'}),
+      );
+
+      if (response.statusCode == 200 && response.data['access'] != null) {
+        final newAccessToken = response.data['access'];
+        final prefs = await SharedPreferences.getInstance();
+        await prefs.setString('AT', newAccessToken);
+
+        setState(() {
+          _accessToken = newAccessToken;
+        });
+
+        debugPrint("Access token refreshed successfully.");
+      } else {
+        debugPrint("Refresh token expired or invalid. Logging out...");
+        await _logout();
+      }
+    } catch (e) {
+      debugPrint('Error refreshing token: $e');
+      await _logout(); // Logout on error (e.g., expired refresh token)
+    }
+  }
 
   Future<void> fetchProducts() async {
     if (_accessToken.isEmpty) {
@@ -125,6 +122,9 @@ class _ProductsPageState extends State<ProductsPage> {
 
   @override
   Widget build(BuildContext context) {
+    // Initialize ScreenUtils
+    ScreenUtil.init(context);
+
     return Scaffold(
       backgroundColor: Colors.white,
       body: isLoading
@@ -132,11 +132,11 @@ class _ProductsPageState extends State<ProductsPage> {
           : Column(
               children: [
                 Padding(
-                  padding: EdgeInsets.all(20.0),
+                  padding: EdgeInsets.all(20.w), // Use ScreenUtil for padding
                   child: Text(
                     AppLocalizations.of(context).translate('product_title'),
                     style: TextStyle(
-                      fontSize: 24.0,
+                      fontSize: 20.sp, // Use ScreenUtil for font size
                       color: Color.fromARGB(255, 55, 99, 174),
                     ),
                   ),
@@ -146,14 +146,14 @@ class _ProductsPageState extends State<ProductsPage> {
                       ? Center(
                           child: Text(
                             AppLocalizations.of(context).translate('product_no_product'),
-                            style: TextStyle(fontSize: 18.0, color: Colors.grey),
+                            style: TextStyle(fontSize: 18.sp, color: Colors.grey), // Use ScreenUtil for font size
                           ),
                         )
                       : SafeArea(
                           child: Padding(
-                            padding: const EdgeInsets.all(30.0),
+                            padding: EdgeInsets.all(30.w), // Use ScreenUtil for padding
                             child: GridView.builder(
-                              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                                 crossAxisCount: 2,
                                 childAspectRatio: 1,
                               ),
@@ -168,12 +168,12 @@ class _ProductsPageState extends State<ProductsPage> {
                                     border: Border(
                                       right: isLastColumn
                                           ? BorderSide.none
-                                          : const BorderSide(
+                                          : BorderSide(
                                               color: Color.fromARGB(255, 131, 131, 131),
                                               width: 1.0),
                                       bottom: isLastRow
                                           ? BorderSide.none
-                                          : const BorderSide(
+                                          : BorderSide(
                                               color: Color.fromARGB(255, 131, 131, 131),
                                               width: 1.0),
                                     ),
@@ -223,12 +223,12 @@ class ProductTile extends StatelessWidget {
     return GestureDetector(
       onTap: onTap,
       child: Padding(
-        padding: const EdgeInsets.all(20.0),
+        padding: EdgeInsets.all(20.w), // Use ScreenUtil for padding
         child: Column(
           children: [
             Expanded(
               child: Padding(
-                padding: const EdgeInsets.only(bottom: 8.0),
+                padding: EdgeInsets.only(bottom: 8.h), // Use ScreenUtil for vertical padding
                 child: Image.network(
                   productImage,
                   fit: BoxFit.contain,
@@ -239,8 +239,8 @@ class ProductTile extends StatelessWidget {
             ),
             Text(
               productName,
-              style: const TextStyle(
-                fontSize: 15.0,
+              style: TextStyle(
+                fontSize: 15.sp, // Use ScreenUtil for font size
                 color: Color.fromARGB(255, 55, 99, 174),
               ),
               textAlign: TextAlign.center,

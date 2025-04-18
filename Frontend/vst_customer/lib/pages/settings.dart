@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../app_localizations.dart';
 import '../main.dart'; // Import MyApp to update locale
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class SettingsPage extends StatefulWidget {
   const SettingsPage({super.key});
@@ -44,19 +45,26 @@ class _SettingsPageState extends State<SettingsPage> {
     return Scaffold(
       appBar: AppBar(
         title: Text(AppLocalizations.of(context).translate('settings')),
+        backgroundColor: Color.fromARGB(255, 55, 99, 174),
+        foregroundColor: Colors.white,
       ),
       body: Padding(
-        padding: const EdgeInsets.all(20.0),
+        padding: EdgeInsets.all(20.sp), // Responsive padding
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
               AppLocalizations.of(context).translate('select_language'),
-              style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+              style: TextStyle(
+                fontSize: 18.sp, // Responsive font size
+              ),
             ),
-            const SizedBox(height: 10),
+            SizedBox(height: 10.h), // Responsive height
             RadioListTile<String>(
-              title: const Text("English"),
+              title: Text(
+                "English",
+                style: TextStyle(fontSize: 16.sp), // Responsive font size
+              ),
               value: 'en',
               groupValue: _selectedLanguage,
               onChanged: (value) {
@@ -64,7 +72,10 @@ class _SettingsPageState extends State<SettingsPage> {
               },
             ),
             RadioListTile<String>(
-              title: const Text("தமிழ்"),
+              title: Text(
+                "தமிழ்",
+                style: TextStyle(fontSize: 16.sp), // Responsive font size
+              ),
               value: 'ta',
               groupValue: _selectedLanguage,
               onChanged: (value) {

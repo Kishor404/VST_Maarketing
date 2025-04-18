@@ -7,6 +7,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'data.dart';
 import 'login_page.dart';
 import '../app_localizations.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart'; // Import screenutil
 
 class ServicePage extends StatefulWidget {
   const ServicePage({super.key});
@@ -167,7 +168,6 @@ class ServicePageState extends State<ServicePage> {
     }
   }
 
-
   void fetchServiceDetails() {
     if (services.isEmpty) return;
 
@@ -206,8 +206,8 @@ class ServicePageState extends State<ServicePage> {
       onPressed: onPressed,
       style: ElevatedButton.styleFrom(
         backgroundColor: const Color.fromARGB(255, 55, 99, 174),
-        padding: const EdgeInsets.symmetric(horizontal: 34.0, vertical: 20.0),
-        textStyle: const TextStyle(fontSize: 18.0),
+        padding: EdgeInsets.symmetric(horizontal: 30.w, vertical: 15.h),
+        textStyle: TextStyle(fontSize: 18.sp),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(8.0),
         ),
@@ -223,13 +223,13 @@ class ServicePageState extends State<ServicePage> {
     return Scaffold(
       backgroundColor: Colors.white,
       body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 50.0),
+        padding: EdgeInsets.only(left: 16.w, right: 16.w, top: 10.h, bottom: 40.h),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Container(
               width: screenWidth * 0.8,
-              padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 30.0),
+              padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 30.h),
               decoration: BoxDecoration(
                 color: const Color.fromARGB(255, 55, 99, 174),
                 borderRadius: BorderRadius.circular(15.0),
@@ -238,29 +238,29 @@ class ServicePageState extends State<ServicePage> {
                 children: [
                   Text(
                     AppLocalizations.of(context).translate('service_title'),
-                    style: TextStyle(fontSize: 24.0, color: Colors.white),
+                    style: TextStyle(fontSize: 22.sp, color: Colors.white),
                   ),
-                  const SizedBox(height: 15.0),
+                  SizedBox(height: 15.h),
                   Text(
                     '${AppLocalizations.of(context).translate('service_last_service')} $lastServiceDate',
-                    style: const TextStyle(fontSize: 16.0, color: Colors.white),
+                    style: TextStyle(fontSize: 14.sp, color: Colors.white),
                   ),
                   Text(
                     '${AppLocalizations.of(context).translate('service_next_service')} $nextServiceCard',
-                    style: const TextStyle(fontSize: 16.0, color: Colors.white),
+                    style: TextStyle(fontSize: 14.sp, color: Colors.white),
                   ),
                   Text(
                     '${AppLocalizations.of(context).translate('service_next_service_in')} $nextService ${AppLocalizations.of(context).translate('service_next_service_days')}',
-                    style: const TextStyle(fontSize: 16.0, color: Colors.white),
+                    style: TextStyle(fontSize: 14.sp, color: Colors.white),
                   ),
                 ],
               ),
             ),
-            const SizedBox(height: 10.0),
+            SizedBox(height: 10.h),
             Expanded(
-              child: Image.network('${Data.baseUrl}/media/utils/Service_Illus.jpg', height: 400),
+              child: Image.network('${Data.baseUrl}/media/utils/Service_Illus.jpg', height: 400.h),
             ),
-            const SizedBox(height: 10.0),
+            SizedBox(height: 10.h),
 
             lastButton
                 ? buildServiceButton(
@@ -269,7 +269,7 @@ class ServicePageState extends State<ServicePage> {
                   )
                 : Container(),
 
-            const SizedBox(height: 15.0),
+            SizedBox(height: 15.h),
 
             bookButton
                 ? buildServiceButton(

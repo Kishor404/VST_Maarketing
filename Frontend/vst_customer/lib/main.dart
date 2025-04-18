@@ -6,6 +6,7 @@ import 'pages/index.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'app_localizations.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 // Background message handler
 Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
@@ -23,7 +24,6 @@ Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
   }
 }
 
-
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
@@ -40,7 +40,7 @@ Future<void> main() async {
   await getToken();
 
   FirebaseMessaging.onMessage.listen((RemoteMessage message) {
-  print("📩 Foreground message received: ${message.messageId}");
+    print("📩 Foreground message received: ${message.messageId}");
     if (message.notification != null) {
       NotificationService().showNotification(
         title: message.notification!.title ?? "No Title",
@@ -48,7 +48,6 @@ Future<void> main() async {
       );
     }
   });
-
 
   Locale locale = await getSavedLocale();
 
@@ -136,33 +135,40 @@ class _MyAppState extends State<MyApp> {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'VST Marketing',
-      theme: ThemeData(
-        scaffoldBackgroundColor: Colors.white,
-        primarySwatch: Colors.blue,
-        fontFamily: 'Poppins',
-      ),
-      locale: _locale,
-      supportedLocales: const [
-        Locale('en', ''),
-        Locale('ta', ''),
-      ],
-      localizationsDelegates: const [
-        AppLocalizations.delegate,
-        GlobalMaterialLocalizations.delegate,
-        GlobalWidgetsLocalizations.delegate,
-        GlobalCupertinoLocalizations.delegate,
-      ],
-      localeResolutionCallback: (locale, supportedLocales) {
-        for (var supportedLocale in supportedLocales) {
-          if (supportedLocale.languageCode == locale?.languageCode) {
-            return supportedLocale;
-          }
-        }
-        return supportedLocales.first;
+    return ScreenUtilInit(
+      designSize: const Size(360, 690), // Change this based on your Figma or XD design resolution
+      minTextAdapt: true,
+      splitScreenMode: true,
+      builder: (context, child) {
+        return MaterialApp(
+          title: 'VST Marketing',
+          theme: ThemeData(
+            scaffoldBackgroundColor: Colors.white,
+            primarySwatch: Colors.blue,
+            fontFamily: 'Poppins',
+          ),
+          locale: _locale,
+          supportedLocales: const [
+            Locale('en', ''),
+            Locale('ta', ''),
+          ],
+          localizationsDelegates: const [
+            AppLocalizations.delegate,
+            GlobalMaterialLocalizations.delegate,
+            GlobalWidgetsLocalizations.delegate,
+            GlobalCupertinoLocalizations.delegate,
+          ],
+          localeResolutionCallback: (locale, supportedLocales) {
+            for (var supportedLocale in supportedLocales) {
+              if (supportedLocale.languageCode == locale?.languageCode) {
+                return supportedLocale;
+              }
+            }
+            return supportedLocales.first;
+          },
+          home: const IndexPage(),
+        );
       },
-      home: const IndexPage(),
     );
   }
 }

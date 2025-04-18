@@ -4,6 +4,7 @@ import 'index.dart';
 import 'package:dio/dio.dart';
 import 'data.dart';
 import '../app_localizations.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -23,9 +24,6 @@ class LoginPageState extends State<LoginPage> {
   final _districtController = TextEditingController();
   final _postalCodeController = TextEditingController();
   String _selectedRegion = 'rajapalayam';
-  int langCode = 0;
-
-
 
   @override
   void dispose() {
@@ -45,64 +43,74 @@ class LoginPageState extends State<LoginPage> {
     return Scaffold(
       body: Center(
         child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 64, vertical: 46),
-        child: SingleChildScrollView(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Center(child: Image.asset('assets/logoindex.jpg', width: 250)),
-              SizedBox(height: 40),
-              Align(
-                alignment: Alignment.center,
-                child: Text(
-                  _isLogin ? AppLocalizations.of(context).translate('login_title') : AppLocalizations.of(context).translate('signup_title'),
-                  style: TextStyle(fontSize: 20),
+          padding: EdgeInsets.symmetric(horizontal: 50.w, vertical: 46.h),
+          child: SingleChildScrollView(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Center(child: Image.asset('assets/logoindex.jpg', width: 200.w)),
+                SizedBox(height: 40.h),
+                Align(
+                  alignment: Alignment.center,
+                  child: Text(
+                    _isLogin
+                        ? AppLocalizations.of(context).translate('login_title')
+                        : AppLocalizations.of(context).translate('signup_title'),
+                    style: TextStyle(fontSize: 20.sp),
+                  ),
                 ),
-              ),
-              SizedBox(height: 20),
-              if (!_isLogin) ...[
-                _buildTextField(_nameController, AppLocalizations.of(context).translate('login_name')),
-                SizedBox(height: 10),
-                _buildTextField(_emailController, AppLocalizations.of(context).translate('login_email')),
-                SizedBox(height: 10),
-                _buildDropdownField(),
-                SizedBox(height: 10),
-                _buildTextField(_addressController, AppLocalizations.of(context).translate('login_address')),
-                SizedBox(height: 10),
-                _buildTextField(_cityController, AppLocalizations.of(context).translate('login_city')),
-                SizedBox(height: 10),
-                _buildTextField(_districtController, AppLocalizations.of(context).translate('login_district')),
-                SizedBox(height: 10),
-                _buildTextField(_postalCodeController, AppLocalizations.of(context).translate('login_postal'), isNumber: true),
-                SizedBox(height: 10),
+                SizedBox(height: 20.h),
+                if (!_isLogin) ...[
+                  _buildTextField(_nameController, AppLocalizations.of(context).translate('login_name')),
+                  SizedBox(height: 10.h),
+                  _buildTextField(_emailController, AppLocalizations.of(context).translate('login_email')),
+                  SizedBox(height: 10.h),
+                  _buildDropdownField(),
+                  SizedBox(height: 10.h),
+                  _buildTextField(_addressController, AppLocalizations.of(context).translate('login_address')),
+                  SizedBox(height: 10.h),
+                  _buildTextField(_cityController, AppLocalizations.of(context).translate('login_city')),
+                  SizedBox(height: 10.h),
+                  _buildTextField(_districtController, AppLocalizations.of(context).translate('login_district')),
+                  SizedBox(height: 10.h),
+                  _buildTextField(_postalCodeController, AppLocalizations.of(context).translate('login_postal'), isNumber: true),
+                  SizedBox(height: 10.h),
+                ],
+                _buildTextField(_phoneController, AppLocalizations.of(context).translate('login_phone'), isNumber: true),
+                SizedBox(height: 10.h),
+                _buildTextField(_passwordController, AppLocalizations.of(context).translate('login_password'), obscureText: true),
+                SizedBox(height: 20.h),
+                ElevatedButton(
+                  onPressed: _isLogin ? _login : _signUp,
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: const Color.fromARGB(255, 55, 99, 174),
+                    foregroundColor: Colors.white,
+                    padding: EdgeInsets.symmetric(horizontal: 45.w, vertical: 12.h),
+                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12.r)),
+                    elevation: 5,
+                  ),
+                  child: Text(
+                    _isLogin
+                        ? AppLocalizations.of(context).translate('login_but')
+                        : AppLocalizations.of(context).translate('signup_but'),
+                    style: TextStyle(fontSize: 16.sp),
+                  ),
+                ),
+                SizedBox(height: 20.h),
+                TextButton(
+                  onPressed: () => setState(() => _isLogin = !_isLogin),
+                  child: Text(
+                    _isLogin
+                        ? AppLocalizations.of(context).translate('login_alt_but')
+                        : AppLocalizations.of(context).translate('signup_alt_but'),
+                    style: TextStyle(fontSize: 14.sp),
+                  ),
+                ),
               ],
-              _buildTextField(_phoneController, AppLocalizations.of(context).translate('login_phone'), isNumber: true),
-              SizedBox(height: 10),
-              _buildTextField(_passwordController, AppLocalizations.of(context).translate('login_password'), obscureText: true),
-              SizedBox(height: 20),
-              ElevatedButton(
-                onPressed: _isLogin ? _login : _signUp,
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: const Color.fromARGB(255, 55, 99, 174),
-                  foregroundColor: Colors.white,
-                  padding: EdgeInsets.symmetric(horizontal: 64, vertical: 18),
-                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-                  elevation: 5,
-                ),
-                child: Text(_isLogin ? AppLocalizations.of(context).translate('login_but') : AppLocalizations.of(context).translate('signup_but'), style: TextStyle(fontSize: 16)),
-              ),
-              SizedBox(height: 20),
-              TextButton(
-                onPressed: () => setState(() => _isLogin = !_isLogin),
-                child: Text(_isLogin
-                    ? AppLocalizations.of(context).translate('login_alt_but')
-                    : AppLocalizations.of(context).translate('signup_alt_but'),)
-              ),
-            ],
+            ),
           ),
         ),
       ),
-    ),
     );
   }
 
@@ -117,7 +125,7 @@ class LoginPageState extends State<LoginPage> {
         hintStyle: TextStyle(color: Colors.grey),
         border: OutlineInputBorder(
           borderSide: BorderSide.none,
-          borderRadius: BorderRadius.circular(10),
+          borderRadius: BorderRadius.circular(10.r),
         ),
       ),
       obscureText: obscureText,
@@ -132,7 +140,7 @@ class LoginPageState extends State<LoginPage> {
         fillColor: const Color.fromARGB(255, 238, 238, 238),
         border: OutlineInputBorder(
           borderSide: BorderSide.none,
-          borderRadius: BorderRadius.circular(10),
+          borderRadius: BorderRadius.circular(10.r),
         ),
       ),
       child: DropdownButton<String>(
@@ -143,11 +151,17 @@ class LoginPageState extends State<LoginPage> {
             _selectedRegion = newValue!;
           });
         },
-        items: <String>["rajapalayam", "ambasamuthiram", "sankarankovil", "tenkasi", "tirunelveli", "chennai"]
-            .map<DropdownMenuItem<String>>((String value) {
+        items: <String>[
+          "rajapalayam",
+          "ambasamuthiram",
+          "sankarankovil",
+          "tenkasi",
+          "tirunelveli",
+          "chennai"
+        ].map<DropdownMenuItem<String>>((String value) {
           return DropdownMenuItem<String>(
             value: value,
-            child: Text(value),
+            child: Text(value, style: TextStyle(fontSize: 14.sp)),
           );
         }).toList(),
       ),
