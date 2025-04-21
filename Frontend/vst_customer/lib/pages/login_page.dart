@@ -56,7 +56,7 @@ class LoginPageState extends State<LoginPage> {
                     _isLogin
                         ? AppLocalizations.of(context).translate('login_title')
                         : AppLocalizations.of(context).translate('signup_title'),
-                    style: TextStyle(fontSize: 20.sp),
+                    style: TextStyle(fontSize: 18.sp),
                   ),
                 ),
                 SizedBox(height: 20.h),
@@ -93,7 +93,7 @@ class LoginPageState extends State<LoginPage> {
                     _isLogin
                         ? AppLocalizations.of(context).translate('login_but')
                         : AppLocalizations.of(context).translate('signup_but'),
-                    style: TextStyle(fontSize: 16.sp),
+                    style: TextStyle(fontSize: 14.sp),
                   ),
                 ),
                 SizedBox(height: 20.h),
@@ -103,7 +103,7 @@ class LoginPageState extends State<LoginPage> {
                     _isLogin
                         ? AppLocalizations.of(context).translate('login_alt_but')
                         : AppLocalizations.of(context).translate('signup_alt_but'),
-                    style: TextStyle(fontSize: 14.sp),
+                    style: TextStyle(fontSize: 12.sp),
                   ),
                 ),
               ],
@@ -161,7 +161,7 @@ class LoginPageState extends State<LoginPage> {
         ].map<DropdownMenuItem<String>>((String value) {
           return DropdownMenuItem<String>(
             value: value,
-            child: Text(value, style: TextStyle(fontSize: 14.sp)),
+            child: Text(value, style: TextStyle(fontSize: 12.sp)),
           );
         }).toList(),
       ),

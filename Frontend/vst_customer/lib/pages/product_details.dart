@@ -22,47 +22,52 @@ class ProductDetailsPage extends StatelessWidget {
       backgroundColor: Colors.white,
       appBar: AppBar(
         backgroundColor: const Color.fromARGB(255, 55, 99, 174),
+        foregroundColor: Colors.white,
+        centerTitle: true,
         title: Text(
           productName,
           style: TextStyle(
             color: Colors.white,
-            fontSize: 18.sp, // Use ScreenUtil for font size
+            fontSize: 16.sp, // Use ScreenUtil for font size
           ),
         ),
       ),
       body: SingleChildScrollView(
         child: Padding(
-          padding: EdgeInsets.all(32.w), // Use ScreenUtil for padding
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Image.network(
-                productImg,
-                height: 200.h, // Use ScreenUtil for height
-                fit: BoxFit.contain,
-                errorBuilder: (context, error, stackTrace) => const Icon(
-                  Icons.broken_image,
-                  size: 100,
-                  color: Colors.grey,
+          padding: EdgeInsets.all(32.w),
+          child: Center( // 👈 Center horizontally
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Image.network(
+                  productImg,
+                  height: 200.h,
+                  fit: BoxFit.contain,
+                  errorBuilder: (context, error, stackTrace) => const Icon(
+                    Icons.broken_image,
+                    size: 100,
+                    color: Colors.grey,
+                  ),
                 ),
-              ),
-              SizedBox(height: 20.h), // Use ScreenUtil for height spacing
-              Text(
-                productName,
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                  fontSize: 24.sp, // Use ScreenUtil for font size
-                  fontWeight: FontWeight.bold,
-                  color: const Color.fromARGB(255, 55, 99, 174),
+                SizedBox(height: 20.h),
+                Text(
+                  productName,
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    fontSize: 20.sp,
+                    fontWeight: FontWeight.bold,
+                    color: const Color.fromARGB(255, 55, 99, 174),
+                  ),
                 ),
-              ),
-              SizedBox(height: 10.h), // Use ScreenUtil for height spacing
-              Text(
-                productDet,
-                textAlign: TextAlign.center,
-                style: TextStyle(fontSize: 16.sp), // Use ScreenUtil for font size
-              ),
-            ],
+                SizedBox(height: 10.h),
+                Text(
+                  productDet,
+                  textAlign: TextAlign.center,
+                  style: TextStyle(fontSize: 14.sp),
+                ),
+              ],
+            ),
           ),
         ),
       ),

@@ -45,7 +45,7 @@ class _ServiceDetailsState extends State<ServiceDetails> {
               children: [
                 Text(
                   AppLocalizations.of(context).translate('service_details_title'),
-                  style: TextStyle(fontSize: 18.sp), // Use ScreenUtil for font size
+                  style: TextStyle(fontSize: 16.sp), // Use ScreenUtil for font size
                 ),
                 Divider(),
                 _buildDetail(AppLocalizations.of(context).translate('service_details_booked_by'), widget.serviceData["customer_data"]?["name"]?.toString() ?? "None"),
@@ -57,7 +57,7 @@ class _ServiceDetailsState extends State<ServiceDetails> {
                 _buildDetail(AppLocalizations.of(context).translate('service_details_date'), widget.serviceData['available_date']?.toString() ?? "None"),
                 _buildDetail(AppLocalizations.of(context).translate('service_details_status'), _getStatusLabel(widget.serviceData['status']?.toString() ?? "None")),
                 SizedBox(height: 16.h), // Use ScreenUtil for spacing
-                Text(AppLocalizations.of(context).translate('service_details_customer_details'), style: TextStyle(fontSize: 18.sp)),
+                Text(AppLocalizations.of(context).translate('service_details_customer_details'), style: TextStyle(fontSize: 16.sp)),
                 Divider(),
                 _buildCustomerDetails(),
                 SizedBox(height: 16.h),
@@ -80,8 +80,8 @@ class _ServiceDetailsState extends State<ServiceDetails> {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Text(title, style: TextStyle(color: Color.fromARGB(255, 55, 99, 174), fontSize: 15.sp)), // Responsive font size
-          Text(value, style: TextStyle(fontSize: 15.sp)), // Responsive font size
+          Text(title, style: TextStyle(color: Color.fromARGB(255, 55, 99, 174), fontSize: 12.sp)), // Responsive font size
+          Text(value, style: TextStyle(fontSize: 12.sp)), // Responsive font size
         ],
       ),
     );
@@ -122,7 +122,7 @@ class _ServiceDetailsState extends State<ServiceDetails> {
           ),
           child: Text(
             AppLocalizations.of(context).translate('service_details_cancel_service'),
-            style: TextStyle(fontSize: 15.sp, color: Colors.white),
+            style: TextStyle(fontSize: 12.sp, color: Colors.white),
           ),
         ),
       ],

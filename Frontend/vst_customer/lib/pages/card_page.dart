@@ -143,7 +143,7 @@ class CardPageState extends State<CardPage> {
                 ? Center(
                     child: Text(
                       AppLocalizations.of(context).translate('card_no_card'),
-                      style: TextStyle(fontSize: 18.sp, color: Colors.grey), // Updated font size for responsiveness
+                      style: TextStyle(fontSize: 16.sp, color: Colors.grey), // Updated font size for responsiveness
                     ),
                   )
                 : ListView.builder(
@@ -203,7 +203,7 @@ class ServiceCard extends StatelessWidget {
             child: Text(
               data['id'].toString(),
               style: TextStyle(
-                fontSize: 20.sp, // Responsive font size
+                fontSize: 18.sp, // Responsive font size
                 fontWeight: FontWeight.bold,
                 color: Color.fromARGB(255, 55, 99, 174),
               ),
@@ -212,15 +212,15 @@ class ServiceCard extends StatelessWidget {
           SizedBox(height: 15.h), // Responsive height spacing
           Text(
             '${AppLocalizations.of(context).translate('card_customer_id')} ${data['customer_code']}',
-            style: TextStyle(color: Colors.white, fontSize: 18.sp), // Responsive font size
+            style: TextStyle(color: Colors.white, fontSize: 16.sp), // Responsive font size
           ),
           Text(
             '${AppLocalizations.of(context).translate('card_model')} ${data['model']}',
-            style: TextStyle(color: Colors.white70, fontSize: 16.sp), // Responsive font size
+            style: TextStyle(color: Colors.white70, fontSize: 14.sp), // Responsive font size
           ),
           Text(
             '${AppLocalizations.of(context).translate('card_date_of_installation')} ${data['date_of_installation']}',
-            style: TextStyle(color: Colors.white70, fontSize: 16.sp), // Responsive font size
+            style: TextStyle(color: Colors.white70, fontSize: 14.sp), // Responsive font size
           ),
           SizedBox(height: 25.h), // Updated height for spacing
           ElevatedButton(
@@ -233,7 +233,7 @@ class ServiceCard extends StatelessWidget {
                 borderRadius: BorderRadius.circular(10.r), // Responsive border radius
               ),
             ),
-            child: Text(AppLocalizations.of(context).translate('card_view_card'), style: TextStyle(fontSize: 14.sp)),
+            child: Text(AppLocalizations.of(context).translate('card_view_card'), style: TextStyle(fontSize: 12.sp)),
           ),
         ],
       ),

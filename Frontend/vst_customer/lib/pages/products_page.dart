@@ -136,7 +136,7 @@ class _ProductsPageState extends State<ProductsPage> {
                   child: Text(
                     AppLocalizations.of(context).translate('product_title'),
                     style: TextStyle(
-                      fontSize: 20.sp, // Use ScreenUtil for font size
+                      fontSize: 18.sp, // Use ScreenUtil for font size
                       color: Color.fromARGB(255, 55, 99, 174),
                     ),
                   ),
@@ -146,7 +146,7 @@ class _ProductsPageState extends State<ProductsPage> {
                       ? Center(
                           child: Text(
                             AppLocalizations.of(context).translate('product_no_product'),
-                            style: TextStyle(fontSize: 18.sp, color: Colors.grey), // Use ScreenUtil for font size
+                            style: TextStyle(fontSize: 16.sp, color: Colors.grey), // Use ScreenUtil for font size
                           ),
                         )
                       : SafeArea(
@@ -240,7 +240,7 @@ class ProductTile extends StatelessWidget {
             Text(
               productName,
               style: TextStyle(
-                fontSize: 15.sp, // Use ScreenUtil for font size
+                fontSize: 12.sp, // Use ScreenUtil for font size
                 color: Color.fromARGB(255, 55, 99, 174),
               ),
               textAlign: TextAlign.center,

@@ -23,7 +23,7 @@ class WelcomePage extends StatelessWidget {
             Text(
               AppLocalizations.of(context).translate('welcome'),
               style: TextStyle(
-                fontSize: 28.sp, // Responsive font size
+                fontSize: 24.sp, // Responsive font size
                 fontWeight: FontWeight.bold,
                 color: Colors.white,
               ),
@@ -38,7 +38,7 @@ class WelcomePage extends StatelessWidget {
               AppLocalizations.of(context).translate('welcome_text'),
               textAlign: TextAlign.center,
               style: TextStyle(
-                fontSize: 16.sp, // Responsive font size
+                fontSize: 14.sp, // Responsive font size
                 color: Colors.white,
               ),
             ),
@@ -61,7 +61,7 @@ class WelcomePage extends StatelessWidget {
                 ),
                 child: Text(
                   Localizations.localeOf(context).languageCode == 'en' ? 'தமிழ்' : 'English',
-                  style: TextStyle(fontSize: 16.sp, color: const Color(0xFF3B5998)),
+                  style: TextStyle(fontSize: 14.sp, color: const Color(0xFF3B5998)),
                 ),
               ),
             ),
@@ -84,7 +84,7 @@ class WelcomePage extends StatelessWidget {
                 ),
                 child: Text(
                   AppLocalizations.of(context).translate('lets_go'),
-                  style: TextStyle(fontSize: 16.sp, color: const Color(0xFF3B5998)),
+                  style: TextStyle(fontSize: 14.sp, color: const Color(0xFF3B5998)),
                 ),
               ),
             ),

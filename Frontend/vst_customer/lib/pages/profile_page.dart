@@ -75,7 +75,7 @@ class ProfilePageState extends State<ProfilePage> {
                   Text(
                     _name,
                     style: TextStyle(
-                      fontSize: 24.sp, // Responsive text size
+                      fontSize: 20.sp, // Responsive text size
                       color: Colors.white,
                     ),
                   ),
@@ -83,7 +83,7 @@ class ProfilePageState extends State<ProfilePage> {
                   Text(
                     '$_role - $_customerid',
                     style: TextStyle(
-                      fontSize: 18.sp, // Responsive text size
+                      fontSize: 16.sp, // Responsive text size
                       color: Colors.white70,
                     ),
                   ),
@@ -91,7 +91,7 @@ class ProfilePageState extends State<ProfilePage> {
                   Text(
                     '+91 $_phone | $_region',
                     style: TextStyle(
-                      fontSize: 16.sp, // Responsive text size
+                      fontSize: 14.sp, // Responsive text size
                       color: Colors.white70,
                     ),
                   ),
@@ -115,13 +115,13 @@ class ProfilePageState extends State<ProfilePage> {
                     children: [
                       ListTile(
                         leading: Icon(Icons.email, color: const Color.fromARGB(255, 55, 99, 174)),
-                        title: Text(AppLocalizations.of(context).translate('profile_email'), style: TextStyle( fontSize: 16.sp)),
-                        subtitle: Text(_email,  style: TextStyle( fontSize: 15.sp)),
+                        title: Text(AppLocalizations.of(context).translate('profile_email'), style: TextStyle( fontSize: 14.sp)),
+                        subtitle: Text(_email,  style: TextStyle( fontSize: 12.sp)),
                       ),
                       ListTile(
                         leading: Icon(Icons.location_on, color: const Color.fromARGB(255, 55, 99, 174)),
-                        title: Text(AppLocalizations.of(context).translate('profile_address'),  style: TextStyle( fontSize: 16.sp)),
-                        subtitle: Text(_address,  style: TextStyle( fontSize: 15.sp)),
+                        title: Text(AppLocalizations.of(context).translate('profile_address'),  style: TextStyle( fontSize: 14.sp)),
+                        subtitle: Text(_address,  style: TextStyle( fontSize: 12.sp)),
                       ),
                       Spacer(),
                       ElevatedButton(
@@ -137,7 +137,7 @@ class ProfilePageState extends State<ProfilePage> {
                         ),
                         child: Text(
                           AppLocalizations.of(context).translate('profile_service_but'),
-                          style: TextStyle(fontSize: 18.sp, color: Colors.white), // Responsive text size
+                          style: TextStyle(fontSize: 16.sp, color: Colors.white), // Responsive text size
                         ),
                       ),
                       SizedBox(height: 10.h), // Responsive height
@@ -152,7 +152,7 @@ class ProfilePageState extends State<ProfilePage> {
                         ),
                         child: Text(
                           AppLocalizations.of(context).translate('profile_logout_but'),
-                          style: TextStyle(fontSize: 18.sp, color: Colors.white), // Responsive text size
+                          style: TextStyle(fontSize: 16.sp, color: Colors.white), // Responsive text size
                         ),
                       ),
                     ],

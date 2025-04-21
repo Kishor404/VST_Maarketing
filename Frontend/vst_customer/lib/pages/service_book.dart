@@ -307,7 +307,7 @@ class ServiceBookState extends State<ServiceBook> {
       appBar: AppBar(
         title: Text(
           AppLocalizations.of(context).translate('service_book_title'),
-          style: TextStyle(color: Colors.white, fontSize: 20.sp),
+          style: TextStyle(color: Colors.white, fontSize: 18.sp),
         ),
         backgroundColor: const Color.fromARGB(255, 55, 99, 174),
         leading: IconButton(
@@ -328,13 +328,13 @@ class ServiceBookState extends State<ServiceBook> {
                 Center(
                   child: Image.network(
                     "${Data.baseUrl}/media/utils/Service_Book.jpg",
-                    height: 250.h,
+                    height: 200.h,
                   ),
                 ),
                 SizedBox(height: 20.h),
                 Text(
                   AppLocalizations.of(context).translate('service_book_available_period'),
-                  style: TextStyle(fontSize: 16.sp),
+                  style: TextStyle(fontSize: 14.sp),
                 ),
                 SizedBox(height: 10.h),
                 Row(
@@ -379,7 +379,7 @@ class ServiceBookState extends State<ServiceBook> {
                 SizedBox(height: 20.h),
                 Text(
                   AppLocalizations.of(context).translate('service_book_select_card'),
-                  style: TextStyle(fontSize: 16.sp),
+                  style: TextStyle(fontSize: 14.sp),
                 ),
                 SizedBox(height: 10.h),
                 DropdownButtonFormField<String>(
@@ -406,7 +406,7 @@ class ServiceBookState extends State<ServiceBook> {
                 SizedBox(height: 20.h),
                 Text(
                   AppLocalizations.of(context).translate('service_book_details'),
-                  style: TextStyle(fontSize: 16.sp),
+                  style: TextStyle(fontSize: 14.sp),
                 ),
                 SizedBox(height: 10.h),
                 DropdownButtonFormField<String>(
@@ -467,7 +467,7 @@ class ServiceBookState extends State<ServiceBook> {
                     ),
                     child: Text(
                       AppLocalizations.of(context).translate('service_book_but'),
-                      style: TextStyle(fontSize: 18.sp, color: Colors.white),
+                      style: TextStyle(fontSize: 16.sp, color: Colors.white),
                     ),
                   ),
                 ),

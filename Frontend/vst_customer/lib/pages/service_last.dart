@@ -43,7 +43,7 @@ class _ServiceLastState extends State<ServiceLast> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(AppLocalizations.of(context).translate('service_last_service_details'),
-                    style: TextStyle(fontSize: 18.sp)), // Responsive font size
+                    style: TextStyle(fontSize: 16.sp)), // Responsive font size
                 Divider(),
                 _buildDetail(AppLocalizations.of(context).translate('service_last_booked_by'),
                     widget.serviceData["customer_data"]?["name"]?.toString() ?? "None"),
@@ -63,7 +63,7 @@ class _ServiceLastState extends State<ServiceLast> {
                     _getStatusLabel(widget.serviceData['status']?.toString() ?? "None")),
                 SizedBox(height: 32.h), // Responsive spacing
                 Text(AppLocalizations.of(context).translate('service_last_customer_details'),
-                    style: TextStyle(fontSize: 18.sp)), // Responsive font size
+                    style: TextStyle(fontSize: 16.sp)), // Responsive font size
                 Divider(),
                 _buildCustomerDetails(),
               ],
@@ -85,8 +85,8 @@ class _ServiceLastState extends State<ServiceLast> {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Text(title, style: TextStyle(color: Color.fromARGB(255, 55, 99, 174), fontSize: 15.sp)), // Responsive font size
-          Text(value, style: TextStyle(fontSize: 15.sp)), // Responsive font size
+          Text(title, style: TextStyle(color: Color.fromARGB(255, 55, 99, 174), fontSize: 12.sp)), // Responsive font size
+          Text(value, style: TextStyle(fontSize: 12.sp)), // Responsive font size
         ],
       ),
     );

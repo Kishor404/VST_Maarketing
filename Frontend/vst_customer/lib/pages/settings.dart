@@ -49,21 +49,21 @@ class _SettingsPageState extends State<SettingsPage> {
         foregroundColor: Colors.white,
       ),
       body: Padding(
-        padding: EdgeInsets.all(20.sp), // Responsive padding
+        padding: EdgeInsets.all(18.sp), // Responsive padding
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
               AppLocalizations.of(context).translate('select_language'),
               style: TextStyle(
-                fontSize: 18.sp, // Responsive font size
+                fontSize: 16.sp, // Responsive font size
               ),
             ),
             SizedBox(height: 10.h), // Responsive height
             RadioListTile<String>(
               title: Text(
                 "English",
-                style: TextStyle(fontSize: 16.sp), // Responsive font size
+                style: TextStyle(fontSize: 14.sp), // Responsive font size
               ),
               value: 'en',
               groupValue: _selectedLanguage,
@@ -74,7 +74,7 @@ class _SettingsPageState extends State<SettingsPage> {
             RadioListTile<String>(
               title: Text(
                 "தமிழ்",
-                style: TextStyle(fontSize: 16.sp), // Responsive font size
+                style: TextStyle(fontSize: 14.sp), // Responsive font size
               ),
               value: 'ta',
               groupValue: _selectedLanguage,

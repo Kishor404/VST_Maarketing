@@ -230,7 +230,7 @@ class _CardDetailsPageState extends State<CardDetailsPage> {
                     children: [
                       Text(
                         '${AppLocalizations.of(context).translate('card_model')} ${widget.cardData['model']}',
-                        style: TextStyle(fontSize: 16.sp, fontWeight: FontWeight.bold),
+                        style: TextStyle(fontSize: 14.sp, color: Color.fromARGB(255, 55, 99, 174), fontWeight: FontWeight.bold),
                       ),
                       SizedBox(height: 8.h),
                       Text('${AppLocalizations.of(context).translate('card_customer_id')}${widget.cardData['customer_code']}'),

@@ -43,8 +43,6 @@ class HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    // Use ScreenUtil for responsive screen width
-    double screenWidth = ScreenUtil().screenWidth;
 
     final List<Map<String, dynamic>> buttonData = [
       {'icon': Icons.construction, 'label': AppLocalizations.of(context).translate('home_service'), 'onTap': () => widget.onNavigateToIndex(1)},
@@ -66,13 +64,12 @@ class HomePageState extends State<HomePage> {
           children: [
             // Use ScreenUtil for responsive sizing
             SizedBox(
-              height: screenWidth * 0.8 * 9 / 16,
+              height:150.h,
               child: PageView.builder(
                 controller: PageController(viewportFraction: 0.9, initialPage: 1000),
                 itemBuilder: (context, index) {
                   int actualIndex = index % 3;
                   return Container(
-                    width: screenWidth * 0.9,
                     margin: EdgeInsets.symmetric(horizontal: 8.sp),
                     decoration: BoxDecoration(
                       color: Colors.grey[300],
@@ -89,12 +86,12 @@ class HomePageState extends State<HomePage> {
             SizedBox(height: 50.sp),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: List.generate(4, (index) => _buildIconButton(screenWidth, buttonData[index])),
+              children: List.generate(4, (index) => _buildIconButton(buttonData[index])),
             ),
-            SizedBox(height: 30.sp),
+            SizedBox(height: 20.sp),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: List.generate(4, (index) => _buildIconButton(screenWidth, buttonData[index + 4])),
+              children: List.generate(4, (index) => _buildIconButton(buttonData[index + 4])),
             ),
             SizedBox(height: 50.sp),
             Expanded(
@@ -105,19 +102,19 @@ class HomePageState extends State<HomePage> {
                 ),
                 child: Center(
                   child: SizedBox(
-                    width: screenWidth * 0.8,
+                    width: 280.w,
                     child: Column(
                       mainAxisSize: MainAxisSize.min,
                       children: [
                         Text(
                           '"${quotes.isNotEmpty ? quotes[0] : AppLocalizations.of(context).translate('home_loading')}"',
                           textAlign: TextAlign.center,
-                          style: TextStyle(fontSize: 14.sp, fontStyle: FontStyle.italic, color: Colors.black87),
+                          style: TextStyle(fontSize: 12.sp, fontStyle: FontStyle.italic, color: Colors.black87),
                         ),
                         SizedBox(height: 8.sp),
                         Text(
                           '- ${quotes.length > 1 ? quotes[1] : ""}',
-                          style: TextStyle(fontSize: 14.sp, fontWeight: FontWeight.bold, color: Colors.black54),
+                          style: TextStyle(fontSize: 12.sp, fontWeight: FontWeight.bold, color: Colors.black54),
                         ),
                       ],
                     ),
@@ -131,13 +128,13 @@ class HomePageState extends State<HomePage> {
     );
   }
 
-  Widget _buildIconButton(double screenWidth, Map<String, dynamic> data) {
+  Widget _buildIconButton(Map<String, dynamic> data) {
     return InkWell(
       onTap: data['onTap'],
       borderRadius: BorderRadius.circular(8.sp),
       child: Container(
-        width: screenWidth / 6,
-        height: screenWidth / 6,
+        width:65.w,
+        height:58.h,
         decoration: BoxDecoration(
           color: Color.fromARGB(255, 55, 99, 174),
           borderRadius: BorderRadius.circular(8.sp),
@@ -145,9 +142,9 @@ class HomePageState extends State<HomePage> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Icon(data['icon'], size: screenWidth / 15.sp, color: Colors.white70),
-            SizedBox(height: 8.sp),
-            Text(data['label'], style: TextStyle(fontSize: screenWidth / 28.sp, color: Colors.white70)),
+            Icon(data['icon'], size:20.sp, color: Colors.white70),
+            SizedBox(height: 5.sp),
+            Text(data['label'], style: TextStyle(fontSize:11.sp, color: Colors.white70)),
           ],
         ),
       ),

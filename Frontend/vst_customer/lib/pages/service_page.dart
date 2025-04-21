@@ -202,23 +202,26 @@ class ServicePageState extends State<ServicePage> {
   }
 
   Widget buildServiceButton({required String label, required VoidCallback onPressed}) {
-    return ElevatedButton(
+    return SizedBox(
+    width: 200.w, // or any responsive width
+    child: ElevatedButton(
       onPressed: onPressed,
       style: ElevatedButton.styleFrom(
         backgroundColor: const Color.fromARGB(255, 55, 99, 174),
         padding: EdgeInsets.symmetric(horizontal: 30.w, vertical: 15.h),
-        textStyle: TextStyle(fontSize: 18.sp),
+        textStyle: TextStyle(fontSize: 14.sp),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(8.0),
         ),
       ),
       child: Text(label, style: const TextStyle(color: Colors.white)),
-    );
+    ),
+  );
+
   }
 
   @override
   Widget build(BuildContext context) {
-    double screenWidth = MediaQuery.of(context).size.width;
 
     return Scaffold(
       backgroundColor: Colors.white,
@@ -228,7 +231,7 @@ class ServicePageState extends State<ServicePage> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Container(
-              width: screenWidth * 0.8,
+              width:300.w,
               padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 30.h),
               decoration: BoxDecoration(
                 color: const Color.fromARGB(255, 55, 99, 174),
@@ -238,20 +241,20 @@ class ServicePageState extends State<ServicePage> {
                 children: [
                   Text(
                     AppLocalizations.of(context).translate('service_title'),
-                    style: TextStyle(fontSize: 22.sp, color: Colors.white),
+                    style: TextStyle(fontSize: 18.sp, color: Colors.white),
                   ),
                   SizedBox(height: 15.h),
                   Text(
                     '${AppLocalizations.of(context).translate('service_last_service')} $lastServiceDate',
-                    style: TextStyle(fontSize: 14.sp, color: Colors.white),
+                    style: TextStyle(fontSize: 12.sp, color: Colors.white),
                   ),
                   Text(
                     '${AppLocalizations.of(context).translate('service_next_service')} $nextServiceCard',
-                    style: TextStyle(fontSize: 14.sp, color: Colors.white),
+                    style: TextStyle(fontSize: 12.sp, color: Colors.white),
                   ),
                   Text(
                     '${AppLocalizations.of(context).translate('service_next_service_in')} $nextService ${AppLocalizations.of(context).translate('service_next_service_days')}',
-                    style: TextStyle(fontSize: 14.sp, color: Colors.white),
+                    style: TextStyle(fontSize: 12.sp, color: Colors.white),
                   ),
                 ],
               ),

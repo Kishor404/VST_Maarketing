@@ -140,7 +140,9 @@ class _MyAppState extends State<MyApp> {
       minTextAdapt: true,
       splitScreenMode: true,
       builder: (context, child) {
-        return MaterialApp(
+      return MediaQuery(
+        data: MediaQuery.of(context).copyWith(textScaler: TextScaler.noScaling),
+        child: MaterialApp(
           title: 'VST Marketing',
           theme: ThemeData(
             scaffoldBackgroundColor: Colors.white,
@@ -167,8 +169,10 @@ class _MyAppState extends State<MyApp> {
             return supportedLocales.first;
           },
           home: const IndexPage(),
-        );
-      },
+        ),
+      );
+    }
+
     );
   }
 }

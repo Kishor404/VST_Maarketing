@@ -8,7 +8,6 @@ import 'profile_page.dart';
 import 'welcome.dart';
 import '../main.dart';
 import '../app_localizations.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class IndexPage extends StatefulWidget {
   const IndexPage({super.key});
@@ -50,37 +49,12 @@ class IndexPageState extends State<IndexPage> {
   Widget build(BuildContext context) {
     // Define the list of pages dynamically
     final List<Widget> pages = [
-    ScreenUtilInit(
-      designSize: const Size(360, 690),
-      minTextAdapt: true,
-      splitScreenMode: true,
-      builder: (context, child) => HomePage(onNavigateToIndex: _navigateToPage),
-    ),
-    ScreenUtilInit(
-      designSize: const Size(375, 812), // for example
-      minTextAdapt: true,
-      splitScreenMode: true,
-      builder: (context, child) => const ServicePage(),
-    ),
-    ScreenUtilInit(
-      designSize: const Size(414, 896), // Different design size for Products
-      minTextAdapt: true,
-      splitScreenMode: true,
-      builder: (context, child) => const ProductsPage(),
-    ),
-    ScreenUtilInit(
-      designSize: const Size(360, 690),
-      minTextAdapt: true,
-      splitScreenMode: true,
-      builder: (context, child) => const CardPage(),
-    ),
-    ScreenUtilInit(
-      designSize: const Size(375, 812),
-      minTextAdapt: true,
-      splitScreenMode: true,
-      builder: (context, child) => ProfilePage(onNavigateToIndex: _navigateToPage),
-    ),
-  ];
+      HomePage(onNavigateToIndex: _navigateToPage),
+      const ServicePage(),
+      const ProductsPage(),
+      const CardPage(),
+      ProfilePage(onNavigateToIndex: _navigateToPage),
+    ];
 
 
     return Scaffold(

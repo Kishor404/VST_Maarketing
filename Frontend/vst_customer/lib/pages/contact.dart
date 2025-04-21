@@ -96,7 +96,7 @@ class _ContactPageState extends State<ContactPage> {
                     // Phone Numbers
                     Text(
                       cardData["company"]["phone"].join("\n"),
-                      style: TextStyle(fontSize: 16.sp),
+                      style: TextStyle(fontSize: 14.sp),
                       textAlign: TextAlign.center,
                     ),
                     SizedBox(height: 12.h),
@@ -104,11 +104,11 @@ class _ContactPageState extends State<ContactPage> {
                     // Email & Website
                     Text(
                       "${AppLocalizations.of(context).translate('contact_email')} ${cardData["company"]["email"]}",
-                      style: TextStyle(fontSize: 16.sp),
+                      style: TextStyle(fontSize: 14.sp),
                     ),
                     Text(
                       "${AppLocalizations.of(context).translate('contact_web')} ${cardData["company"]["web"]}",
-                      style: TextStyle(fontSize: 16.sp),
+                      style: TextStyle(fontSize: 14.sp),
                     ),
                   ],
                 ),
@@ -120,7 +120,7 @@ class _ContactPageState extends State<ContactPage> {
               Container(
                 width: double.infinity,
                 margin: EdgeInsets.symmetric(horizontal: 40.w),
-                padding: EdgeInsets.all(16.sp),
+                padding: EdgeInsets.all(14.sp),
                 decoration: BoxDecoration(
                   color: const Color.fromARGB(255, 55, 99, 174),
                   borderRadius: BorderRadius.circular(12.sp),
@@ -130,14 +130,14 @@ class _ContactPageState extends State<ContactPage> {
                     Text(
                       cardData["admin"]["name"],
                       style: TextStyle(
-                        fontSize: 17.sp,
+                        fontSize: 15.sp,
                         color: Colors.white,
                       ),
                     ),
                     Text(
                       cardData["admin"]["phone"],
                       style: TextStyle(
-                        fontSize: 16.sp,
+                        fontSize: 14.sp,
                         color: Colors.white,
                       ),
                     ),
