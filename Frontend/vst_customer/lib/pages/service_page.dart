@@ -203,7 +203,7 @@ class ServicePageState extends State<ServicePage> {
 
   Widget buildServiceButton({required String label, required VoidCallback onPressed}) {
     return SizedBox(
-    width: 200.w, // or any responsive width
+    width: 250.w, // or any responsive width
     child: ElevatedButton(
       onPressed: onPressed,
       style: ElevatedButton.styleFrom(

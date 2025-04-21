@@ -96,8 +96,6 @@ class _ServiceLastState extends State<ServiceLast> {
     Map<String, String> customerData = {
       AppLocalizations.of(context).translate('service_last_customer_city'):
           widget.serviceData["customer_data"]?["city"]?.toString() ?? "None",
-      AppLocalizations.of(context).translate('service_last_customer_name'):
-          widget.serviceData["customer_data"]?["name"]?.toString() ?? "None",
       AppLocalizations.of(context).translate('service_last_customer_email'):
           widget.serviceData["customer_data"]?["email"]?.toString() ?? "None",
       AppLocalizations.of(context).translate('service_last_customer_phone'):

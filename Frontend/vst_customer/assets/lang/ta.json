@@ -26,7 +26,7 @@
     "home_contact": "தொடர்பு",
     "home_card": "கார்டு",
     "home_setting": "அமைப்பு",
-    "home_alert": "எச்சரிக்கை",
+    "home_alert": "அறிவிப்பு",
     "home_profile": "சுயவிவரம்",
     "home_product": "தயாரிப்பு",
     "home_help": "உதவி",
@@ -134,7 +134,7 @@
     "service_details_cancel_service_success": "சேவை வெற்றிகரமாக ரத்து செய்யப்பட்டது",
     "service_details_cancel_service_fail": "சேவையை ரத்து செய்ய முடியவில்லை",
 
-    "service_last_title": "ரத்து செய்யப்பட்ட சேவை விவரங்கள்",
+    "service_last_title": "ரத்து செய்யப்பட்ட சேவை",
     "service_last_service_details": "சேவை விவரங்கள்",
     "service_last_booked_by": "பதிவு செய்தவர் : ",
     "service_last_card_id": "அட்டை ஐடி : ",
@@ -144,7 +144,7 @@
     "service_last_description": "விளக்கம் : ",
     "service_last_date": "நியமிக்கப்பட்ட தேதி : ",
     "service_last_status": "நிலை : ",
-    "service_last_customer_details": "வாடிக்கையாளர் விவரங்கள் : ",
+    "service_last_customer_details": "வாடிக்கையாளர் : ",
     "service_last_customer_city": "நகரம் : ",
     "service_last_customer_name": "பெயர் : ",
     "service_last_customer_phone": "தொலைபேசி எண் : ",
@@ -157,18 +157,18 @@
 
     "service_title": "சேவை",
     "service_last_service": "கடைசி சேவை",
-    "service_next_service": "அடுத்த சேவை அட்டை ஐடி : ",
+    "service_next_service": "அடுத்த அட்டை : ",
     "service_next_service_in": "அடுத்த சேவை : ",
     "service_next_service_days": "நாட்கள்",
     "service_cancelled_service": "ரத்து செய்யப்பட்ட சேவை",
-    "service_book_service": "சேவையை பதிவு செய்யவும்",
+    "service_book_service": "சேவை பதிவு",
     "service_details": "சேவை விவரங்கள்",
 
 
     "nav_home": "முகப்பு",
     "nav_service": "சேவை",
-    "nav_product": "தயாரிப்பு",
-    "nav_card": "சேவை அட்டை",
+    "nav_products": "தயாரிப்பு",
+    "nav_card": "அட்டை",
     "nav_profile": "சுயவிவரம்",
 
 
