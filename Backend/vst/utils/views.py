@@ -610,3 +610,43 @@ class GetStaffByID(APIView):
 
         return Response(serializer.data, status=status.HTTP_200_OK)
 
+
+# =========== GET WARRENTY BY ID ==========
+
+
+from rest_framework.views import APIView
+from rest_framework.response import Response
+from rest_framework import status
+from rest_framework.permissions import IsAuthenticated
+from django.shortcuts import get_object_or_404
+from card.models import Card
+from datetime import date
+
+class GetWarrentyByID(APIView):
+    """Fetch warranty details by Card ID with role-based access control"""
+
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request, *args, **kwargs):
+        user_role = request.user.role
+        card_id = kwargs.get('id')
+        print(card_id)
+        print(user_role)
+
+        card = get_object_or_404(Card, id=card_id)
+        
+        warranty_start_date = card.warranty_start_date
+        warranty_end_date = card.warranty_end_date
+        today = date.today()
+        is_warranty = today <= warranty_end_date
+
+        warranty_end_in = (warranty_end_date - today).days if is_warranty else 0
+
+        data = {
+            'warranty_start_date': warranty_start_date,
+            'warranty_end_date': warranty_end_date,
+            'is_warranty': is_warranty,
+            'warranty_end_in': warranty_end_in,
+        }
+
+        return Response(data, status=status.HTTP_200_OK)

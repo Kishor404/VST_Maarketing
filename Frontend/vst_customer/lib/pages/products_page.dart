@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:dio/dio.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'product_details.dart';
-import 'data.dart';
+import 'api.dart';
 import 'login_page.dart';
 import '../app_localizations.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart'; // Import ScreenUtils
@@ -15,11 +13,10 @@ class ProductsPage extends StatefulWidget {
 }
 
 class _ProductsPageState extends State<ProductsPage> {
-  String _refreshToken = '';
-  String _accessToken = '';
   List<dynamic> products = [];
+  Map<String, dynamic> apiData = {};
   bool isLoading = true;
-  final Dio _dio = Dio();
+  API api = API();
 
   @override
   void initState() {
@@ -28,96 +25,23 @@ class _ProductsPageState extends State<ProductsPage> {
   }
 
   Future<void> _initializeData() async {
-    await _loadTokens(); 
-    await _refreshAccessToken();  
-    await fetchProducts();
+    apiData = await api.fetchProducts();
+    if (apiData["logout"]==1) {
+      _logout();
+    } else {
+      products = apiData["data"];
+      setState(() {
+        isLoading = false;
+      });
+    }
   }
-
-  Future<void> _loadTokens() async {
-    final prefs = await SharedPreferences.getInstance();
-    setState(() {
-      _refreshToken = prefs.getString('RT') ?? ''; 
-      _accessToken = prefs.getString('AT') ?? ''; 
-    });
-  }
+  
 
   Future<void> _logout() async {
-    final prefs = await SharedPreferences.getInstance();
-    await prefs.clear();
     Navigator.pushReplacement(
       context,
       MaterialPageRoute(builder: (context) => LoginPage()),
     );
-  }
-
-  Future<void> _refreshAccessToken() async {
-    if (_refreshToken.isEmpty) {
-      debugPrint("No refresh token found! Logging out...");
-      await _logout();
-      return;
-    }
-
-    final url = '${Data.baseUrl}/log/token/refresh/';
-    final requestBody = {'refresh': _refreshToken};
-
-    try {
-      final response = await _dio.post(
-        url,
-        data: requestBody,
-        options: Options(headers: {'Content-Type': 'application/json'}),
-      );
-
-      if (response.statusCode == 200 && response.data['access'] != null) {
-        final newAccessToken = response.data['access'];
-        final prefs = await SharedPreferences.getInstance();
-        await prefs.setString('AT', newAccessToken);
-
-        setState(() {
-          _accessToken = newAccessToken;
-        });
-
-        debugPrint("Access token refreshed successfully.");
-      } else {
-        debugPrint("Refresh token expired or invalid. Logging out...");
-        await _logout();
-      }
-    } catch (e) {
-      debugPrint('Error refreshing token: $e');
-      await _logout(); // Logout on error (e.g., expired refresh token)
-    }
-  }
-
-  Future<void> fetchProducts() async {
-    if (_accessToken.isEmpty) {
-      debugPrint("No access token available. Cannot fetch products.");
-      return;
-    }
-
-    try {
-      final response = await _dio.get(
-        '${Data.baseUrl}/products/',
-        options: Options(headers: {
-          'Content-Type': 'application/json',
-          'Authorization': 'Bearer $_accessToken',
-        }),
-      );
-
-      setState(() {
-        products = response.data;
-        isLoading = false;
-      });
-    } catch (e) {
-      if (e is DioException && e.response?.statusCode == 401) {
-        debugPrint("Access token expired. Refreshing token...");
-        await _refreshAccessToken();
-        return fetchProducts(); // Retry fetching after token refresh
-      }
-
-      setState(() {
-        isLoading = false;
-      });
-      debugPrint('Error fetching products: $e');
-    }
   }
 
   @override

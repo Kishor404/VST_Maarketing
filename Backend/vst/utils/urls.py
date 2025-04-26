@@ -15,7 +15,8 @@ from .views import (
     EditUsersByHeadAndAdmin,
     RejectEditReq,
     UnavailableReqView,
-    RejectUnavaReq
+    RejectUnavaReq,
+    GetWarrentyByID
     )
 
 urlpatterns = [
@@ -36,4 +37,5 @@ urlpatterns = [
     path('headviewunavareq/', UnavailableReqView.as_view(), name='view-unava-by-head'),
     path('role-count/', RoleCountView.as_view(), name='role-count'),
     path('reassingstaff/<int:id>', AssignAvailableStaffView.as_view(), name='reassign-staff'),
+    path('getwarrentydetails/<int:id>', GetWarrentyByID.as_view(), name='get-warrenty-by-id'),
 ]

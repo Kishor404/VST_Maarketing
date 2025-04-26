@@ -2,9 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:vst_maarketing/pages/service_last.dart';
 import 'service_details.dart';
 import 'service_book.dart';
-import 'package:dio/dio.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'data.dart';
+import 'api.dart';
 import 'login_page.dart';
 import '../app_localizations.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart'; // Import screenutil
@@ -16,17 +15,18 @@ class ServicePage extends StatefulWidget {
 }
 
 class ServicePageState extends State<ServicePage> {
+  API api = API();
+  Map<String, dynamic> apiServiceData = {};
+  Map<String, dynamic> apiNextServiceData = {};
+
   String lastServiceDate = "No Service Data";
   String nextService = "No Service Data";
   String nextServiceCard = "No Service Data";
 
-  String _refreshToken = '';
-  String _accessToken = '';
   List<dynamic> services = [];
   List<dynamic> bookedServices = [];
   List<dynamic> cancelServices = [];
   bool isLoading = true;
-  final Dio _dio = Dio();
 
   bool bookButton = true;
   bool lastButton = false;
@@ -38,134 +38,27 @@ class ServicePageState extends State<ServicePage> {
   }
 
   Future<void> _initializeData() async {
-    await _loadTokens();
-    await _refreshAccessToken();
-    await fetchNextService();
-    await fetchServices();
-    fetchServiceDetails(); // No need for `await` as it's not an API call
-  }
-
-  Future<void> _loadTokens() async {
-    final prefs = await SharedPreferences.getInstance();
-    setState(() {
-      _refreshToken = prefs.getString('RT') ?? '';
-      _accessToken = prefs.getString('AT') ?? '';
-    });
+    apiServiceData = await api.fetchServices();
+    apiNextServiceData = await api.fetchNextService();
+    if (apiServiceData["logout"] == 1 || apiNextServiceData["logout"] == 1) {
+      _logout();
+    } else {
+      if(mounted){
+        setState(() {
+        services = apiServiceData["data"];
+        nextService = apiNextServiceData["nextService"];
+        nextServiceCard = apiNextServiceData["nextServiceCard"];
+        isLoading = false;
+      });}
+    }
+    fetchServiceDetails();
   }
 
   Future<void> _logout() async {
-    final prefs = await SharedPreferences.getInstance();
-    await prefs.clear();
     Navigator.pushReplacement(
       context,
       MaterialPageRoute(builder: (context) => LoginPage()),
     );
-  }
-
-  Future<void> _refreshAccessToken() async {
-  if (_refreshToken.isEmpty) {
-    debugPrint("No refresh token found! Logging out...");
-    await _logout();
-    return;
-  }
-
-  final url = '${Data.baseUrl}/log/token/refresh/';
-  final requestBody = {'refresh': _refreshToken};
-
-  try {
-    final response = await _dio.post(
-      url,
-      data: requestBody,
-      options: Options(headers: {'Content-Type': 'application/json'}),
-    );
-
-    if (response.statusCode == 200 && response.data['access'] != null) {
-      final newAccessToken = response.data['access'];
-      final prefs = await SharedPreferences.getInstance();
-      await prefs.setString('AT', newAccessToken);
-
-      setState(() {
-        _accessToken = newAccessToken;
-      });
-
-      debugPrint("Access token refreshed successfully.");
-    } else {
-      debugPrint("Invalid refresh token. Logging out...");
-      await _logout();
-    }
-  } catch (e) {
-    if (e is DioException && e.response?.statusCode == 401) {
-      debugPrint("Refresh token expired. Logging out...");
-      await _logout();
-    } else {
-      debugPrint("Error refreshing token: $e");
-    }
-  }
-}
-
-
-  Future<void> fetchServices() async {
-    if (_accessToken.isEmpty) {
-      debugPrint("No access token available. Cannot fetch services.");
-      return;
-    }
-
-    try {
-      final response = await _dio.get(
-        '${Data.baseUrl}/services/',
-        options: Options(headers: {
-          'Content-Type': 'application/json',
-          'Authorization': 'Bearer $_accessToken',
-        }),
-      );
-
-      setState(() {
-        services = response.data;
-      });
-
-      fetchServiceDetails(); // Process fetched services
-    } catch (e) {
-      if (e is DioException && e.response?.statusCode == 401) {
-        debugPrint("Access token expired. Refreshing token...");
-        await _refreshAccessToken();
-        return fetchServices();
-      }
-
-      debugPrint('Error fetching services: $e');
-    } finally {
-      setState(() {
-        isLoading = false;
-      });
-    }
-  }
-
-  Future<void> fetchNextService() async {
-    if (_accessToken.isEmpty) {
-      debugPrint("No access token available. Cannot fetch services.");
-      return;
-    }
-
-    try {
-      final response = await _dio.get(
-        '${Data.baseUrl}/utils/next-service/',
-        options: Options(headers: {
-          'Content-Type': 'application/json',
-          'Authorization': 'Bearer $_accessToken',
-        }),
-      );
-
-      setState(() {
-        nextService = response.data["days_remaining"].toString();
-        nextServiceCard = response.data["card_id"].toString();
-      });
-    } catch (e) {
-      if (e is DioException && e.response?.statusCode == 401) {
-        debugPrint("Access token expired. Refreshing token...");
-        await _refreshAccessToken();
-        return fetchNextService();
-      }
-      debugPrint('Error fetching next service: $e');
-    }
   }
 
   void fetchServiceDetails() {
@@ -174,11 +67,10 @@ class ServicePageState extends State<ServicePage> {
     List<dynamic> tempBookedServices = [];
     List<dynamic> tempCancelServices = [];
     String tempLastServiceDate = lastServiceDate;
-
     for (var service in services) {
       switch (service["status"]) {
         case "SD":
-          tempLastServiceDate = service["date_of_service"];
+          tempLastServiceDate = service["available_date"];
           break;
         case "BD":
         case "SP":
@@ -225,7 +117,9 @@ class ServicePageState extends State<ServicePage> {
 
     return Scaffold(
       backgroundColor: Colors.white,
-      body: Padding(
+      body: isLoading
+        ? const Center(child: CircularProgressIndicator())
+        :Padding(
         padding: EdgeInsets.only(left: 16.w, right: 16.w, top: 10.h, bottom: 40.h),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,

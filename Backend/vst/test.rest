@@ -9,7 +9,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiY
 POST http://127.0.0.1:8000/log/login/
 Content-Type: application/json
 
-{"phone":"9078563411","password":"123"}
+{"phone":"7418081727","password":"Kishor_2005"}
 
 # ====== DEMO 1 ========
 
