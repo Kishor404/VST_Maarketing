@@ -36,20 +36,20 @@ class ServiceViewSet(viewsets.ModelViewSet):
         user = self.request.user  # Get authenticated user
 
         # Update staff availability
-        if staff and available_date:
-            try:
-                # Ensure availability is a dictionary
-                if not staff.availability:
-                    staff.availability = {"unavailable": []}
-                else:
-                    if isinstance(staff.availability, str):
-                        staff.availability = json.loads(staff.availability)
+        # if staff and available_date:
+        #     try:
+        #         # Ensure availability is a dictionary
+        #         if not staff.availability:
+        #             staff.availability = {"unavailable": []}
+        #         else:
+        #             if isinstance(staff.availability, str):
+        #                 staff.availability = json.loads(staff.availability)
 
-                # Append new date
-                staff.availability["unavailable"].append(available_date)
-                staff.save()
-            except Exception as e:
-                print(f"Error updating staff availability: {e}")
+        #         # Append new date
+        #         staff.availability["unavailable"].append(available_date)
+        #         staff.save()
+        #     except Exception as e:
+        #         print(f"Error updating staff availability: {e}")
 
         # Send notification about service creation
         if user.FCM_Token:
@@ -65,18 +65,18 @@ class ServiceViewSet(viewsets.ModelViewSet):
             except requests.exceptions.RequestException as e:
                 print(f"Error sending notification: {e}")
 
-        if staff and staff.FCM_Token:
-            staff_payload = {
-                "token": staff.FCM_Token,
-                "title": "New Service Assigned",
-                "body": f"A new service (ID: {service.id}) has been assigned to you."
-            }
-            try:
-                response = requests.post("http://157.173.220.208/firebase/send-notification/", json=staff_payload)
-                response.raise_for_status()
-                print("Staff notification sent successfully:", response.json())
-            except requests.exceptions.RequestException as e:
-                print(f"Error sending staff notification: {e}")
+        # if staff and staff.FCM_Token:
+        #     staff_payload = {
+        #         "token": staff.FCM_Token,
+        #         "title": "New Service Assigned",
+        #         "body": f"A new service (ID: {service.id}) has been assigned to you."
+        #     }
+        #     try:
+        #         response = requests.post("http://157.173.220.208/firebase/send-notification/", json=staff_payload)
+        #         response.raise_for_status()
+        #         print("Staff notification sent successfully:", response.json())
+        #     except requests.exceptions.RequestException as e:
+        #         print(f"Error sending staff notification: {e}")
 
         return Response(serializer.data, status=status.HTTP_201_CREATED)
 

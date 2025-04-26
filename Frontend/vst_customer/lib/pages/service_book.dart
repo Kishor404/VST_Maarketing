@@ -215,38 +215,39 @@ class ServiceBookState extends State<ServiceBook> {
 
     String complaintDescription = complaintDetailsController.text;
 
-    final String checkAvailabilityUrl = "${Data.baseUrl}/utils/checkstaffavailability/";
+    // final String checkAvailabilityUrl = "${Data.baseUrl}/utils/checkstaffavailability/";
 
     Map<String, dynamic> availabilityRequestBody = {
       "from_date": "${fromDate!.year}-${fromDate!.month}-${fromDate!.day}",
       "to_date": "${toDate!.year}-${toDate!.month}-${toDate!.day}"
     };
-    try {
-      Response availabilityResponse = await _dio.post(
-        checkAvailabilityUrl,
-        data: availabilityRequestBody,
-        options: Options(
-          headers: {
-            "Content-Type": "application/json",
-            'Authorization': 'Bearer $_accessToken',
-          },
-        ),
-      );
+    // try {
+    //   Response availabilityResponse = await _dio.post(
+    //     checkAvailabilityUrl,
+    //     data: availabilityRequestBody,
+    //     options: Options(
+    //       headers: {
+    //         "Content-Type": "application/json",
+    //         'Authorization': 'Bearer $_accessToken',
+    //       },
+    //     ),
+    //   );
 
-      if (availabilityResponse.data.containsKey("worker_id")) {
-        int workerId = availabilityResponse.data["worker_id"];
-        String avaDate = availabilityResponse.data["available"];
-        await _confirmBooking(workerId, avaDate, complaintText, complaintDescription);
-      } else {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text(AppLocalizations.of(context).translate('service_book_no_worker'))),
-        );
-      }
-    } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text("Error checking staff availability: $e")),
-      );
-    }
+    //   if (availabilityResponse.data.containsKey("worker_id")) {
+    //     int workerId = availabilityResponse.data["worker_id"];
+    //     String avaDate = availabilityResponse.data["available"];
+    //     await _confirmBooking(workerId, avaDate, complaintText, complaintDescription);
+    //   } else {
+    //     ScaffoldMessenger.of(context).showSnackBar(
+    //       SnackBar(content: Text(AppLocalizations.of(context).translate('service_book_no_worker'))),
+    //     );
+    //   }
+    // } catch (e) {
+    //   ScaffoldMessenger.of(context).showSnackBar(
+    //     SnackBar(content: Text("Error checking staff availability: $e")),
+    //   );
+    // }
+    _confirmBooking(0, availabilityRequestBody["from_date"], complaintText, complaintDescription);
   }
 
   Future<void> _confirmBooking(int workerId, String avaDate, String complaintText, String complaintDescription) async {
@@ -255,7 +256,7 @@ class ServiceBookState extends State<ServiceBook> {
 
     Map<String, dynamic> requestBody = {
       "customer": int.parse(_customerId!),
-      "staff": workerId,
+      "staff": null,
       "staff_name": "Assigned Worker",
       "available": {
         "from": "${fromDate!.year}/${fromDate!.month}/${fromDate!.day}",

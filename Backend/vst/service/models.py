@@ -15,7 +15,7 @@ class Service(models.Model):
     ]
 
     customer = models.ForeignKey(User, on_delete=models.CASCADE, related_name="services")
-    staff = models.ForeignKey(User, on_delete=models.CASCADE, related_name="servicesstaff")
+    staff = models.ForeignKey(User, on_delete=models.CASCADE, related_name="servicesstaff", null=True, blank=True)
     card = models.ForeignKey(Card, on_delete=models.CASCADE, related_name="card")
 
     on_warrenty = models.BooleanField(default=False)
@@ -23,7 +23,7 @@ class Service(models.Model):
     rating = models.CharField(max_length=255, default="1")
     feedback = models.CharField(max_length=255, blank=True, null=True)
 
-    staff_name = models.CharField(max_length=255, blank=False, null=False)
+    staff_name = models.CharField(max_length=255, blank=True, null=True)
     customer_data = models.JSONField(blank=False, null=False)
 
     region = models.CharField(max_length=50, blank=False, null=False)
