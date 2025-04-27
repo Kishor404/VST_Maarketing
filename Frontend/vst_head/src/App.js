@@ -6,6 +6,7 @@ import Staff from "./pages/staff";
 import EditReq from "./pages/editReq";
 import UnavaReq from "./pages/unavaReq";
 import CreateCard from "./pages/createcard";
+import Service from "./pages/service";
 import Sidebar from "./components/Sidebar";
 import "./App.css";
 import ShowCard from "./pages/showcard";
@@ -34,6 +35,7 @@ const App = () => {
           <Route path="/unavareq" element={<UnavaReq />} />
           <Route path="/createcard" element={<CreateCard />} />
           <Route path="/showcard" element={<ShowCard/>} />
+          <Route path="/service" element={<Service/>} />
         </Routes>
       </Layout>
     </Router>

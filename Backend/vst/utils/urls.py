@@ -18,6 +18,8 @@ from .views import (
     RejectUnavaReq,
     GetWarrentyByID,
     GetServiceByHead,
+    GetServiceByIdByHead,
+    PatchServiceByIdByHead
     )
 
 urlpatterns = [
@@ -40,4 +42,6 @@ urlpatterns = [
     path('reassingstaff/<int:id>', AssignAvailableStaffView.as_view(), name='reassign-staff'),
     path('getwarrentydetails/<int:id>', GetWarrentyByID.as_view(), name='get-warrenty-by-id'),
     path('getservicebyhead/', GetServiceByHead.as_view(), name='get-service-by-head'),
+    path('getservicebyidbyhead/<int:id>', GetServiceByIdByHead.as_view(), name='get-service-by-id-by-head'),
+    path('patchservicebyidbyhead/<int:id>', PatchServiceByIdByHead.as_view(), name='patch-service-by-id-by-head'),
 ]

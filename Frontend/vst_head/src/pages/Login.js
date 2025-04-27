@@ -31,7 +31,7 @@ const Login = () => {
             Cookies.set('region', data.data.region, { expires: 7 });
             Cookies.set('name', data.data.name, { expires: 7 });
             alert("Login Sucessfull")
-            navigate("/customer")
+            navigate("/service")
         }else{
             alert("Invaild Role !")
         }

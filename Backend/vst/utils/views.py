@@ -701,3 +701,68 @@ class GetServiceByHead(APIView):
 
         return Response(serializer.data, status=status.HTTP_200_OK)
     
+
+#============= 19. GET SERVICE BY ID BY HEAD ==========
+
+from rest_framework.views import APIView
+from rest_framework.response import Response
+from rest_framework import status
+from rest_framework.permissions import IsAuthenticated
+from service.models import Service
+from service.serializers import ServiceSerializer
+
+class GetServiceByIdByHead(APIView):
+    """Fetch all services by role and region with role-based access control"""
+    permission_classes = [IsAuthenticated]
+    def get(self, request, *args, **kwargs):
+        service_id = kwargs.get('id')
+        user_role = request.user.role
+        user_region = request.user.region
+
+        allowed_roles = ["head"]
+
+        if user_role not in allowed_roles:
+            return Response({"error": "Permission denied"}, status=status.HTTP_403_FORBIDDEN)
+
+        services = Service.objects.filter(customer__region=user_region, id=service_id)
+        
+        serializer = ServiceSerializer(services, many=False)
+
+        return Response(serializer.data, status=status.HTTP_200_OK)
+    
+# =========== 20. PATCH SERVICE BY ID BY HEAD ==========
+
+from rest_framework.views import APIView
+from rest_framework.response import Response
+from rest_framework import status
+from rest_framework.permissions import IsAuthenticated
+from service.models import Service
+from service.serializers import ServiceSerializer
+from django.shortcuts import get_object_or_404
+from rest_framework.permissions import IsAuthenticated
+
+
+class PatchServiceByIdByHead(APIView):
+    queryset = Service.objects.all()
+    serializer_class = ServiceSerializer
+    permission_classes = [IsAuthenticated]
+
+    def patch(self, request, *args, **kwargs):
+        service_id = kwargs.get('id')
+        user_role = request.user.role
+        user_region = request.user.region
+
+        allowed_roles = ["head"]
+
+        if user_role not in allowed_roles:
+            return Response({"error": "Permission denied"}, status=status.HTTP_403_FORBIDDEN)
+
+        service = get_object_or_404(Service, id=service_id, customer__region=user_region)
+
+        serializer = self.serializer_class(service, data=request.data, partial=True)
+
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_200_OK)
+
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
