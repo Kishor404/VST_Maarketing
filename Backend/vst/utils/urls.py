@@ -16,7 +16,8 @@ from .views import (
     RejectEditReq,
     UnavailableReqView,
     RejectUnavaReq,
-    GetWarrentyByID
+    GetWarrentyByID,
+    GetServiceByHead,
     )
 
 urlpatterns = [
@@ -38,4 +39,5 @@ urlpatterns = [
     path('role-count/', RoleCountView.as_view(), name='role-count'),
     path('reassingstaff/<int:id>', AssignAvailableStaffView.as_view(), name='reassign-staff'),
     path('getwarrentydetails/<int:id>', GetWarrentyByID.as_view(), name='get-warrenty-by-id'),
+    path('getservicebyhead/', GetServiceByHead.as_view(), name='get-service-by-head'),
 ]

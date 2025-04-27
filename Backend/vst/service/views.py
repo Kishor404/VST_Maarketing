@@ -31,8 +31,8 @@ class ServiceViewSet(viewsets.ModelViewSet):
         Override perform_create to modify staff user after creating a service and send a notification.
         """
         service = serializer.save()  # Save the service instance
-        staff = service.staff  # Get assigned staff
-        available_date = service.available_date  # Extract available date
+        # staff = service.staff  # Get assigned staff
+        # available_date = service.available_date  # Extract available date
         user = self.request.user  # Get authenticated user
 
         # Update staff availability

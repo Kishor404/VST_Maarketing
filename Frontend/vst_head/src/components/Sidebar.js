@@ -22,6 +22,12 @@ return (
             </div>
             <div className="sidebar-list">
                 <div className="sidebar-item">
+                    <Link to="/staff" className="sidebar-link">
+                        <FaIdBadge className="sidebar-item-icon" size={20}/>
+                        Services Booked
+                    </Link>
+                </div>
+                <div className="sidebar-item">
                     <Link to="/customer" className="sidebar-link">
                         <FaUsers className="sidebar-item-icon" size={20}/>
                         Customers

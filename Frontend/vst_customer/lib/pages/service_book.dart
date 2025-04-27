@@ -156,12 +156,12 @@ class ServiceBookState extends State<ServiceBook> {
 
   Future<void> _selectDate(BuildContext context, bool isFrom) async {
     DateTime initialDate = isFrom
-        ? DateTime.now().add(Duration(days: 3)) // "From date" should be at least 10 days from now
-        : fromDate != null ? fromDate!.add(Duration(days: 1)) : DateTime.now();
+        ? DateTime.now().add(Duration(days: 0)) // "From date" should be at least 10 days from now
+        : fromDate != null ? fromDate!.add(Duration(days: 2)) : DateTime.now();
 
     DateTime firstDate = DateTime(2000); // Allow dates from year 2000
     DateTime lastDate = isFrom
-        ? DateTime.now().add(Duration(days: 60)) // "From date" can be up to 60 days ahead
+        ? DateTime.now().add(Duration(days: 30)) // "From date" can be up to 60 days ahead
         : (fromDate != null ? fromDate!.add(Duration(days: 10)) : DateTime.now().add(Duration(days: 10))); // "To" date within 10 days of the "From" date
 
     final DateTime? pickedDate = await showDatePicker(
@@ -175,10 +175,10 @@ class ServiceBookState extends State<ServiceBook> {
       setState(() {
         if (isFrom) {
           // Check if the "from date" is at least 10 days from today
-          if (pickedDate.isBefore(DateTime.now().add(Duration(days: 3)))) {
+          if (pickedDate.isBefore(DateTime.now().add(Duration(days: -1)))) {
             // If "from date" is not at least 10 days from now, show an error
             ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(content: Text('The "From Date" must be at least 10 days from today.')),
+              SnackBar(content: Text('The "From Date" must be from today.')),
             );
           } else {
             fromDate = pickedDate;
@@ -257,7 +257,7 @@ class ServiceBookState extends State<ServiceBook> {
     Map<String, dynamic> requestBody = {
       "customer": int.parse(_customerId!),
       "staff": null,
-      "staff_name": "Assigned Worker",
+      "staff_name": "Waiting...",
       "available": {
         "from": "${fromDate!.year}/${fromDate!.month}/${fromDate!.day}",
         "to": "${toDate!.year}/${toDate!.month}/${toDate!.day}"

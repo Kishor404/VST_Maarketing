@@ -5,8 +5,30 @@ from rest_framework import status
 from user.models import User
 from datetime import datetime
 
+# ==========================================
 
-# ====== AVAILABLITY CHECKER =========
+# 1. Availability Checker
+# 2. Find Next Service
+# 3. Get Upcoming Service
+# 4. Get Current Service
+# 5. Get Completed Service
+# 6. Get Count for Dashboard
+# 7. Head Accept and Delete the EditReq
+# 8. Head Reject EditReq
+# 9. Head Reject UnavailableReq
+# 10. Get User by ID
+# 11. Reassign Staff
+# 12. Get EditReq by Head
+# 13. Get UnavailableReq by Head
+# 14. Get All User by Head and Admin
+# 15. Edit User by Head and Admin
+# 16. Get Staff by ID
+# 17. Get Warranty by ID
+# 18. Get Service by Head
+
+# ==========================================
+
+# ====== 1. AVAILABLITY CHECKER =========
 
 from datetime import datetime, timedelta
 from rest_framework.views import APIView
@@ -56,7 +78,7 @@ class CheckAvailabilityView(APIView):
         return Response({"message": "No workers available during this period"}, status=status.HTTP_200_OK)
 
 
-# ========== FIND NEXT SERVICE =========
+# ========== 2. FIND NEXT SERVICE =========
 
 from datetime import date
 from rest_framework.views import APIView
@@ -107,7 +129,7 @@ class NextServiceView(APIView):
             return Response({"error": "No valid service entry found"}, status=status.HTTP_404_NOT_FOUND)
 
     
-# ======== GET UPCOMING SERVICE =============
+# ======== 3. GET UPCOMING SERVICE =============
 
 from rest_framework.views import APIView
 from rest_framework.response import Response
@@ -129,7 +151,7 @@ class UpcomingServiceView(APIView):
         return Response(serializer.data, status=200)
     
 
-# ======== GET CURRENT SERVICE ===========
+# ======== 4. GET CURRENT SERVICE ===========
 
 from django.utils.timezone import now  # Import the timezone-aware "now" function
 
@@ -144,7 +166,7 @@ class CurrentServiceView(APIView):
         serializer = ServiceSerializer(services, many=True)
         return Response(serializer.data, status=200)
 
-# ======== GET COMPLETED SERVICE =============
+# ======== 5. GET COMPLETED SERVICE =============
 
 from rest_framework.views import APIView
 from rest_framework.response import Response
@@ -167,7 +189,7 @@ class CompletedServiceView(APIView):
 
 
 
-# ============ GET COUNT FOR DASHBOARD =========
+# ============ 6. GET COUNT FOR DASHBOARD =========
 
 # views.py
 from rest_framework.views import APIView
@@ -196,7 +218,7 @@ class RoleCountView(APIView):
         })
 
 
-# ================ HEAD ACCEPT AND DELETE THE EDITREQ ===========
+# ================ 7. HEAD ACCEPT AND DELETE THE EDITREQ ===========
 
 
 from rest_framework.views import APIView
@@ -245,7 +267,7 @@ class HeadEdit(APIView):
         return Response(user_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
-# ================ HEAD REJECT EDITREQ ===========
+# ================ 8. HEAD REJECT EDITREQ ===========
 
 
 from rest_framework.views import APIView
@@ -281,7 +303,7 @@ class RejectEditReq(APIView):
         
         return Response("Rejected Successfully", status=status.HTTP_400_BAD_REQUEST)
 
-# ================ HEAD REJECT UNAVAILABLEREQ ===========
+# ================ 9. HEAD REJECT UNAVAILABLEREQ ===========
 
 
 from rest_framework.views import APIView
@@ -317,7 +339,7 @@ class RejectUnavaReq(APIView):
         
         return Response("Rejected Successfully", status=status.HTTP_400_BAD_REQUEST)
     
-# =========== GET USER BY ID ==========
+# =========== 10. GET USER BY ID ==========
 
 from rest_framework.views import APIView
 from rest_framework.response import Response
@@ -356,7 +378,7 @@ class GetUserByID(APIView):
         return Response(serializer.data, status=status.HTTP_200_OK)
 
 
-# =========== REASSIGN STAFF ==========
+# =========== 11. REASSIGN STAFF ==========
 
 import json
 from datetime import datetime, timedelta
@@ -448,7 +470,7 @@ class AssignAvailableStaffView(APIView):
         return Response({"message": "No available workers found."}, status=status.HTTP_200_OK)
 
 
-# =========== GET EDITREQ BY HEAD ===========
+# =========== 12. GET EDITREQ BY HEAD ===========
 
 from rest_framework.views import APIView
 from rest_framework.response import Response
@@ -472,7 +494,7 @@ class EditReqView(APIView):
         serializer = EditReqSerializer(edit_requests, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
     
-# =========== GET UNAVAILABLEREQ BY HEAD ===========
+# =========== 13. GET UNAVAILABLEREQ BY HEAD ===========
 
 from rest_framework.views import APIView
 from rest_framework.response import Response
@@ -496,7 +518,7 @@ class UnavailableReqView(APIView):
         serializer = UnavailableReqSerializer(edit_requests, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
-# =========== GET ALL USER BY HEAD AND ADMIN ==========
+# =========== 14. GET ALL USER BY HEAD AND ADMIN ==========
 
 from rest_framework.views import APIView
 from rest_framework.response import Response
@@ -531,7 +553,7 @@ class GetAllUsersByRoleAndRegion(APIView):
 
         return Response(serializer.data, status=status.HTTP_200_OK)
 
-# =========== EDIT USER BY HEAD AND ADMIN ==========
+# =========== 15. EDIT USER BY HEAD AND ADMIN ==========
 
 from rest_framework.views import APIView
 from rest_framework.response import Response
@@ -572,7 +594,7 @@ class EditUsersByHeadAndAdmin(APIView):
         
         return Response(user_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-# =========== GET STAFF BY ID ==========
+# =========== 16. GET STAFF BY ID ==========
 
 from rest_framework.views import APIView
 from rest_framework.response import Response
@@ -611,7 +633,7 @@ class GetStaffByID(APIView):
         return Response(serializer.data, status=status.HTTP_200_OK)
 
 
-# =========== GET WARRENTY BY ID ==========
+# =========== 17. GET WARRENTY BY ID ==========
 
 
 from rest_framework.views import APIView
@@ -650,3 +672,32 @@ class GetWarrentyByID(APIView):
         }
 
         return Response(data, status=status.HTTP_200_OK)
+
+
+#============= 18. GET ALL SERVICE BY HEAD ==========
+
+from rest_framework.views import APIView
+from rest_framework.response import Response
+from rest_framework import status
+from rest_framework.permissions import IsAuthenticated
+from service.models import Service
+from service.serializers import ServiceSerializer
+
+class GetServiceByHead(APIView):
+    """Fetch all services by role and region with role-based access control"""
+    permission_classes = [IsAuthenticated]
+    def get(self, request, *args, **kwargs):
+        user_role = request.user.role
+        user_region = request.user.region
+
+        allowed_roles = ["head"]
+
+        if user_role not in allowed_roles:
+            return Response({"error": "Permission denied"}, status=status.HTTP_403_FORBIDDEN)
+
+        services = Service.objects.filter(customer__region=user_region)
+        
+        serializer = ServiceSerializer(services, many=True)
+
+        return Response(serializer.data, status=status.HTTP_200_OK)
+    
