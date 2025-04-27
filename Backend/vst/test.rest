@@ -6,7 +6,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiY
 
 ### =========== CUSTOMER LOGIN API =============
 
-POST http://127.0.0.1:8000/log/login/
+POST http://157.173.220.208/log/login/
 Content-Type: application/json
 
 {"phone":"7418081727","password":"Kishor_2005"}
@@ -57,9 +57,9 @@ Content-Type: application/json
 
 ### ========== CARD DETAILS API ==========
 
-GET http://127.0.0.1:8000/api/cards-details/
+GET http://157.173.220.208/utils/getservicebyidbyhead/2
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzM5ODY4MTg4LCJpYXQiOjE3Mzk4NjYzODgsImp0aSI6ImM3YzViMDU2ZGZjZjQzN2NhMGVlZWI0Zjc0N2ZmNzQ5IiwidXNlcl9pZCI6MjV9.j67W4vCRTjO4igX_jK-4u0389iuCe45MAfpiFubLP5M
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzQ1NzYyOTc1LCJpYXQiOjE3NDU3NjExNzUsImp0aSI6ImRlMGZiODJhMDg0MzRkZWU5ZjI1OTk2NDE0YTg1ODA1IiwidXNlcl9pZCI6MX0.dPm82-v7PpAz_1-cd4SIYTUwyTO5of4R-pv4SgjHsww
 
 ### ========== CARD POST API ==========
 

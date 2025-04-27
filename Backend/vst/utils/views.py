@@ -714,7 +714,7 @@ from service.serializers import ServiceSerializer
 class GetServiceByIdByHead(APIView):
     """Fetch all services by role and region with role-based access control"""
     permission_classes = [IsAuthenticated]
-    def get(self, request, *args, **kwargs):
+    def get(self, request, **kwargs):
         service_id = kwargs.get('id')
         user_role = request.user.role
         user_region = request.user.region
@@ -724,9 +724,9 @@ class GetServiceByIdByHead(APIView):
         if user_role not in allowed_roles:
             return Response({"error": "Permission denied"}, status=status.HTTP_403_FORBIDDEN)
 
-        services = Service.objects.filter(customer__region=user_region, id=service_id)
+        service = get_object_or_404(Service, customer__region=user_region, id=service_id)
         
-        serializer = ServiceSerializer(services, many=False)
+        serializer = ServiceSerializer(service)
 
         return Response(serializer.data, status=status.HTTP_200_OK)
     

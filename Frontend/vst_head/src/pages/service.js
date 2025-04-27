@@ -14,7 +14,13 @@ const Service = () => {
 
     const [serviceList, setServiceList] = useState([]);
     const [editService, setEditService] = useState(true);
-    const [fetchService, setfetchService] = useState();
+    const [fetchService, setfetchService] = useState(false);
+    const [fetchServiceId, setfetchServiceId] = useState("");
+    const [fetchServiceStaffId, setfetchServiceStaffId] = useState("");
+    const [fetchServiceCardId, setfetchServiceCardId] = useState("");
+    const [fetchServiceAvaDate, setfetchServiceAvaDate] = useState("");
+    const [fetchServiceComplaint, setfetchServiceComplaint] = useState("");
+    const [fetchServiceStatus, setfetchServiceStatus] = useState("");
     const [boxData, setBoxData] = useState({"upcoming": 0, "pending": 0, "completed": 0, "total": 0});
     const refreshToken = Cookies.get('refresh_token');
 
@@ -27,6 +33,42 @@ const Service = () => {
         } catch (error) {
             console.error("Error refreshing token:", error);
             return null;
+        }
+    };
+    
+    // ========== FETCH SERVICE ==========
+
+    const fetchServicebyid = async (sid) => {
+        const accessToken = await refresh_token();
+        if (!accessToken) return;
+        try {
+            const response = await axios.get("http://157.173.220.208/utils/getservicebyidbyhead/"+sid, { headers: { Authorization: `Bearer ${accessToken}` } });
+            setfetchService(true);
+            setfetchServiceId(response.data.id);
+            setfetchServiceStaffId(response.data.staff);
+            setfetchServiceCardId(response.data.card);
+            setfetchServiceAvaDate(response.data.available_date);
+            setfetchServiceComplaint(response.data.complaint);
+            setfetchServiceStatus(response.data.status);
+
+        } catch (error) {
+            console.error("Error fetching customers:", error);
+        }
+    };
+
+    // ========== PATCH SERVICE ==========
+
+    const patchService = async (sid) => {
+        const accessToken = await refresh_token();
+        if (!accessToken) return;
+        const reqBody ={
+
+        }
+        try {
+            const response = await axios.get("http://157.173.220.208/utils/patchservicebyidbyhead/"+sid, { headers: { Authorization: `Bearer ${accessToken}` } });
+            setServiceList(response.data.filter((service) => service.status === "BD" && service.staff_name === "Waiting..."));
+        } catch (error) {
+            console.error("Error fetching customers:", error);
         }
     };
 
@@ -165,30 +207,34 @@ const Service = () => {
                                 (
                                     <div className='service-bottom-right-bottom-edit-cont'>
                                         <div className='service-bottom-right-bottom-edit-fetch-box'>
-                                            <div className='service-bottom-right-bottom-edit-fetch'>
-                                                <input type="text" placeholder='Enter Service ID' className='service-bottom-right-bottom-edit-input'/>
+                                            <form className='service-bottom-right-bottom-edit-fetch' onSubmit={(e)=>{e.preventDefault();fetchServicebyid(fetchServiceId);}}>
+                                                <input type="text" placeholder='Enter Service ID' className='service-bottom-right-bottom-edit-input' value={fetchServiceId} onChange={(e)=>{setfetchServiceId(e.target.value)}} required/>
                                                 <button className='service-bottom-right-bottom-edit-button'>Fetch</button>
-                                            </div>
+                                            </form>
                                         </div>
                                         <hr/>
                                         {fetchService ?
                                         (
                                         <div className='service-bottom-right-bottom-edit-info-box'>
                                             <div className='service-bottom-right-bottom-edit-info-cont'>
-                                                <p className='service-bottom-right-bottom-edit-info-title'>Customer Name</p>
-                                                <input type="text" placeholder='Enter Customer Name' className='service-bottom-right-bottom-edit-info-input'/>
+                                                <p className='service-bottom-right-bottom-edit-info-title'>Staff ID</p>
+                                                <input type="text" placeholder='Enter Staff ID' className='service-bottom-right-bottom-edit-info-input' value={fetchServiceStaffId}/>
                                             </div>
                                             <div className='service-bottom-right-bottom-edit-info-cont'>
-                                                <p className='service-bottom-right-bottom-edit-info-title'>Staff Name</p>
-                                                <input type="text" placeholder='Enter Staff Name' className='service-bottom-right-bottom-edit-info-input'/>
+                                                <p className='service-bottom-right-bottom-edit-info-title'>Card ID</p>
+                                                <input type="text" placeholder='Enter Card ID' className='service-bottom-right-bottom-edit-info-input' value={fetchServiceCardId}/>
+                                            </div>
+                                            <div className='service-bottom-right-bottom-edit-info-cont'>
+                                                <p className='service-bottom-right-bottom-edit-info-title'>Available Date</p>
+                                                <input type="date" placeholder='Enter Available' className='service-bottom-right-bottom-edit-info-input' value={fetchServiceAvaDate}/>
                                             </div>
                                             <div className='service-bottom-right-bottom-edit-info-cont'>
                                                 <p className='service-bottom-right-bottom-edit-info-title'>Complaint</p>
-                                                <input type="text" placeholder='Enter Complaint' className='service-bottom-right-bottom-edit-info-input'/>
+                                                <input type="text" placeholder='Enter Complaint' className='service-bottom-right-bottom-edit-info-input' value={fetchServiceComplaint}/>
                                             </div>
                                             <div className='service-bottom-right-bottom-edit-info-cont'>
                                                 <p className='service-bottom-right-bottom-edit-info-title'>Status</p>
-                                                <input type="text" placeholder='Enter Status' className='service-bottom-right-bottom-edit-info-input'/>
+                                                <input type="text" placeholder='Enter Status' className='service-bottom-right-bottom-edit-info-input' value={fetchServiceStatus}/>
                                             </div>
                                         </div>
                                         ):
