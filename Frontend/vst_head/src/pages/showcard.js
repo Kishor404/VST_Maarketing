@@ -112,7 +112,7 @@ const ShowCard = () => {
                             <p className="showcard-count-value">{showcardList.length}</p>
                             <p className="showcard-count-title">Total Cards</p>
                         </div>
-                        <FaAddressCard className="showcard-count-icon" size={40} />
+                        <FaAddressCard className="showcard-count-icon" size={40} color='green'/>
                     </div>
 
                     {/* EDIT showcard */}

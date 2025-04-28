@@ -108,7 +108,7 @@ const Customer = () => {
                             <p className="customer-count-value">{customerList.length}</p>
                             <p className="customer-count-title">Customers</p>
                         </div>
-                        <FaUsers className="customer-count-icon" size={50} />
+                        <FaUsers className="customer-count-icon" size={50} color='green'/>
                     </div>
 
                     {/* EDIT CUSTOMER */}

@@ -107,7 +107,7 @@ const Staff = () => {
                             <p className="staff-count-value">{staffList.length}</p>
                             <p className="staff-count-title">staffs</p>
                         </div>
-                        <FaUsers className="staff-count-icon" size={50} />
+                        <FaUsers className="staff-count-icon" size={50} color='green'/>
                     </div>
 
                     {/* EDIT staff */}

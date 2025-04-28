@@ -14,6 +14,7 @@ const Service = () => {
 
     const [serviceList, setServiceList] = useState([]);
     const [editService, setEditService] = useState(true);
+
     const [fetchService, setfetchService] = useState(false);
     const [fetchServiceId, setfetchServiceId] = useState("");
     const [fetchServiceStaffId, setfetchServiceStaffId] = useState("");
@@ -21,6 +22,14 @@ const Service = () => {
     const [fetchServiceAvaDate, setfetchServiceAvaDate] = useState("");
     const [fetchServiceComplaint, setfetchServiceComplaint] = useState("");
     const [fetchServiceStatus, setfetchServiceStatus] = useState("");
+
+    const [createServiceCustomerId, setcreateServiceCustomerId] = useState("");
+    const [createServiceStaffId, setcreateServiceStaffId] = useState("");
+    const [createServiceCardId, setcreateServiceCardId] = useState("");
+    const [createServiceAvaDate, setcreateServiceAvaDate] = useState("");
+    const [createServiceComplaint, setcreateServiceComplaint] = useState("");
+    const [createServiceComplaintDescription, setcreateServiceComplaintDescription] = useState("");
+
     const [boxData, setBoxData] = useState({"upcoming": 0, "pending": 0, "completed": 0, "total": 0});
     const refreshToken = Cookies.get('refresh_token');
 
@@ -62,13 +71,46 @@ const Service = () => {
         const accessToken = await refresh_token();
         if (!accessToken) return;
         const reqBody ={
-
+            "staff": fetchServiceStaffId,
+            "card": fetchServiceCardId,
+            "available_date": fetchServiceAvaDate,
+            "complaint": fetchServiceComplaint,
+            "status": fetchServiceStatus
         }
         try {
-            const response = await axios.get("http://157.173.220.208/utils/patchservicebyidbyhead/"+sid, { headers: { Authorization: `Bearer ${accessToken}` } });
-            setServiceList(response.data.filter((service) => service.status === "BD" && service.staff_name === "Waiting..."));
+            const response = await axios.patch("http://157.173.220.208/utils/patchservicebyidbyhead/"+sid, reqBody, { headers: { Authorization: `Bearer ${accessToken}` } });
+            console.log(response.data);
+            getAllServiceList();
+            alert("Service updated successfully!");
         } catch (error) {
             console.error("Error fetching customers:", error);
+            alert("Error Editing Service, Please check the values and try again.");
+        }
+    };
+
+    // ========== CREATE SERVICE ==========
+
+    const createService = async () => {
+        const accessToken = await refresh_token();
+        if (!accessToken) return;
+        const reqBody ={
+            "customer": createServiceCustomerId,
+            "staff": createServiceStaffId,
+            "card": createServiceCardId,
+            "available_date": createServiceAvaDate,
+            "available":{"from": createServiceAvaDate, "to": createServiceAvaDate},
+            "complaint": createServiceComplaint,
+            "description": createServiceComplaintDescription,
+            "status": "BD",
+        }
+        try {
+            const response = await axios.post("http://157.173.220.208/services/", reqBody, { headers: { Authorization: `Bearer ${accessToken}` } });
+            console.log(response.data);
+            getAllServiceList();
+            alert("Service Created successfully!");
+        } catch (error) {
+            console.error("Error fetching customers:", error);
+            alert("Error Creating Service, Please check the values and try again.");
         }
     };
 
@@ -121,6 +163,32 @@ const Service = () => {
         }
     };
 
+    // =========== CONFRIMATION ON EDIT ===========
+
+    const handleEditService = () => {
+        if (fetchService){
+            const confirmEdit = window.confirm("Are you sure you want to edit this service?");
+            if (confirmEdit) {
+                patchService(fetchServiceId);
+            } else {
+                alert("Service Edit Cancelled");
+            }
+        }else{
+            alert("Please Fetch the Service ID First");
+        }
+    }
+
+    // =========== CONFRIMATION ON CREATE ===========
+
+    const handleCreateService = () => {
+        const confirmEdit = window.confirm("Are you sure you want to create this service?");
+        if (confirmEdit) {
+            createService();
+        } else {
+            alert("Service Creation Cancelled");
+        }
+    }
+
 
     useEffect(() => {
         getAllServiceList();
@@ -137,7 +205,7 @@ const Service = () => {
                             <p className='service-top-value'>{boxData.upcoming}</p>
                             <p className='service-top-title'>Upcoming Services</p>
                         </div>
-                        <MdUpcoming className="service-top-box-icon" size={50} />
+                        <MdUpcoming className="service-top-box-icon" size={50} color='#e305a0'/>
                     </button>
                     <button className='service-top-box' onClick={getPendingServiceList}>
                         <div className='service-top-box-cont'>
@@ -158,7 +226,7 @@ const Service = () => {
                             <p className='service-top-value'>{boxData.total}</p>
                             <p className='service-top-title'>Total Services</p>
                         </div>
-                        <PiStackSimpleFill className="service-top-box-icon" size={50} />
+                        <PiStackSimpleFill className="service-top-box-icon" size={50} color='#ff7300'/>
                     </button>
                 </div>
             </div>
@@ -209,7 +277,7 @@ const Service = () => {
                                         <div className='service-bottom-right-bottom-edit-fetch-box'>
                                             <form className='service-bottom-right-bottom-edit-fetch' onSubmit={(e)=>{e.preventDefault();fetchServicebyid(fetchServiceId);}}>
                                                 <input type="text" placeholder='Enter Service ID' className='service-bottom-right-bottom-edit-input' value={fetchServiceId} onChange={(e)=>{setfetchServiceId(e.target.value)}} required/>
-                                                <button className='service-bottom-right-bottom-edit-button'>Fetch</button>
+                                                <button className='service-bottom-right-bottom-edit-button' type='submit'>Fetch</button>
                                             </form>
                                         </div>
                                         <hr/>
@@ -218,23 +286,23 @@ const Service = () => {
                                         <div className='service-bottom-right-bottom-edit-info-box'>
                                             <div className='service-bottom-right-bottom-edit-info-cont'>
                                                 <p className='service-bottom-right-bottom-edit-info-title'>Staff ID</p>
-                                                <input type="text" placeholder='Enter Staff ID' className='service-bottom-right-bottom-edit-info-input' value={fetchServiceStaffId}/>
+                                                <input type="text" placeholder='Enter Staff ID' className='service-bottom-right-bottom-edit-info-input' value={fetchServiceStaffId} onChange={(e)=>{setfetchServiceStaffId(e.target.value)}}/>
                                             </div>
                                             <div className='service-bottom-right-bottom-edit-info-cont'>
                                                 <p className='service-bottom-right-bottom-edit-info-title'>Card ID</p>
-                                                <input type="text" placeholder='Enter Card ID' className='service-bottom-right-bottom-edit-info-input' value={fetchServiceCardId}/>
+                                                <input type="text" placeholder='Enter Card ID' className='service-bottom-right-bottom-edit-info-input' value={fetchServiceCardId} onChange={(e)=>{setfetchServiceCardId(e.target.value)}}/>
                                             </div>
                                             <div className='service-bottom-right-bottom-edit-info-cont'>
                                                 <p className='service-bottom-right-bottom-edit-info-title'>Available Date</p>
-                                                <input type="date" placeholder='Enter Available' className='service-bottom-right-bottom-edit-info-input' value={fetchServiceAvaDate}/>
+                                                <input type="date" placeholder='Enter Available' className='service-bottom-right-bottom-edit-info-input' value={fetchServiceAvaDate} onChange={(e)=>{setfetchServiceAvaDate(e.target.value)}}/>
                                             </div>
                                             <div className='service-bottom-right-bottom-edit-info-cont'>
                                                 <p className='service-bottom-right-bottom-edit-info-title'>Complaint</p>
-                                                <input type="text" placeholder='Enter Complaint' className='service-bottom-right-bottom-edit-info-input' value={fetchServiceComplaint}/>
+                                                <input type="text" placeholder='Enter Complaint' className='service-bottom-right-bottom-edit-info-input' value={fetchServiceComplaint} onChange={(e)=>{setfetchServiceComplaint(e.target.value)}}/>
                                             </div>
                                             <div className='service-bottom-right-bottom-edit-info-cont'>
                                                 <p className='service-bottom-right-bottom-edit-info-title'>Status</p>
-                                                <input type="text" placeholder='Enter Status' className='service-bottom-right-bottom-edit-info-input' value={fetchServiceStatus}/>
+                                                <input type="text" placeholder='Enter Status' className='service-bottom-right-bottom-edit-info-input' value={fetchServiceStatus} onChange={(e)=>{setfetchServiceStatus(e.target.value)}}/>
                                             </div>
                                         </div>
                                         ):
@@ -245,41 +313,41 @@ const Service = () => {
                                         )}
                                         <hr/>
                                         <div className='service-bottom-right-bottom-edit-button-cont'>
-                                            <button className='service-bottom-right-bottom-edit-submit'>Edit Service</button>
+                                            <button className='service-bottom-right-bottom-edit-submit' onClick={()=>handleEditService()}>Edit Service</button>
                                         </div>
                                     </div>
                                 ):
                                 (
-                                    <form className='service-bottom-right-bottom-create-cont'>
+                                    <form className='service-bottom-right-bottom-create-cont' onSubmit={(e)=>{e.preventDefault();handleCreateService();}}>
                                         <div className='service-bottom-right-bottom-create-info-box'>
                                             <div className='service-bottom-right-bottom-create-info-cont'>
                                                 <p className='service-bottom-right-bottom-create-info-title'>Customer ID</p>
-                                                <input type="text" placeholder='Enter Customer ID' className='service-bottom-right-bottom-create-info-input' required/>
+                                                <input type="text" placeholder='Enter Customer ID' className='service-bottom-right-bottom-create-info-input' required value={createServiceCustomerId} onChange={(e)=>{setcreateServiceCustomerId(e.target.value)}}/>
                                             </div>
                                             <div className='service-bottom-right-bottom-create-info-cont'>
                                                 <p className='service-bottom-right-bottom-create-info-title'>Staff ID</p>
-                                                <input type="text" placeholder='Enter Staff ID' className='service-bottom-right-bottom-create-info-input' required/>
+                                                <input type="text" placeholder='Enter Staff ID' className='service-bottom-right-bottom-create-info-input' required value={createServiceStaffId} onChange={(e)=>{setcreateServiceStaffId(e.target.value)}}/>
                                             </div>
                                             <div className='service-bottom-right-bottom-create-info-cont'>
                                                 <p className='service-bottom-right-bottom-create-info-title'>Card ID</p>
-                                                <input type="text" placeholder='Enter Card ID' className='service-bottom-right-bottom-create-info-input' required/>
+                                                <input type="text" placeholder='Enter Card ID' className='service-bottom-right-bottom-create-info-input' required value={createServiceCardId} onChange={(e)=>{setcreateServiceCardId(e.target.value)}}/>
                                             </div>
                                             <div className='service-bottom-right-bottom-create-info-cont'>
                                                 <p className='service-bottom-right-bottom-create-info-title'>Appointed Date</p>
-                                                <input type="date" className='service-bottom-right-bottom-create-info-input' required/>
+                                                <input type="date" className='service-bottom-right-bottom-create-info-input' required value={createServiceAvaDate} onChange={(e)=>{setcreateServiceAvaDate(e.target.value)}}/>
                                             </div>
                                             <div className='service-bottom-right-bottom-create-info-cont'>
                                                 <p className='service-bottom-right-bottom-create-info-title'>Complaint</p>
-                                                <input type="text" placeholder='Enter Complaint' className='service-bottom-right-bottom-create-info-input' required/>
+                                                <input type="text" placeholder='Enter Complaint' className='service-bottom-right-bottom-create-info-input' required value={createServiceComplaint} onChange={(e)=>{setcreateServiceComplaint(e.target.value)}}/>
                                             </div>
                                             <div className='service-bottom-right-bottom-create-info-cont'>
                                                 <p className='service-bottom-right-bottom-create-info-title'>Complaint Description</p>
-                                                <input type="text" placeholder='Enter Complaint Description' className='service-bottom-right-bottom-create-info-input' required/>
+                                                <input type="text" placeholder='Enter Complaint Description' className='service-bottom-right-bottom-create-info-input' value={createServiceComplaintDescription} onChange={(e)=>{setcreateServiceComplaintDescription(e.target.value)}}/>
                                             </div>
                                         </div>
                                         <hr/>
                                         <div className='service-bottom-right-bottom-edit-button-cont'>
-                                            <button className='service-bottom-right-bottom-edit-submit'>Create Service</button>
+                                            <button className='service-bottom-right-bottom-edit-submit' type='submit'>Create Service</button>
                                         </div>
                                     </form>
                                 )}
