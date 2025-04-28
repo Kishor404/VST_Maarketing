@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';  // Add this import
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'contact.dart';
 import 'data.dart';
 import 'help.dart';
 import 'package:dio/dio.dart';
 import 'settings.dart';
 import '../app_localizations.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'login_page.dart';
 
 class HomePage extends StatefulWidget {
   final Function(int) onNavigateToIndex;
@@ -16,34 +18,157 @@ class HomePage extends StatefulWidget {
 }
 
 class HomePageState extends State<HomePage> {
+  List<Map<String, dynamic>> cardData = [];
+  List<Map<String, dynamic>> warrentyData = [];
+  bool isLoading = true;
   final Dio _dio = Dio();
-  List<String> quotes = [
-    "I will love the light for it shows me the way, yet I will endure the darkness because it shows me the stars.",
-    "OG Mandino"
-  ];
+
+  late PageController _cardPageController;
+  int _currentCardPage = 0;
 
   @override
   void initState() {
     super.initState();
-    fetchData();
+    _cardPageController = PageController();
+    _initializeData();
   }
 
-  Future<void> fetchData() async {
+  @override
+  void dispose() {
+    _cardPageController.dispose();
+    super.dispose();
+  }
+
+  Future<void> _initializeData() async {
+    await fetchCards();
+  }
+
+  Future _loadTokens() async {
+    final prefs = await SharedPreferences.getInstance();
+    String refreshToken = prefs.getString('RT') ?? '';
+    return refreshToken;
+  }
+
+  Future _refreshAccessToken() async {
+    String refreshToken = await _loadTokens();
+    if (refreshToken.isEmpty) {
+      await _handleLogout();
+      return;
+    }
+
+    final url = '${Data.baseUrl}/log/token/refresh/';
+    final requestBody = {'refresh': refreshToken};
+
     try {
-      Response response = await _dio.get('${Data.baseUrl}/media/data.json');
-      if (response.statusCode == 200) {
+      final response = await _dio.post(
+        url,
+        data: requestBody,
+        options: Options(headers: {'Content-Type': 'application/json'}),
+      );
+
+      if (response.statusCode == 200 && response.data['access'] != null) {
+        final newAccessToken = response.data['access'];
+        final prefs = await SharedPreferences.getInstance();
+        await prefs.setString('AT', newAccessToken);
+        return newAccessToken;
+      } else {
+        debugPrint("Refresh token expired or invalid. Logging out...");
+        await _handleLogout();
+      }
+    } catch (e) {
+      debugPrint('Error refreshing token: $e');
+      await _handleLogout();
+    }
+  }
+
+  Future<void> _handleLogout() async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.clear();
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(builder: (context) => LoginPage()),
+    );
+  }
+
+  Future<void> fetchCards() async {
+    String accessToken = await _refreshAccessToken();
+
+    if (accessToken.isEmpty) {
+      debugPrint("No access token available. Cannot fetch cards.");
+      return;
+    }
+
+    try {
+      final response = await _dio.get(
+        '${Data.baseUrl}/api/cards-details/',
+        options: Options(headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer $accessToken',
+        }),
+      );
+
+      if (response.statusCode == 200 && response.data is List) {
         setState(() {
-          quotes = List<String>.from(response.data['quotes']);
+          cardData = List<Map<String, dynamic>>.from(response.data);
+          isLoading = false;
+        });
+        await getWarrentyDetails(response.data);
+      } else {
+        debugPrint("Unexpected response format: ${response.data}");
+        setState(() {
+          isLoading = false;
         });
       }
     } catch (e) {
+      if (e is DioException && e.response?.statusCode == 401) {
+        debugPrint("Access token expired. Refreshing token...");
+        await _refreshAccessToken();
+        return fetchCards(); // Retry fetching after token refresh
+      }
+
+      setState(() {
+        isLoading = false;
+      });
+      debugPrint('Error fetching cards: $e');
+    }
+  }
+
+  Future<Map<String, dynamic>> fetchWarrentyDataByCardId(cid) async {
+    String accessToken = await _refreshAccessToken();
+    try {
+      final response = await _dio.get(
+        '${Data.baseUrl}/utils/getwarrentydetails/$cid',
+        options: Options(headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer $accessToken',
+        }),
+      );
+      if (response.statusCode == 200) {
+        return response.data;
+      }
+    } catch (e) {
       print('Error fetching data: $e');
+    }
+    return {};
+  }
+
+  Future<void> getWarrentyDetails(cData) async {
+    if (cData.isEmpty) {
+      return;
+    }
+    for (int i = 0; i < cData.length; i++) {
+      var cid = cData[i]['id'];
+      var data = await fetchWarrentyDataByCardId(cid);
+      if (data.isNotEmpty) {
+        setState(() {
+          warrentyData.add(data);
+        });
+      }
     }
   }
 
   @override
   Widget build(BuildContext context) {
-
     final List<Map<String, dynamic>> buttonData = [
       {'icon': Icons.construction, 'label': AppLocalizations.of(context).translate('home_service'), 'onTap': () => widget.onNavigateToIndex(1)},
       {'icon': Icons.phone, 'label': AppLocalizations.of(context).translate('home_contact'), 'onTap': () => Navigator.push(context, MaterialPageRoute(builder: (context) => ContactPage()))},
@@ -58,13 +183,12 @@ class HomePageState extends State<HomePage> {
     return Scaffold(
       backgroundColor: Colors.white,
       body: Padding(
-        padding: EdgeInsets.all(16.0.sp), // Use screen scaling for padding
+        padding: EdgeInsets.all(16.0.sp),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            // Use ScreenUtil for responsive sizing
             SizedBox(
-              height:150.h,
+              height: 150.h,
               child: PageView.builder(
                 controller: PageController(viewportFraction: 0.9, initialPage: 1000),
                 itemBuilder: (context, index) {
@@ -106,16 +230,94 @@ class HomePageState extends State<HomePage> {
                     child: Column(
                       mainAxisSize: MainAxisSize.min,
                       children: [
-                        Text(
-                          '"${quotes.isNotEmpty ? quotes[0] : AppLocalizations.of(context).translate('home_loading')}"',
-                          textAlign: TextAlign.center,
-                          style: TextStyle(fontSize: 12.sp, fontStyle: FontStyle.italic, color: Colors.black87),
+                        Expanded(
+                          child: PageView.builder(
+                            controller: _cardPageController,
+                            onPageChanged: (index) {
+                              setState(() {
+                                _currentCardPage = index;
+                              });
+                            },
+                            itemCount: cardData.length,
+                            itemBuilder: (context, index) {
+                              return Column(
+                                mainAxisSize: MainAxisSize.min,
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Text(
+                                    'Warranty For ${cardData[index]['model']} (${cardData[index]['id']})',
+                                    textAlign: TextAlign.center,
+                                    style: TextStyle(fontSize: 14.sp),
+                                  ),
+                                  SizedBox(height: 8.sp),
+                                  warrentyData.length > index
+            ? Column(
+                children: [
+                  Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Container(
+                        width: 8.w,
+                        height: 8.w,
+                        decoration: BoxDecoration(
+                          color: warrentyData[index]['is_warranty'] == true
+                              ? Colors.green
+                              : Colors.red,
+                          shape: BoxShape.circle,
                         ),
-                        SizedBox(height: 8.sp),
-                        Text(
-                          '- ${quotes.length > 1 ? quotes[1] : ""}',
-                          style: TextStyle(fontSize: 12.sp, fontWeight: FontWeight.bold, color: Colors.black54),
+                      ),
+                      SizedBox(width: 6.w),
+                      Text(
+                        warrentyData[index]['is_warranty'] == true
+                            ? "Warranty"
+                            : "No Warranty",
+                        style: TextStyle(
+                          fontSize: 14.sp,
+                          color: warrentyData[index]['is_warranty'] == true
+                              ? Colors.green
+                              : Colors.red,
                         ),
+                      ),
+                      
+                      
+                    ],
+                  ),
+                  if (warrentyData[index]['is_warranty'] != true) ...[
+                    SizedBox(height: 8.sp),
+                    Text(
+                      "Contact VST Maarketing for Extend Warrenty or Get ACM",
+                      textAlign: TextAlign.center,
+                      style: TextStyle(fontSize: 12.sp, color: Colors.red),
+                    ),
+                  ]
+                ],
+              )
+            : Text(
+                'Loading warranty info...',
+                textAlign: TextAlign.center,
+                style: TextStyle(fontSize: 14.sp),
+              ),
+                                ],
+                              );
+                            },
+                          ),
+                        ),
+                        SizedBox(height: 10.h),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: List.generate(cardData.length, (index) {
+                            return Container(
+                              margin: EdgeInsets.symmetric(horizontal: 2.w),
+                              width: _currentCardPage == index ? 6.w : 4.w,
+                              height: _currentCardPage == index ? 6.w : 4.w,
+                              decoration: BoxDecoration(
+                                color: _currentCardPage == index ? Colors.black : Colors.grey,
+                                shape: BoxShape.circle,
+                              ),
+                            );
+                          }),
+                        ),
+                        SizedBox(height: 10.h),
                       ],
                     ),
                   ),
@@ -133,8 +335,8 @@ class HomePageState extends State<HomePage> {
       onTap: data['onTap'],
       borderRadius: BorderRadius.circular(8.sp),
       child: Container(
-        width:65.w,
-        height:58.h,
+        width: 65.w,
+        height: 58.h,
         decoration: BoxDecoration(
           color: Color.fromARGB(255, 55, 99, 174),
           borderRadius: BorderRadius.circular(8.sp),
@@ -142,9 +344,9 @@ class HomePageState extends State<HomePage> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Icon(data['icon'], size:20.sp, color: Colors.white70),
+            Icon(data['icon'], size: 20.sp, color: Colors.white70),
             SizedBox(height: 5.sp),
-            Text(data['label'], style: TextStyle(fontSize:11.sp, color: Colors.white70)),
+            Text(data['label'], style: TextStyle(fontSize: 11.sp, color: Colors.white70)),
           ],
         ),
       ),
