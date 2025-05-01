@@ -11,6 +11,13 @@ Content-Type: application/json
 
 {"phone":"7418081727","password":"Kishor_2005"}
 
+###
+
+POST http://157.173.220.208/log/login/
+Content-Type: application/json
+
+{"phone":"5555555555","password":"123"}
+
 # ====== DEMO 1 ========
 
 # ----- HEAD : 9876543120 ---------
@@ -148,9 +155,9 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiY
 
 ### ========= SIGN SERVICE ENTRIES =========
 
-PATCH http://127.0.0.1:8000/api/signbycustomer/9/
+PATCH http://157.173.220.208/api/signbycustomer/3/
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzM5ODY4NjI5LCJpYXQiOjE3Mzk4NjY4MjksImp0aSI6IjZjNjExMjdiYTljMDRjMTY5MWVjZGNiZjhhNTkxODVmIiwidXNlcl9pZCI6MjV9.8JRdeLWx3P8_FZ6cEPzHcmd1Ft5wRfJx1KLfiFmY658
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzQ1ODkzNTc3LCJpYXQiOjE3NDU4OTE3NzcsImp0aSI6IjdkNWFjNGRhZGVlZTQyMzRhYTdmZmQ3M2I4ZWU3YTQxIiwidXNlcl9pZCI6N30.TPDQl3iOH99HsUs141lhEZ-7Cm9MFeMyZleR31gmYI4
 
 {
     "customer_signature":{"sign":0},

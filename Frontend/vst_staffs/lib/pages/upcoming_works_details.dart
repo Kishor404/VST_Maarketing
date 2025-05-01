@@ -73,8 +73,7 @@ class _UpcomingServiceDetailsState extends State<UpcomingServiceDetails> {
       await _refreshAccessToken(); // Step 1: Refresh token
 
       // Step 2: Retrieve updated access token
-      final prefs = await SharedPreferences.getInstance();
-      final accessToken = prefs.getString('AT') ?? '';
+      final accessToken = _accessToken;
 
       if (accessToken.isEmpty) {
         debugPrint("No access token found!");

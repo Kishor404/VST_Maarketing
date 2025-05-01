@@ -219,137 +219,152 @@ class HomePageState extends State<HomePage> {
             ),
             SizedBox(height: 50.sp),
             Expanded(
-              child: Container(
-                decoration: BoxDecoration(
-                  color: Colors.grey[300],
-                  borderRadius: BorderRadius.circular(10.sp),
-                ),
-                child: Center(
-                  child: SizedBox(
-                    width: 280.w,
-                    child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Expanded(
-                          child: PageView.builder(
-                            controller: _cardPageController,
-                            onPageChanged: (index) {
-                              setState(() {
-                                _currentCardPage = index;
-                              });
-                            },
-                            itemCount: cardData.length,
-                            itemBuilder: (context, index) {
-                              return Column(
-                                mainAxisSize: MainAxisSize.min,
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Text(
-                                    'Warranty For ${cardData[index]['model']} (${cardData[index]['id']})',
+  child: Container(
+    decoration: BoxDecoration(
+      color: Colors.grey[300],
+      borderRadius: BorderRadius.circular(10.sp),
+    ),
+    child: Center(
+      child: SizedBox(
+        width: 260.w,
+        child: cardData.isNotEmpty
+            ? Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Expanded(
+                    child: PageView.builder(
+                      controller: _cardPageController,
+                      onPageChanged: (index) {
+                        setState(() {
+                          _currentCardPage = index;
+                        });
+                      },
+                      itemCount: cardData.length,
+                      itemBuilder: (context, index) {
+                        return Column(
+                          mainAxisSize: MainAxisSize.min,
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text(
+                              'Warranty For ${cardData[index]['model']} (${cardData[index]['id']})',
+                              textAlign: TextAlign.center,
+                              style: TextStyle(fontSize: 12.sp),
+                            ),
+                            SizedBox(height: 8.sp),
+                            warrentyData.length > index
+                                ? Column(
+                                    children: [
+                                      Row(
+                                        mainAxisSize: MainAxisSize.min,
+                                        children: [
+                                          Container(
+                                            width: 8.w,
+                                            height: 8.w,
+                                            decoration: BoxDecoration(
+                                              color: warrentyData[index]['is_warranty'] == true
+                                                  ? Colors.green
+                                                  : Colors.red,
+                                              shape: BoxShape.circle,
+                                            ),
+                                          ),
+                                          SizedBox(width: 6.w),
+                                          Text(
+                                            warrentyData[index]['is_warranty'] == true
+                                                ? "On Warranty Period"
+                                                : "Warranty Expired",
+                                            style: TextStyle(
+                                              fontSize: 14.sp,
+                                              color: warrentyData[index]['is_warranty'] == true
+                                                  ? Colors.green
+                                                  : Colors.red,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                      if (warrentyData[index]['is_warranty'] != true) ...[
+                                        SizedBox(height: 8.sp),
+                                        Text(
+                                          "Contact VST Marketing to Extend the Warranty or Activate ACM",
+                                          textAlign: TextAlign.center,
+                                          style: TextStyle(fontSize: 10.sp, color: Colors.black),
+                                        ),
+                                      ]
+                                    ],
+                                  )
+                                : Text(
+                                    'Loading warranty info...',
                                     textAlign: TextAlign.center,
                                     style: TextStyle(fontSize: 14.sp),
                                   ),
-                                  SizedBox(height: 8.sp),
-                                  warrentyData.length > index
-            ? Column(
-                children: [
+                          ],
+                        );
+                      },
+                    ),
+                  ),
+                  SizedBox(height: 10.h),
                   Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Container(
-                        width: 8.w,
-                        height: 8.w,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: List.generate(cardData.length, (index) {
+                      return Container(
+                        margin: EdgeInsets.symmetric(horizontal: 2.w),
+                        width: _currentCardPage == index ? 6.w : 4.w,
+                        height: _currentCardPage == index ? 6.w : 4.w,
                         decoration: BoxDecoration(
-                          color: warrentyData[index]['is_warranty'] == true
-                              ? Colors.green
-                              : Colors.red,
+                          color: _currentCardPage == index ? Colors.black : Colors.grey,
                           shape: BoxShape.circle,
                         ),
-                      ),
-                      SizedBox(width: 6.w),
-                      Text(
-                        warrentyData[index]['is_warranty'] == true
-                            ? "Warranty"
-                            : "No Warranty",
-                        style: TextStyle(
-                          fontSize: 14.sp,
-                          color: warrentyData[index]['is_warranty'] == true
-                              ? Colors.green
-                              : Colors.red,
-                        ),
-                      ),
-                      
-                      
-                    ],
+                      );
+                    }),
                   ),
-                  if (warrentyData[index]['is_warranty'] != true) ...[
-                    SizedBox(height: 8.sp),
-                    Text(
-                      "Contact VST Maarketing for Extend Warrenty or Get ACM",
-                      textAlign: TextAlign.center,
-                      style: TextStyle(fontSize: 12.sp, color: Colors.red),
-                    ),
-                  ]
+                  SizedBox(height: 10.h),
                 ],
               )
-            : Text(
-                'Loading warranty info...',
-                textAlign: TextAlign.center,
-                style: TextStyle(fontSize: 14.sp),
-              ),
-                                ],
-                              );
-                            },
-                          ),
-                        ),
-                        SizedBox(height: 10.h),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: List.generate(cardData.length, (index) {
-                            return Container(
-                              margin: EdgeInsets.symmetric(horizontal: 2.w),
-                              width: _currentCardPage == index ? 6.w : 4.w,
-                              height: _currentCardPage == index ? 6.w : 4.w,
-                              decoration: BoxDecoration(
-                                color: _currentCardPage == index ? Colors.black : Colors.grey,
-                                shape: BoxShape.circle,
-                              ),
-                            );
-                          }),
-                        ),
-                        SizedBox(height: 10.h),
-                      ],
-                    ),
-                  ),
+            : Center(
+                child: Text(
+                  "Get Service Card from VST Maarketing To View Warranty Details...",
+                  textAlign: TextAlign.center,
+                  style: TextStyle(fontSize: 13.sp, color: const Color.fromARGB(255, 0, 0, 0)),
                 ),
               ),
-            ),
-          ],
-        ),
       ),
-    );
-  }
+    ),
+  ),
+)
+
+                                ],
+                              ),
+                            ),
+                          );
+                        }
 
   Widget _buildIconButton(Map<String, dynamic> data) {
-    return InkWell(
-      onTap: data['onTap'],
-      borderRadius: BorderRadius.circular(8.sp),
-      child: Container(
-        width: 65.w,
-        height: 58.h,
-        decoration: BoxDecoration(
-          color: Color.fromARGB(255, 55, 99, 174),
-          borderRadius: BorderRadius.circular(8.sp),
-        ),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Icon(data['icon'], size: 20.sp, color: Colors.white70),
-            SizedBox(height: 5.sp),
-            Text(data['label'], style: TextStyle(fontSize: 11.sp, color: Colors.white70)),
-          ],
-        ),
+  return InkWell(
+    onTap: data['onTap'],
+    borderRadius: BorderRadius.circular(8.sp),
+    child: Container(
+      width: 65.w,
+      height: 58.h,
+      decoration: BoxDecoration(
+        color: Color.fromARGB(255, 55, 99, 174),
+        borderRadius: BorderRadius.circular(8.sp),
+        boxShadow: [
+          BoxShadow(
+            color: const Color.fromARGB(85, 0, 0, 0), // shadow color
+            blurRadius: 6,          // soft blur radius
+            offset: Offset(3, 3),   // horizontal and vertical offset
+          ),
+        ],
       ),
-    );
-  }
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Icon(data['icon'], size: 20.sp, color: const Color.fromARGB(228, 255, 255, 255)),
+          SizedBox(height: 5.sp),
+          Text(data['label'], style: TextStyle(fontSize: 11.sp, color: const Color.fromARGB(228, 255, 255, 255))),
+        ],
+      ),
+    ),
+  );
+}
+
 }

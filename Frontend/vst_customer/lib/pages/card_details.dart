@@ -17,6 +17,8 @@ class CardDetailsPage extends StatefulWidget {
 }
 
 class _CardDetailsPageState extends State<CardDetailsPage> {
+  double _rating = 1.0;
+  TextEditingController _feedbackController = TextEditingController();
   String _refreshToken = '';
   String _accessToken = '';
   List<dynamic> products = [];
@@ -96,18 +98,19 @@ class _CardDetailsPageState extends State<CardDetailsPage> {
     }
   }
 
-  void _showSignConfirmationDialog(BuildContext context, int serviceId) {
-    showDialog(
-      context: context,
-      builder: (context) {
-        double rating = 0;
-        TextEditingController feedbackController = TextEditingController();
+  void _showSignConfirmationDialog(BuildContext parentContext, BuildContext dialogContext, int serviceId) {
+  double rating = 1.0;
+  TextEditingController feedbackController = TextEditingController();
 
-        return StatefulBuilder(
-          builder: (context, setDialogState) {
-            return AlertDialog(
-              title: Text(AppLocalizations.of(context).translate('card_confrim_sign')),
-              content: Column(
+  showDialog(
+    context: dialogContext,
+    builder: (context) {
+      return StatefulBuilder(
+        builder: (context, setDialogState) {
+          return AlertDialog(
+            title: Text(AppLocalizations.of(context).translate('card_confrim_sign')),
+            content: SingleChildScrollView(
+              child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   Text(AppLocalizations.of(context).translate('card_confrim_sign_text')),
@@ -140,28 +143,29 @@ class _CardDetailsPageState extends State<CardDetailsPage> {
                   ),
                 ],
               ),
-              actions: [
-                TextButton(
-                  onPressed: () => Navigator.pop(context),
-                  child: Text(AppLocalizations.of(context).translate('card_cancel')),
-                ),
-                ElevatedButton(
-                  onPressed: () {
-                    Navigator.pop(context);
-                    _signService(serviceId, rating, feedbackController.text, context);
-                  },
-                  child: Text(AppLocalizations.of(context).translate('card_confrim')),
-                ),
-              ],
-            );
-          },
-        );
-      },
-    );
-  }
+            ),
+            actions: [
+              TextButton(
+                onPressed: () => Navigator.pop(dialogContext),
+                child: Text(AppLocalizations.of(context).translate('card_cancel')),
+              ),
+              ElevatedButton(
+                onPressed: () {
+                  Navigator.pop(dialogContext); // close dialog
+                  _signService(serviceId, rating, feedbackController.text, parentContext); // use parentContext
+                },
+                child: Text(AppLocalizations.of(context).translate('card_confirm')),
+              ),
+            ],
+          );
+        },
+      );
+    },
+  );
+}
+
 
   void _signService(int serviceId, double rating, String feedback, BuildContext context) async {
-    final dio = Dio();
     final url = '${Data.baseUrl}/api/signbycustomer/$serviceId/';
     final headers = {
       'Content-Type': 'application/json',
@@ -170,15 +174,21 @@ class _CardDetailsPageState extends State<CardDetailsPage> {
     final data = {
       "customer_signature": {"sign": 1},
       "feedback": feedback,
-      "rating": rating.toString(),
+      "rating": rating.toInt(),
     };
 
     try {
-      final response = await dio.patch(url, data: data, options: Options(headers: headers));
+      final response = await _dio.patch(url, data: data, options: Options(headers: headers));
 
       if (response.statusCode == 200) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text(AppLocalizations.of(context).translate('card_sign_success'))),
+        SnackBar(content: Text(AppLocalizations.of(context).translate('card_sign_success'))),
+        );
+        await Future.delayed(Duration(milliseconds: 500)); // wait to let snackbar show
+        Navigator.pushAndRemoveUntil(
+          context,
+          MaterialPageRoute(builder: (context) => IndexPage()),
+          (Route<dynamic> route) => false,
         );
         Navigator.pushAndRemoveUntil(
           context,
@@ -190,7 +200,17 @@ class _CardDetailsPageState extends State<CardDetailsPage> {
           SnackBar(content: Text(AppLocalizations.of(context).translate('card_sign_fail'))),
         );
       }
-    } catch (e) {
+    } on DioException catch (e) {
+    if (e.response?.statusCode == 401) {
+      // Access token expired — try refreshing
+      await _refreshAccessToken();
+      _signService(serviceId, rating, feedback, context); // Retry after refresh
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text("Error: ${e.message}")),
+      );
+    }
+  }catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text("Error: $e")),
       );
@@ -314,7 +334,7 @@ class _CardDetailsPageState extends State<CardDetailsPage> {
                                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                           children: [
                                             ElevatedButton(
-                                              onPressed: () => _showSignConfirmationDialog(context, service['id']),
+                                              onPressed: () => _showSignConfirmationDialog(context,context, service['id']),
                                               child: Text(AppLocalizations.of(context).translate('card_service_sign')),
                                             ),
                                             TextButton(

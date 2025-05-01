@@ -95,21 +95,33 @@
     background-color: #e2e2e2;
     border: none;
     padding: 15px;
-    width: 300px;
+    width: 200px;
     margin-right: 20px;
     border-radius: 15px;
 }
-.customer-edit-button{
+.customer-edit-button {
     background-color: #3763ae;
     border: none;
     padding: 15px 30px;
     color: white;
     border-radius: 15px;
     cursor: pointer;
+    margin-right: 10px; /* Add this */
 }
+.customer-edit-button:last-child {
+    margin-right: 0;
+}
+
 .customer-edit-button:hover{
     background-color: #4073cc;
 }
+.customer-edit-box {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+}
+
 
 ::-webkit-scrollbar {
   display: none;

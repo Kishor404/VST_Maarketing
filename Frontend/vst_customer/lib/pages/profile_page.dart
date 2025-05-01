@@ -115,13 +115,11 @@ class ProfilePageState extends State<ProfilePage> {
                     children: [
                       ListTile(
                         leading: Icon(Icons.email, color: const Color.fromARGB(255, 55, 99, 174)),
-                        title: Text(AppLocalizations.of(context).translate('profile_email'), style: TextStyle( fontSize: 14.sp)),
-                        subtitle: Text(_email,  style: TextStyle( fontSize: 12.sp)),
+                        title: Text(_email, style: TextStyle( fontSize: 14.sp)),
                       ),
                       ListTile(
                         leading: Icon(Icons.location_on, color: const Color.fromARGB(255, 55, 99, 174)),
-                        title: Text(AppLocalizations.of(context).translate('profile_address'),  style: TextStyle( fontSize: 14.sp)),
-                        subtitle: Text(_address,  style: TextStyle( fontSize: 12.sp)),
+                        title: Text(_address,  style: TextStyle( fontSize: 14.sp)),
                       ),
                       Spacer(),
                       ElevatedButton(
