@@ -231,9 +231,9 @@ Future<Map<String, dynamic>> changePassword(String currentPassword, String newPa
   final dio = Dio();
   try {
     final response = await dio.post(
-      'http://<YOUR_DOMAIN>/change-password/',
+      '$baseUrl/log/change-password/',
       data: {
-        'current_password': currentPassword,
+        'old_password': currentPassword,
         'new_password': newPassword,
       },
       options: Options(
@@ -244,7 +244,7 @@ Future<Map<String, dynamic>> changePassword(String currentPassword, String newPa
       ),
     );
 
-    return {"status":1,"data":response.data,"logout": 0};
+    return {"status":1,"data":response.data,"logout": 1};
 
     // ScaffoldMessenger.of(context).showSnackBar(
     //   SnackBar(

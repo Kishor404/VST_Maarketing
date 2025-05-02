@@ -60,7 +60,7 @@ class ProfilePageState extends State<ProfilePage> {
 
     try{
       Map<String, dynamic> response = await api.changePassword(oldPass, newPass);
-      if (response["logoit"] == 1) {
+      if (response["logout"] == 1) {
         _logout();
       } else if (response["status"] == 1) {
         ScaffoldMessenger.of(context).showSnackBar(
