@@ -3,7 +3,8 @@ from rest_framework_simplejwt.views import TokenRefreshView
 from .views import (
     SignupView, LoginView, 
     WorkerOnlyView, AdminOnlyView, HeadOnlyView,
-    protected_view
+    protected_view,
+    ChangePasswordView
 )
 
 urlpatterns = [
@@ -21,4 +22,6 @@ urlpatterns = [
 
     # General protected view for authenticated users
     path('protected/', protected_view, name='protected-view'),
+
+    path('change-password/', ChangePasswordView.as_view(), name='change-password'),
 ]

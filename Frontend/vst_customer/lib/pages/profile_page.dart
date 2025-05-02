@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'login_page.dart';
+import 'api.dart';
 import '../app_localizations.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -21,6 +22,7 @@ class ProfilePageState extends State<ProfilePage> {
   String _address = '';
   String _region = '';
   String _role = '';
+  API api = API();
 
   @override
   void initState() {
@@ -53,6 +55,122 @@ class ProfilePageState extends State<ProfilePage> {
       MaterialPageRoute(builder: (context) => LoginPage()),
     );
   }
+
+  Future<void> manageChangePassword(oldPass, newPass) async {
+
+    try{
+      Map<String, dynamic> response = await api.changePassword(oldPass, newPass);
+      if (response["logoit"] == 1) {
+        _logout();
+      } else if (response["status"] == 1) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text("Password changed successfully"),
+            backgroundColor: Colors.green,
+            duration: const Duration(seconds: 2),
+          ),
+        );
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text("Failed to change password"),
+            backgroundColor: Colors.red,
+            duration: const Duration(seconds: 2),
+          ),
+        );
+      }
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text("An error occurred: $e"),
+          backgroundColor: Colors.red,
+        ),
+      );
+    }
+
+    
+    
+  }
+
+  void _showChangePasswordDialog(BuildContext context) {
+  final currentPasswordController = TextEditingController();
+  final newPasswordController = TextEditingController();
+
+  showDialog(
+    context: context,
+    builder: (context) => AlertDialog(
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(20),
+      ),
+      titlePadding: EdgeInsets.fromLTRB(24, 24, 24, 0),
+      title: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            'Change Password',
+            style: TextStyle(),
+          ),
+          SizedBox(height: 16), // Gap between title and content
+        ],
+      ),
+      content: SizedBox(
+        width: MediaQuery.of(context).size.width * 0.85, // 85% of screen width
+        height: 100.h, // Custom height
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
+              TextField(
+                controller: currentPasswordController,
+                obscureText: true,
+                decoration: InputDecoration(
+                  labelText: 'Current Password',
+                  prefixIcon: Icon(Icons.lock_outline),
+                  border: OutlineInputBorder(borderRadius: BorderRadius.circular(10)),
+                  contentPadding: EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+                ),
+              ),
+              SizedBox(height: 15),
+              TextField(
+                controller: newPasswordController,
+                obscureText: true,
+                decoration: InputDecoration(
+                  labelText: 'New Password',
+                  prefixIcon: Icon(Icons.lock),
+                  border: OutlineInputBorder(borderRadius: BorderRadius.circular(10)),
+                  contentPadding: EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+      actionsPadding: EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+      actions: [
+        TextButton(
+          onPressed: () => Navigator.pop(context),
+          child: Text('Cancel',style: TextStyle(color: Colors.black),),
+        ),
+        ElevatedButton(
+          style: ElevatedButton.styleFrom(
+            backgroundColor: Color.fromARGB(255, 55, 99, 174),
+            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+          ),
+          onPressed: () {
+            manageChangePassword(
+              currentPasswordController.text,
+              newPasswordController.text,
+            );
+            Navigator.pop(context);
+          },
+          child: Text('Submit', style: TextStyle(color: const Color.fromARGB(255, 255, 255, 255)),),
+        ),
+      ],
+    ),
+  );
+}
+
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -123,21 +241,21 @@ class ProfilePageState extends State<ProfilePage> {
                       ),
                       Spacer(),
                       ElevatedButton(
-                        onPressed: () {
-                          widget.onNavigateToIndex(1); // Navigate to ServicePage
-                        },
+                       onPressed: () => _showChangePasswordDialog(context),
                         style: ElevatedButton.styleFrom(
-                          backgroundColor: const Color.fromARGB(255, 55, 99, 174),
-                          minimumSize: Size(double.infinity, 50.h), // Responsive size
+                          backgroundColor: Color.fromARGB(255, 55, 99, 174),
+                          minimumSize: Size(double.infinity, 50.h),
                           shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(8.r), // Make radius responsive
+                            borderRadius: BorderRadius.circular(8.r),
                           ),
                         ),
                         child: Text(
-                          AppLocalizations.of(context).translate('profile_service_but'),
-                          style: TextStyle(fontSize: 16.sp, color: Colors.white), // Responsive text size
+                          'Change Password',
+                          style: TextStyle(fontSize: 16.sp, color: Colors.white),
                         ),
                       ),
+                      SizedBox(height: 10.h),
+
                       SizedBox(height: 10.h), // Responsive height
                       ElevatedButton(
                         onPressed: _logout,

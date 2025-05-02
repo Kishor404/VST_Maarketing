@@ -217,6 +217,23 @@ class _CardDetailsPageState extends State<CardDetailsPage> {
     }
   }
 
+  Widget _buildServiceInfoRow(BuildContext context, String labelKey, String value) {
+  return Padding(
+    padding: EdgeInsets.symmetric(vertical: 4.h),
+    child: Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          '${AppLocalizations.of(context).translate(labelKey)} ',
+          style: TextStyle(fontWeight: FontWeight.w500),
+        ),
+        Expanded(child: Text(value)),
+      ],
+    ),
+  );
+}
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -292,57 +309,84 @@ class _CardDetailsPageState extends State<CardDetailsPage> {
                           builder: (context) {
                             return Dialog(
                               shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(12.r),
+                                borderRadius: BorderRadius.circular(16.r),
                               ),
                               child: SingleChildScrollView(
                                 child: Container(
                                   width: 400.w,
-                                  padding: EdgeInsets.all(25.0.w),
+                                  padding: EdgeInsets.all(20.w),
                                   child: Column(
                                     crossAxisAlignment: CrossAxisAlignment.start,
                                     children: [
-                                      Text('${AppLocalizations.of(context).translate('card_service_no')} ${service['id']} ${AppLocalizations.of(context).translate('card_service_details')}',
-                                          style: Theme.of(context).textTheme.headlineMedium),
-                                      SizedBox(height: 16.h),
-                                      Text('${AppLocalizations.of(context).translate('card_service_date')} ${service['date']}'),
-                                      SizedBox(height: 6.h),
-                                      Text('${AppLocalizations.of(context).translate('card_service_visit_type')} ${service['visit_type']}'),
-                                      SizedBox(height: 6.h),
-                                      Text('${AppLocalizations.of(context).translate('card_service_nature_of_complaint')} ${service['nature_of_complaint']}'),
-                                      SizedBox(height: 6.h),
-                                      Text('${AppLocalizations.of(context).translate('card_service_work_details')} ${service['work_details']}'),
-                                      SizedBox(height: 6.h),
-                                      Text('${AppLocalizations.of(context).translate('card_service_parts_replaced')} ${service['parts_replaced']}'),
-                                      SizedBox(height: 6.h),
-                                      Text('${AppLocalizations.of(context).translate('card_service_ICR_no')} ${service['icr_number']}'),
-                                      SizedBox(height: 6.h),
-                                      Text('${AppLocalizations.of(context).translate('card_service_amount_charged')} ${service['amount_charged']}'),
-                                      SizedBox(height: 16.h),
-
-                                      // Customer & CSE Signatures (if applicable)
-                                      if (service['customer_signature'] != null && service['customer_signature']['sign'] != 0)
-                                        Text(AppLocalizations.of(context).translate('card_service_customer_signed'), style: TextStyle(color: Colors.green)),
-
-                                      if (service['customer_signature'] != null && service['customer_signature']['sign'] != 0)
-                                        TextButton(
-                                          onPressed: () => Navigator.pop(context),
-                                          child: Text(AppLocalizations.of(context).translate('card_service_close')),
-                                        ),
-
-                                      if (service['customer_signature'] == null || service['customer_signature']['sign'] == 0)
-                                        Row(
-                                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                          children: [
-                                            ElevatedButton(
-                                              onPressed: () => _showSignConfirmationDialog(context,context, service['id']),
-                                              child: Text(AppLocalizations.of(context).translate('card_service_sign')),
+                                      // Title
+                                      Row(
+                                        children: [
+                                          Icon(Icons.build_circle_outlined, color: Theme.of(context).primaryColor),
+                                          SizedBox(width: 10.w),
+                                          Expanded(
+                                            child: Text(
+                                              '${AppLocalizations.of(context).translate('card_service_no')} ${service['id']}',
+                                              style: Theme.of(context).textTheme.headlineSmall?.copyWith(),
                                             ),
-                                            TextButton(
-                                              onPressed: () => Navigator.pop(context),
-                                              child: Text(AppLocalizations.of(context).translate('card_service_close')),
+                                          ),
+                                        ],
+                                      ),
+                                      SizedBox(height: 12.h),
+                                      Divider(),
+
+                                      // Details Section
+                                      Text(
+                                        AppLocalizations.of(context).translate('card_service_details'),
+                                        style: Theme.of(context).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.w500),
+                                      ),
+                                      SizedBox(height: 10.h),
+                                      _buildServiceInfoRow(context, 'card_service_date', service['date']),
+                                      _buildServiceInfoRow(context, 'card_service_visit_type', service['visit_type']),
+                                      _buildServiceInfoRow(context, 'card_service_nature_of_complaint', service['nature_of_complaint']),
+                                      _buildServiceInfoRow(context, 'card_service_work_details', service['work_details']),
+                                      _buildServiceInfoRow(context, 'card_service_parts_replaced', service['parts_replaced']),
+                                      _buildServiceInfoRow(context, 'card_service_ICR_no', service['icr_number']),
+                                      _buildServiceInfoRow(context, 'card_service_amount_charged', service['amount_charged']),
+                                      SizedBox(height: 16.h),
+
+                                      // Signature Info
+                                      if (service['customer_signature'] != null && service['customer_signature']['sign'] != 0)
+                                        Row(
+                                          children: [
+                                            Icon(Icons.check_circle, color: Colors.green),
+                                            SizedBox(width: 8.w),
+                                            Text(
+                                              AppLocalizations.of(context).translate('card_service_customer_signed'),
+                                              style: TextStyle(color: Colors.green, fontWeight: FontWeight.w600),
                                             ),
                                           ],
                                         ),
+
+                                      SizedBox(height: 20.h),
+
+                                      // Action Buttons
+                                      Align(
+                                        alignment: Alignment.centerRight,
+                                        child: service['customer_signature'] != null && service['customer_signature']['sign'] != 0
+                                            ? TextButton(
+                                                onPressed: () => Navigator.pop(context),
+                                                child: Text(AppLocalizations.of(context).translate('card_service_close')),
+                                              )
+                                            : Row(
+                                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                children: [
+                                                  ElevatedButton.icon(
+                                                    onPressed: () => _showSignConfirmationDialog(context, context, service['id']),
+                                                    icon: Icon(Icons.edit),
+                                                    label: Text(AppLocalizations.of(context).translate('card_service_sign')),
+                                                  ),
+                                                  TextButton(
+                                                    onPressed: () => Navigator.pop(context),
+                                                    child: Text(AppLocalizations.of(context).translate('card_service_close')),
+                                                  ),
+                                                ],
+                                              ),
+                                      ),
                                     ],
                                   ),
                                 ),
@@ -350,6 +394,7 @@ class _CardDetailsPageState extends State<CardDetailsPage> {
                             );
                           },
                         );
+
                       },
                       child: Text('${AppLocalizations.of(context).translate('card_service_no')} ${service['id']} - ${service['date']}'),
                     ),

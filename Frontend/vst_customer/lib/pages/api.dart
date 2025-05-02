@@ -217,6 +217,51 @@ Future<Map<String, dynamic>> fetchServices() async {
     }
   }
 
+// ======================== 5. Change Password ==================================
+
+Future<Map<String, dynamic>> changePassword(String currentPassword, String newPassword) async {
+  String accessToken= await _refreshAccessToken();
+
+    if (accessToken.isEmpty) {
+      debugPrint("No access token available. Cannot fetch products.");
+      await _logout();
+      return {"data":"none","logout": 1};
+    }
+
+  final dio = Dio();
+  try {
+    final response = await dio.post(
+      'http://<YOUR_DOMAIN>/change-password/',
+      data: {
+        'current_password': currentPassword,
+        'new_password': newPassword,
+      },
+      options: Options(
+        headers: {
+          'Authorization': 'Bearer $accessToken',
+          'Content-Type': 'application/json',
+        },
+      ),
+    );
+
+    return {"status":1,"data":response.data,"logout": 0};
+
+    // ScaffoldMessenger.of(context).showSnackBar(
+    //   SnackBar(
+    //     content: Text(response.data['message']),
+    //     backgroundColor: Colors.green,
+    //   ),
+    // );
+  } on DioException catch (e) {
+    String errorMessage = 'Something went wrong!';
+    if (e.response != null && e.response?.data != null) {
+      errorMessage = e.response?.data['message'] ?? errorMessage;
+    }
+    return {"status":0,"data":errorMessage, "logout": 0};
+  }
+}
+
+
 
 
 }
