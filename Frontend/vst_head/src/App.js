@@ -10,6 +10,7 @@ import Service from "./pages/service";
 import Sidebar from "./components/Sidebar";
 import "./App.css";
 import ShowCard from "./pages/showcard";
+import Essentials from "./pages/essentials";
 
 const Layout = ({ children }) => {
   const location = useLocation();
@@ -36,6 +37,7 @@ const App = () => {
           <Route path="/createcard" element={<CreateCard />} />
           <Route path="/showcard" element={<ShowCard/>} />
           <Route path="/service" element={<Service/>} />
+          <Route path="/essentials" element={<Essentials/>} />
         </Routes>
       </Layout>
     </Router>

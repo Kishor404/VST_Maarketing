@@ -2,6 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { FaUsers, FaIdBadge, FaEdit, FaInfo, FaAddressCard, FaPlus } from "react-icons/fa";
 import { MdRoomService } from "react-icons/md";
+import { MdHotelClass } from "react-icons/md";
 import '../styles/sidebar.css';
 import Logo from '../assets/logo.jpg';
 import Cookies from 'js-cookie';
@@ -26,6 +27,12 @@ return (
                     <Link to="/service" className="sidebar-link">
                         <MdRoomService className="sidebar-item-icon" size={20}/>
                         Services
+                    </Link>
+                </div>
+                <div className="sidebar-item">
+                    <Link to="/essentials" className="sidebar-link">
+                        <MdHotelClass className="sidebar-item-icon" size={20}/>
+                        Essentials
                     </Link>
                 </div>
                 <div className="sidebar-item">
