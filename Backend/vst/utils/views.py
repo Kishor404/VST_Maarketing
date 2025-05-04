@@ -415,7 +415,8 @@ class AssignAvailableStaffView(APIView):
 
         if available_worker:
             # Assign new worker to the service
-            service.staff = available_worker
+            staff_instance = get_object_or_404(User, id=available_worker)
+            service.staff = staff_instance
             service.save()
             unavailable_req.delete()
             return Response({
