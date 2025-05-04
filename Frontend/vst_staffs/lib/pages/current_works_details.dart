@@ -297,7 +297,13 @@ Future<void> _createServiceEntry(Map<String, dynamic> service, Map<String, Strin
     // Save response in SharedPreferences
     final prefs = await SharedPreferences.getInstance();
     await prefs.setString('serviceEntry', json.encode(response.data));
-
+    await _loadSavedServiceEntry();
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(
+      content: Text("Service entry Added successfully!"),
+        backgroundColor: Color.fromARGB(255, 34, 87, 36),
+      ),
+    );
     debugPrint("Service entry created successfully.");
   } catch (e) {
     debugPrint("Error creating service entry: $e");

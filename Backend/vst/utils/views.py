@@ -395,66 +395,23 @@ User = get_user_model()
 class AssignAvailableStaffView(APIView):
     def post(self, request, *args, **kwargs):
         # Fetch unavailable request by ID
-        reqSender_region=request.user.region
+        available_worker = request.data.get("staff_id")
+        available=request.data.get("available")
+
+        if not available_worker:
+            return Response({"message": "Staff ID is required."}, status=status.HTTP_400_BAD_REQUEST)
+        if not available:
+            return Response({"message": "Available date is required."}, status=status.HTTP_400_BAD_REQUEST)
+
         req_id = kwargs.get("id") or request.data.get("id")
-        if not req_id:
+        if not req_id :
             return Response({"message": "Request ID is required."}, status=status.HTTP_400_BAD_REQUEST)
 
         unavailable_req = get_object_or_404(UnavailableReq, id=req_id)
+
         service = unavailable_req.service
-        current_staff = unavailable_req.staff
 
-        # Debugging: Print the available data
-        print("Raw available:", service.available, type(service.available))
-
-        # Parse available from JSON format and normalize date format
-        try:
-            if isinstance(service.available, str):
-                available = json.loads(service.available)  # Convert string to JSON
-            else:
-                available = service.available  # Already a dictionary
-
-            # Ensure required keys exist
-            if "from" not in available or "to" not in available:
-                raise KeyError("Missing 'from' or 'to' in available.")
-
-            # Normalize date format (replace '/' with '-')
-            from_date_str = available["from"].replace("/", "-")
-            to_date_str = available["to"].replace("/", "-")
-
-            # Convert to date format
-            from_date = datetime.strptime(from_date_str, "%Y-%m-%d").date()
-            to_date = datetime.strptime(to_date_str, "%Y-%m-%d").date()
-        except (KeyError, ValueError, json.JSONDecodeError) as e:
-            print("Error parsing available:", str(e))  # Debugging
-            return Response({"message": "Invalid available format.", "error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
-
-        # Fetch workers excluding the current staff
-        workers = User.objects.filter(role="worker", region=reqSender_region).exclude(id=current_staff.id)
-        available_worker = None
-
-        for check_date in (from_date + timedelta(days=i) for i in range((to_date - from_date).days + 1)):
-            available_workers = []
-
-            for worker in workers:
-                try:
-                    # Parse worker availability if stored as JSON string
-                    worker_availability = json.loads(worker.availability) if isinstance(worker.availability, str) else worker.availability
-                    unavailables = worker_availability.get("unavailable", [])
-                    unavailables = {datetime.strptime(date, "%Y-%m-%d").date() for date in unavailables}
-                except (json.JSONDecodeError, AttributeError, ValueError):
-                    unavailables = set()  # Handle malformed availability data
-
-                if check_date not in unavailables:
-                    available_workers.append(worker)
-
-            if available_workers:
-                # Select the worker with the earliest last service date
-                available_worker = min(
-                    available_workers,
-                    key=lambda w: datetime.strptime(w.last_service, "%Y-%m-%d").date() if w.last_service and w.last_service != "None" else datetime.min.date()
-                )
-                break
+        
 
         if available_worker:
             # Assign new worker to the service
@@ -464,7 +421,7 @@ class AssignAvailableStaffView(APIView):
             return Response({
                 "message": "Staff reassigned successfully.",
                 "worker_id": available_worker.id,
-                "available": check_date.strftime("%Y-%m-%d")
+                "available": available 
             }, status=status.HTTP_200_OK)
         
         return Response({"message": "No available workers found."}, status=status.HTTP_200_OK)

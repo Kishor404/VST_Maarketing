@@ -6,7 +6,10 @@ import Cookies from 'js-cookie';
 const UnavaReq = () => {
     const [reqData, setreqData] = useState(null);
     const [AllreqData, setAllreqData] = useState([]);
+    const [newStaff, setNewStaff] = useState("");
+    const [newDate, setNewDate] = useState("");
     const refreshToken = Cookies.get('refresh_token');
+    
 
     const refresh_token = async () => {
         try {
@@ -47,11 +50,11 @@ const UnavaReq = () => {
 
     const accept_req = async (req_id) => {
         const confirmAction = window.confirm("Are you sure you want to APPROVE AND RESSIGN this request?");
-        if (!confirmAction) return;
+        if (!confirmAction && newStaff !="" && newDate!="") return;
 
         const AT = await refresh_token();
         try {
-            const response = await axios.post(`http://157.173.220.208/utils/reassingstaff/${req_id}`, {},{
+            const response = await axios.post(`http://157.173.220.208/utils/reassingstaff/${req_id}`, {"staff_id":newStaff, "available":newDate},{
                 headers: { Authorization: `Bearer ${AT}` }
             });
             if (response.data) {
@@ -129,6 +132,27 @@ const UnavaReq = () => {
                                 <DetailBox label="Staff ID" value={reqData.staff} />
                                 <DetailBox label="Staff Name" value={reqData.staff_name} />
                                 <DetailBox label="Service ID" value={reqData.service} />
+                                <hr className='div-gf'/>
+                                <p className='unavareq-details-new'>
+                                    New Staff ID
+                                    <input
+                                            placeholder='Enter staff ID'
+                                            value={newStaff}
+                                            onChange={(e) => setNewStaff(e.target.value)}
+                                            className='staff-edit-input'
+                                    />
+                                </p>
+                                <p className='unavareq-details-new'>
+                                    New Appointed Date
+                                    <input
+                                            placeholder='Enter Date Of Appointment'
+                                            type="date"
+                                            value={newDate}
+                                            onChange={(e) => setNewDate(e.target.value)}
+                                            className='staff-edit-input'
+                                    />
+                                </p>
+                                
                             </>
                         ) : <p>No Request Selected</p>}
                     </div>
