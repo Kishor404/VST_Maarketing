@@ -16,7 +16,7 @@ Content-Type: application/json
 POST http://157.173.220.208/log/login/
 Content-Type: application/json
 
-{"phone":"5555555555","password":"123"}
+{"phone":"3535353535","password":"123"}
 
 # ====== DEMO 1 ========
 
@@ -135,12 +135,12 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiY
 
 ### ========= CREATE SERVICE ENTRIES =========
 
-POST http://127.0.0.1:8000/api/createserviceentry/
+POST http://157.173.220.208/api/createserviceentry/
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzM5NzE1MDkxLCJpYXQiOjE3Mzk3MTMyOTEsImp0aSI6ImNlOGJkZDYxNTUxMzQwMGU4NjY2ODhmZDI3MGMyNmNhIiwidXNlcl9pZCI6MTl9.4XcqzPhxVmM1F-jV2xIkSMkLfH-QBRtyl-O7tQ0BGTQ
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzQ2MzMzNTA2LCJpYXQiOjE3NDYzMzE3MDYsImp0aSI6IjBhMmQ4ZmRjZDE3YzQ1YjdhMTAwNDMzZWQ1OWRhOGMzIiwidXNlcl9pZCI6MTJ9.yZB0E7RHRascoYWYAq8Q-knM9FWHeBqFMih98YCm8rk
 
 {
-    "card":3, 
+    "card":4, 
     "date":"2025-02-15", 
     "next_service":"2025-05-12", 
     "visit_type":"C", 

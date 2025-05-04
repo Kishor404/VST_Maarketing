@@ -19,6 +19,8 @@ class Service(models.Model):
     card = models.ForeignKey(Card, on_delete=models.CASCADE, related_name="card")
 
     on_warrenty = models.BooleanField(default=False)
+    on_ACM = models.BooleanField(default=False)
+    on_contract = models.BooleanField(default=False)
 
     rating = models.CharField(max_length=255, default="1")
     feedback = models.CharField(max_length=255, blank=True, null=True)

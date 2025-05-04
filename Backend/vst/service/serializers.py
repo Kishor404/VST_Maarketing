@@ -11,6 +11,8 @@ class ServiceSerializer(serializers.ModelSerializer):
             'card',
             'staff_name',
             'on_warrenty',
+            'on_ACM',
+            'on_contract',
             'region',
             'available',
             'description',

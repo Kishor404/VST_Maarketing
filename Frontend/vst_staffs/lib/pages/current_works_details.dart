@@ -104,24 +104,70 @@ Future<void> _showServiceEntryDialog(BuildContext context, Map<String, dynamic> 
   final TextEditingController partsReplacedController = TextEditingController();
   final TextEditingController icrNumberController = TextEditingController();
   final TextEditingController amountChargedController = TextEditingController();
-  
+
   String visitType = 'C'; // Default value
 
   return showDialog(
     context: context,
     builder: (BuildContext context) {
       return AlertDialog(
-        title: Text("Enter Service Details"),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+        title: const Text(
+          "Enter Service Details",
+          style: TextStyle(),
+        ),
         content: SizedBox(
-          width: MediaQuery.of(context).size.width * 0.7, // 70% of screen width
+          width: MediaQuery.of(context).size.width * 0.7,
           child: SingleChildScrollView(
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
+                // Warranty Status Indicator
+                Container(
+                  width: double.infinity,
+                  padding: const EdgeInsets.all(12),
+                  margin: const EdgeInsets.only(bottom: 12),
+                  decoration: BoxDecoration(
+                    color: service['on_warrenty'] == true ? Colors.green[50] : Colors.red[50],
+                    borderRadius: BorderRadius.circular(8),
+                    border: Border.all(
+                      color: service['on_warrenty'] == true ? Colors.green : Colors.red,
+                    ),
+                  ),
+                  child: Row(
+                    children: [
+                      Icon(
+                        service['on_warrenty'] == true ? Icons.verified : Icons.error_outline,
+                        color: service['on_warrenty'] == true ? Colors.green : Colors.red,
+                      ),
+                      const SizedBox(width: 8),
+                      Expanded(
+                        child: Text(
+                          service['on_warrenty'] == true
+                              ? "This service is under warranty."
+                              : "This service is not under warranty.",
+                          style: TextStyle(
+                            color: service['on_warrenty'] == true ? Colors.green : Colors.red,
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+
+                // Next Service Date
                 TextFormField(
                   controller: nextServiceController,
-                  decoration: InputDecoration(labelText: "Next Service Date (YYYY-MM-DD)"),
+                  decoration: const InputDecoration(
+                    labelText: "Next Service Date",
+                    hintText: "YYYY-MM-DD",
+                    border: OutlineInputBorder(),
+                  ),
                 ),
+                const SizedBox(height: 12),
+
+                // Visit Type Dropdown
                 DropdownButtonFormField<String>(
                   value: visitType,
                   items: ['I', 'C', 'MS', 'CS', 'CC']
@@ -130,23 +176,52 @@ Future<void> _showServiceEntryDialog(BuildContext context, Map<String, dynamic> 
                   onChanged: (val) {
                     visitType = val!;
                   },
-                  decoration: InputDecoration(labelText: "Visit Type"),
+                  decoration: const InputDecoration(
+                    labelText: "Visit Type",
+                    border: OutlineInputBorder(),
+                  ),
                 ),
+                const SizedBox(height: 12),
+
+                // Work Details
                 TextFormField(
                   controller: workDetailsController,
-                  decoration: InputDecoration(labelText: "Work Details"),
+                  decoration: const InputDecoration(
+                    labelText: "Work Details",
+                    border: OutlineInputBorder(),
+                  ),
+                  maxLines: 2,
                 ),
+                const SizedBox(height: 12),
+
+                // Parts Replaced
                 TextFormField(
                   controller: partsReplacedController,
-                  decoration: InputDecoration(labelText: "Parts Replaced"),
+                  decoration: const InputDecoration(
+                    labelText: "Parts Replaced",
+                    border: OutlineInputBorder(),
+                  ),
+                  maxLines: 2,
                 ),
+                const SizedBox(height: 12),
+
+                // ICR Number
                 TextFormField(
                   controller: icrNumberController,
-                  decoration: InputDecoration(labelText: "ICR Number"),
+                  decoration: const InputDecoration(
+                    labelText: "ICR Number",
+                    border: OutlineInputBorder(),
+                  ),
                 ),
+                const SizedBox(height: 12),
+
+                // Amount Charged
                 TextFormField(
                   controller: amountChargedController,
-                  decoration: InputDecoration(labelText: "Amount Charged"),
+                  decoration: const InputDecoration(
+                    labelText: "Amount Charged",
+                    border: OutlineInputBorder(),
+                  ),
                   keyboardType: TextInputType.number,
                 ),
               ],
@@ -156,9 +231,9 @@ Future<void> _showServiceEntryDialog(BuildContext context, Map<String, dynamic> 
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context),
-            child: Text("Cancel"),
+            child: const Text("Cancel"),
           ),
-          TextButton(
+          ElevatedButton(
             onPressed: () {
               Navigator.pop(context);
               _createServiceEntry(service, {
@@ -170,13 +245,27 @@ Future<void> _showServiceEntryDialog(BuildContext context, Map<String, dynamic> 
                 'amount_charged': amountChargedController.text,
               });
             },
-            child: Text("Submit"),
+            style: ElevatedButton.styleFrom(
+              backgroundColor: const Color.fromARGB(255, 55, 99, 174),
+              foregroundColor: Colors.white,
+              elevation: 4,
+              padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(10),
+              ),
+              textStyle: const TextStyle(
+                fontSize: 16,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            child: const Text("Submit"),
           ),
         ],
       );
     },
   );
 }
+
 
 
 Future<void> _createServiceEntry(Map<String, dynamic> service, Map<String, String> userInput) async {

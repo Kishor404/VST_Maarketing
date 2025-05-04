@@ -22,6 +22,8 @@ const Service = () => {
     const [fetchServiceAvaDate, setfetchServiceAvaDate] = useState("");
     const [fetchServiceComplaint, setfetchServiceComplaint] = useState("");
     const [fetchServiceStatus, setfetchServiceStatus] = useState("");
+    const [fetchServiceAvailableFrom, setfetchServiceAvailableFrom] = useState("");
+    const [fetchServiceAvailableTo, setfetchServiceAvailableTo] = useState("");
 
     const [createServiceCustomerId, setcreateServiceCustomerId] = useState("");
     const [createServiceStaffId, setcreateServiceStaffId] = useState("");
@@ -59,6 +61,8 @@ const Service = () => {
             setfetchServiceAvaDate(response.data.available_date);
             setfetchServiceComplaint(response.data.complaint);
             setfetchServiceStatus(response.data.status);
+            setfetchServiceAvailableFrom(response.data.available.from);
+            setfetchServiceAvailableTo(response.data.available.to);
 
         } catch (error) {
             console.error("Error fetching customers:", error);
@@ -285,6 +289,14 @@ const Service = () => {
                                         (
                                         <div className='service-bottom-right-bottom-edit-info-box'>
                                             <div className='service-bottom-right-bottom-edit-info-cont'>
+                                                <p className='service-bottom-right-bottom-edit-info-title'>Customer Available From</p>
+                                                <p className='service-bottom-right-bottom-edit-info-input'>{fetchServiceAvailableFrom}</p>
+                                            </div>
+                                            <div className='service-bottom-right-bottom-edit-info-cont'>
+                                                <p className='service-bottom-right-bottom-edit-info-title'>Customer Available To</p>
+                                                <p className='service-bottom-right-bottom-edit-info-input'>{fetchServiceAvailableTo}</p>
+                                            </div>
+                                            <div className='service-bottom-right-bottom-edit-info-cont'>
                                                 <p className='service-bottom-right-bottom-edit-info-title'>Staff ID</p>
                                                 <input type="text" placeholder='Enter Staff ID' className='service-bottom-right-bottom-edit-info-input' value={fetchServiceStaffId} onChange={(e)=>{setfetchServiceStaffId(e.target.value)}}/>
                                             </div>
@@ -292,6 +304,7 @@ const Service = () => {
                                                 <p className='service-bottom-right-bottom-edit-info-title'>Card ID</p>
                                                 <input type="text" placeholder='Enter Card ID' className='service-bottom-right-bottom-edit-info-input' value={fetchServiceCardId} onChange={(e)=>{setfetchServiceCardId(e.target.value)}}/>
                                             </div>
+                                            
                                             <div className='service-bottom-right-bottom-edit-info-cont'>
                                                 <p className='service-bottom-right-bottom-edit-info-title'>Available Date</p>
                                                 <input type="date" placeholder='Enter Available' className='service-bottom-right-bottom-edit-info-input' value={fetchServiceAvaDate} onChange={(e)=>{setfetchServiceAvaDate(e.target.value)}}/>
