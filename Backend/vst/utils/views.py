@@ -396,9 +396,10 @@ class AssignAvailableStaffView(APIView):
     def post(self, request, *args, **kwargs):
         # Fetch unavailable request by ID
         available_worker = request.data.get("staff_id")
+        staff_instance = get_object_or_404(User, id=available_worker)
         available=request.data.get("available")
 
-        if not available_worker:
+        if not staff_instance:
             return Response({"message": "Staff ID is required."}, status=status.HTTP_400_BAD_REQUEST)
         if not available:
             return Response({"message": "Available date is required."}, status=status.HTTP_400_BAD_REQUEST)
@@ -413,15 +414,15 @@ class AssignAvailableStaffView(APIView):
 
         
 
-        if available_worker:
+        if staff_instance:
             # Assign new worker to the service
-            staff_instance = get_object_or_404(User, id=available_worker)
+            staff_instance = get_object_or_404(User, id=staff_instance)
             service.staff = staff_instance
             service.save()
             unavailable_req.delete()
             return Response({
                 "message": "Staff reassigned successfully.",
-                "worker_id": available_worker.id,
+                "worker_id": staff_instance.id,
                 "available": available 
             }, status=status.HTTP_200_OK)
         
