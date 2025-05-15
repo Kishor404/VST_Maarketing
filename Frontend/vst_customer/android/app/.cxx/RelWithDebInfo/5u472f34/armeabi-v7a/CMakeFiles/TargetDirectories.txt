@@ -1,2 +1,0 @@
-E:/VST/Frontend/vst_customer/android/app/.cxx/RelWithDebInfo/5u472f34/armeabi-v7a/CMakeFiles/edit_cache.dir
-E:/VST/Frontend/vst_customer/android/app/.cxx/RelWithDebInfo/5u472f34/armeabi-v7a/CMakeFiles/rebuild_cache.dir
