@@ -45,5 +45,5 @@ urlpatterns = [
     path('getservicebyhead/', GetServiceByHead.as_view(), name='get-service-by-head'),
     path('getservicebyidbyhead/<int:id>', GetServiceByIdByHead.as_view(), name='get-service-by-id-by-head'),
     path('patchservicebyidbyhead/<int:id>', PatchServiceByIdByHead.as_view(), name='patch-service-by-id-by-head'),
-    path('getuserbyphone/<str:phone>', GetUserByID.as_view(), name='get-user-by-phone'),
+    path('getuserbyphone/<str:phone>', GetUserByPhone.as_view(), name='get-user-by-phone'),
 ]
