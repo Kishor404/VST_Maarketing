@@ -1,10 +1,13 @@
 from django.db import models
 from user.models import User 
+import uuid
+import os
 
 def signature_image_upload_path(instance, filename):
-    # Upload to media/Signature/<service_id>.ext
     ext = filename.split('.')[-1]
-    return f'Signature/{instance.id}.{ext}' if instance.id else f'Signature/temp.{ext}'
+    # Generate a unique filename to avoid conflicts
+    filename = f"{uuid.uuid4()}.{ext}"
+    return os.path.join('Signature', filename)
 
 class Card(models.Model):
 
