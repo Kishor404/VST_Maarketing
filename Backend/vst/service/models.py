@@ -4,6 +4,11 @@ from card.models import Card
 from django.core.exceptions import ValidationError
 from datetime import datetime, timedelta
 
+def signature_image_upload_path(instance, filename):
+    # Upload to media/Signature/<service_id>.ext
+    ext = filename.split('.')[-1]
+    return f'Signature/{instance.id}.{ext}' if instance.id else f'Signature/temp.{ext}'
+
 class Service(models.Model):
 
     STATUS_CHOICES = [
@@ -39,6 +44,12 @@ class Service(models.Model):
 
     status = models.CharField(max_length=10, choices=STATUS_CHOICES, blank=False, null=False)
 
+    # New fields
+    OTP_Verification = models.BooleanField(default=False)
+    Signature_Image = models.ImageField(upload_to=signature_image_upload_path, blank=True, null=True)
+    Signature_By = models.CharField(max_length=255, blank=True, null=True)
+    Signature_At = models.DateTimeField(blank=True, null=True)
+
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
@@ -58,11 +69,7 @@ class Service(models.Model):
                 'postal_code': self.customer.postal_code,
             }
         if self.staff:
-            self.staff_name=self.staff.name
-        
-        if self.card and self.customer:
-            if self.card.customer_code.id != self.customer.id:  # Assuming customer_code stores the customer's ID
-                raise ValidationError("The customer associated with this service must match the customer_code in the card.")
+            self.staff_name = self.staff.name
         
         if self.card and self.customer:
             if self.card.customer_code.id != self.customer.id:  # Assuming customer_code stores the customer's ID
@@ -80,7 +87,6 @@ class Service(models.Model):
                     self.on_warrenty = False
             except ValueError:
                 raise ValidationError("Invalid date format for warranty or service date. Use YYYY-MM-DD.")
-
 
         super().save(*args, **kwargs)
 

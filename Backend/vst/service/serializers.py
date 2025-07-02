@@ -23,6 +23,9 @@ class ServiceSerializer(serializers.ModelSerializer):
             'status',
             'feedback',
             'rating',
+            'Signature_Image',
+            'Signature_By',
+            'Signature_At',
             'created_at',
             'updated_at'
         ]
