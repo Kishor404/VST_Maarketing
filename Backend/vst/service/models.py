@@ -4,10 +4,6 @@ from card.models import Card
 from django.core.exceptions import ValidationError
 from datetime import datetime, timedelta
 
-def signature_image_upload_path(instance, filename):
-    # Upload to media/Signature/<service_id>.ext
-    ext = filename.split('.')[-1]
-    return f'Signature/{instance.id}.{ext}' if instance.id else f'Signature/temp.{ext}'
 
 class Service(models.Model):
 
@@ -46,9 +42,7 @@ class Service(models.Model):
 
     # New fields
     OTP_Verification = models.BooleanField(default=False)
-    Signature_Image = models.ImageField(upload_to=signature_image_upload_path, blank=True, null=True)
-    Signature_By = models.CharField(max_length=255, blank=True, null=True)
-    Signature_At = models.DateTimeField(blank=True, null=True)
+    
 
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)

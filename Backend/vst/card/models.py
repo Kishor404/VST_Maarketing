@@ -1,6 +1,11 @@
 from django.db import models
 from user.models import User 
 
+def signature_image_upload_path(instance, filename):
+    # Upload to media/Signature/<service_id>.ext
+    ext = filename.split('.')[-1]
+    return f'Signature/{instance.id}.{ext}' if instance.id else f'Signature/temp.{ext}'
+
 class Card(models.Model):
 
     model = models.CharField(max_length=100)
@@ -49,7 +54,10 @@ class ServiceEntry(models.Model):
     icr_number = models.CharField(max_length=50, null=True, blank=True)
     amount_charged = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
     customer_signature = models.JSONField(null=True, blank=True)
-    cse_signature = models.JSONField(null=True, blank=True)
+    Signature_Image = models.ImageField(upload_to=signature_image_upload_path, blank=True, null=True)
+    Signature_By = models.CharField(max_length=255, blank=True, null=True)
+    Signature_At = models.DateTimeField(blank=True, null=True)
+    OTP_Verified = models.BooleanField(default=False)
 
     def __str__(self):
         return f"Service Entry for {self.card.customer_code} on {self.date}"

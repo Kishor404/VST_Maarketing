@@ -18,7 +18,10 @@ class ServiceEntrySerializer(serializers.ModelSerializer):
             'icr_number',
             'amount_charged',
             'customer_signature',
-            'cse_signature',
+            'Signature_Image',
+            'Signature_By',
+            'Signature_At',
+            'OTP_Verified',
         ]
         read_only_fields = ['id']
 
@@ -43,5 +46,6 @@ class CardSerializer(serializers.ModelSerializer):
             'contract_start_date',
             'contract_end_date',
             'service_entries',
+            
         ]
         read_only_fields = ['id']
