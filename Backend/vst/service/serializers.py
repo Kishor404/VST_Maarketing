@@ -23,6 +23,7 @@ class ServiceSerializer(serializers.ModelSerializer):
             'status',
             'feedback',
             'rating',
+            'OTP_Verification',
             'Signature_Image',
             'Signature_By',
             'Signature_At',
