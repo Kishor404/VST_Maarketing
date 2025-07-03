@@ -124,7 +124,7 @@ class ServiceEntryCreateByHeadAndWorker(generics.CreateAPIView):
         Override perform_create to send a notification to the customer after creating a ServiceEntry.
         """
         service_entry = serializer.save()  # Save the new ServiceEntry instance
-        customer = service_entry.card.customer_code  # Get the customer associated with this service entry
+        customer = service_entry.card.customer_code  # Get the customer associated with this service entr
 
         # Send notification to the customer
         if customer and customer.FCM_Token:
