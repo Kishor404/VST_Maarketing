@@ -123,20 +123,8 @@ class ServiceEntryCreateByHeadAndWorker(generics.CreateAPIView):
         """
         Override perform_create to send a notification to the customer after creating a ServiceEntry.
         """
-        service_entry = serializer.save()
-
-        # Check the conditions for updating service status
-        has_signature = service_entry.Signature_Image and service_entry.Signature_By
-        is_verified = service_entry.OTP_Verified
-
-        if has_signature or is_verified:
-            try:
-                service = Service.objects.get(id=service_entry.service)
-                service.status = "SD"  # Serviced
-                service.save()
-            except Service.DoesNotExist:
-                print(f"Service with ID {service_entry.service.id} not found.")
-        customer = service_entry.card.customer_code  # Get the customer associated with this service entry
+        service_entry = serializer.save()  # Save the new ServiceEntry instance
+        customer = service_entry.card.customer_code  # Get the customer associated with this service entr
 
         # Send notification to the customer
         if customer and customer.FCM_Token:
