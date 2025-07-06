@@ -157,7 +157,7 @@ class IsWarrantyService(APIView):
 
         # Check if the current service falls within any remaining warranty slot
         for warranty_date in warranty_dates:
-            if abs((service.date - warranty_date).days) <= 15 and warranty_date not in used_dates:
+            if abs((service.available_date - warranty_date).days) <= 15 and warranty_date not in used_dates:
                 return Response({'isWarranty': True}, status=status.HTTP_200_OK)
 
         return Response({'isWarranty': False}, status=status.HTTP_200_OK)
