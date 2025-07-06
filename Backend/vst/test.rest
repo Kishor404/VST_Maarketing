@@ -112,9 +112,9 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiY
 
 ### ======== GET CARD BY HEAD ==========
 
-GET http://127.0.0.1:8000/api/headcardlist/
+GET http://157.173.220.208/services/is-warranty/10/
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzM5NjAzOTg3LCJpYXQiOjE3Mzk2MDIxODcsImp0aSI6ImFhZGEzOGRmNDlkMzRhYzI4MGZkZDViNmQ4YjI4Y2E3IiwidXNlcl9pZCI6MTl9.uu0L-UxDjg6zYCmgvtQVtYULHgENYCw0T-lQRcZxCVM
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzUxODEwOTgwLCJpYXQiOjE3NTE4MDkxODAsImp0aSI6ImQ5NDM3MDNlNzQ5YzQyNDdhYjkwMWJmZTAyZGRhMzFiIiwidXNlcl9pZCI6MX0.PWqfV_azx8RjH8QTObZc2Got8gUKyjKXpKwvyEAWD1Y
 
 ###========== EDIT CARD BY HEAD USING ID ========
 

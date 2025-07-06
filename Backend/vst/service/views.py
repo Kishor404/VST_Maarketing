@@ -150,7 +150,7 @@ class IsWarrantyService(APIView):
 
         for done_service in completed_services:
             for warranty_date in warranty_dates:
-                if abs((done_service.date - warranty_date).days) <= 15 and warranty_date not in used_dates:
+                if abs((done_service.available_date - warranty_date).days) <= 15 and warranty_date not in used_dates:
                     completed_warranty_services += 1
                     used_dates.append(warranty_date)
                     break
