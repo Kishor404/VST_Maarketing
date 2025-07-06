@@ -9,5 +9,5 @@ router.register(r'', ServiceViewSet, basename='serviceentry')
 urlpatterns = [
     path('', include(router.urls)),
     path('cancleservicebycustomer/<int:id>', CancelServiceByCustomer.as_view(), name='cancel-service-by-user'),
-    path('/is-warranty/<int:id>', IsWarrantyService.as_view(), name='is-warranty'),
+    path('is-warranty/<int:id>/', IsWarrantyService.as_view(), name='is-warranty'),
 ]
