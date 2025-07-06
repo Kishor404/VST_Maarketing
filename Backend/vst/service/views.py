@@ -144,7 +144,7 @@ class IsWarrantyService(APIView):
             current_date += relativedelta(months=4)
 
         # Count how many warranty services have already been done for this card
-        completed_services = Service.objects.filter(card=card, status="SD").order_by('date')
+        completed_services = Service.objects.filter(card=card, status="SD").order_by('available_date')
         completed_warranty_services = 0
         used_dates = []
 
