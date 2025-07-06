@@ -8,6 +8,8 @@ from rest_framework import generics
 from rest_framework.exceptions import PermissionDenied
 from service.models import Service
 import requests
+from rest_framework.views import APIView
+from rest_framework.permissions import IsAuthenticated
 
 class CardViewSet(viewsets.ModelViewSet):
     """
@@ -209,3 +211,22 @@ class ServiceEntryCustomerSignatureUpdate(generics.UpdateAPIView):
         self.perform_update(serializer)
 
         return Response(serializer.data)
+
+class ServiceEntryByServiceID(APIView):
+    """
+    Get all ServiceEntry instances related to a given Service ID.
+    Only accessible by worker, head, or admin.
+    """
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request, *args, **kwargs):
+        user = request.user
+        allowed_roles = {"worker", "head", "admin"}
+
+        if getattr(user, 'role', None) not in allowed_roles:
+            raise PermissionDenied("You are not authorized to access service entries.")
+
+        service_id = kwargs.get("id")
+        service_entries = ServiceEntry.objects.filter(service=service_id)
+        serializer = ServiceEntrySerializer(service_entries, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)

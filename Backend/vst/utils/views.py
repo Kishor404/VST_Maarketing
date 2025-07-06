@@ -759,3 +759,4 @@ class GetUserByPhone(APIView):
         serializer = UserSerializer(user)
 
         return Response(serializer.data, status=status.HTTP_200_OK)
+

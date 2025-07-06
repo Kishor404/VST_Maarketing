@@ -4,7 +4,8 @@ from .views import (
     CardViewSet, ServiceEntryViewSet, CardListView, 
     CardCreateByHead, CardUpdateByHead, CardListByHead,
     ServiceEntryCreateByHeadAndWorker, ServiceEntryUpdateByHeadAndWorker,
-    ServiceEntryCustomerSignatureUpdate, CardListByHeadByID
+    ServiceEntryCustomerSignatureUpdate, CardListByHeadByID,
+    ServiceEntryByServiceID
 )
 
 # Create a router and register the viewsets
@@ -27,4 +28,6 @@ urlpatterns = [
     path('createserviceentry/', ServiceEntryCreateByHeadAndWorker.as_view(), name='create-service-entry'),
     path('editserviceentry/<int:id>/', ServiceEntryUpdateByHeadAndWorker.as_view(), name='edit-service-entry'),
     path('signbycustomer/<int:id>/', ServiceEntryCustomerSignatureUpdate.as_view(), name='customer-sign-service-entry'),
+
+    path("service-entry/by-service/<int:id>/", ServiceEntryByServiceID.as_view(), name="service-entry-by-service"),
 ]
