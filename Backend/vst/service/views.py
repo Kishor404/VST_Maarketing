@@ -7,7 +7,6 @@ from rest_framework import status
 from rest_framework.views import APIView
 from django.shortcuts import get_object_or_404
 import requests
-import json
 
 
 
@@ -114,3 +113,51 @@ class CancelServiceByCustomer(APIView):
                 print(f"Error sending notification: {e}")
 
         return Response({'message': 'Service status updated successfully'}, status=status.HTTP_200_OK)
+
+
+from dateutil.relativedelta import relativedelta
+from rest_framework.views import APIView
+from rest_framework.response import Response
+from rest_framework import status
+from django.shortcuts import get_object_or_404
+from .models import Service
+
+
+class IsWarrantyService(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request, id):
+        # Get the current service
+        service = get_object_or_404(Service, id=id)
+        card = service.card
+        if not card.warranty_start_date or not card.warranty_end_date:
+            return Response({'isWarranty': False, 'reason': 'No warranty dates available'}, status=status.HTTP_200_OK)
+
+        warranty_start = card.warranty_start_date
+        warranty_end = card.warranty_end_date
+
+        # Generate all warranty milestone dates (every 4 months from start to end)
+        warranty_dates = []
+        current_date = warranty_start
+        while current_date <= warranty_end:
+            warranty_dates.append(current_date)
+            current_date += relativedelta(months=4)
+
+        # Count how many warranty services have already been done for this card
+        completed_services = Service.objects.filter(card=card, status="SD").order_by('date')
+        completed_warranty_services = 0
+        used_dates = []
+
+        for done_service in completed_services:
+            for warranty_date in warranty_dates:
+                if abs((done_service.date - warranty_date).days) <= 15 and warranty_date not in used_dates:
+                    completed_warranty_services += 1
+                    used_dates.append(warranty_date)
+                    break
+
+        # Check if the current service falls within any remaining warranty slot
+        for warranty_date in warranty_dates:
+            if abs((service.date - warranty_date).days) <= 15 and warranty_date not in used_dates:
+                return Response({'isWarranty': True}, status=status.HTTP_200_OK)
+
+        return Response({'isWarranty': False}, status=status.HTTP_200_OK)
