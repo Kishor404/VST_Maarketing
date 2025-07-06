@@ -230,3 +230,17 @@ class ServiceEntryByServiceID(APIView):
         service_entries = ServiceEntry.objects.filter(service=service_id)
         serializer = ServiceEntrySerializer(service_entries, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
+
+from rest_framework.generics import DestroyAPIView
+
+class ServiceEntryDeleteByRole(DestroyAPIView):
+    queryset = ServiceEntry.objects.all()
+    serializer_class = ServiceEntrySerializer
+    lookup_field = 'id'
+
+    def delete(self, request, *args, **kwargs):
+        user_role = getattr(request.user, 'role', None)
+
+        if user_role not in {"head", "worker", "admin"}:
+            raise PermissionDenied("You are not authorized to delete this service entry.")
+        return super().delete(request, *args, **kwargs)
