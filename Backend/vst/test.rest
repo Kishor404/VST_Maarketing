@@ -249,7 +249,7 @@ POST http://157.173.220.208/firebase/send-notification/
 Content-Type: application/json
 
 {
-  "token": "eCMe0BOXTMepL7i6sttjB3:APA91bGiJLZZ_NJ7aDAxXDV2FlF_OtkqSLU00FzZdUa2cUioa4EPZEoHr93rWwaNjTRHIa3qVITNgPMJlQlCxkt3KBFa45FLtxHBoLbQgJEb02FuHZQd6_U",
+  "token": "ebe-Dg8QTmOlziXYaqalOU:APA91bHenLKK9IVXKdv8zbsBFPRhgtvp53M39IeijKbhDN2mZRjnFaZIsY23pC6Bz-m4QRUZLKUDAKw-8iyMFFd9VnhusSjlIjSnAh1hgGUQ4ls04ZdHmAw",
   "title": "Why Not !",
   "body": "Choose Venus Water Purifier From VST Maarketing"
 }

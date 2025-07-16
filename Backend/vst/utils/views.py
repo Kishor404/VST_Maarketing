@@ -746,6 +746,7 @@ class GetUserByPhone(APIView):
 
         # Define allowed roles
         allowed_roles = ["worker", "head", "admin"]
+        no_allowed_roles = [ "head", "admin"]
 
         # Check if the role is authorized
         if user_role not in allowed_roles:
@@ -753,7 +754,7 @@ class GetUserByPhone(APIView):
 
         # Fetch the requested user
         user = get_object_or_404(User, phone=user_phone)
-        if user.role in allowed_roles:
+        if user.role in no_allowed_roles:
             return Response({"error": "Permission denied"}, status=status.HTTP_403_FORBIDDEN)
         
         serializer = UserSerializer(user)
