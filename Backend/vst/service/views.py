@@ -33,6 +33,7 @@ class ServiceViewSet(viewsets.ModelViewSet):
         # staff = service.staff  # Get assigned staff
         # available_date = service.available_date  # Extract available date
         user = self.request.user  # Get authenticated user
+        staff= service.staff  # Get staff from the service
 
         # Update staff availability
         # if staff and available_date:
@@ -55,6 +56,19 @@ class ServiceViewSet(viewsets.ModelViewSet):
             payload = {
                 "token": user.FCM_Token,
                 "title": "Service Created",
+                "body": f"Your service (ID: {service.id}) has been successfully created."
+            }
+            try:
+                response = requests.post("http://157.173.220.208/firebase/send-notification/", json=payload)
+                response.raise_for_status()
+                print("Notification sent successfully:", response.json())
+            except requests.exceptions.RequestException as e:
+                print(f"Error sending notification: {e}")
+
+        if staff.FCM_Token:
+            payload = {
+                "token": user.FCM_Token,
+                "title": "Service Assigned !",
                 "body": f"Your service (ID: {service.id}) has been successfully created."
             }
             try:

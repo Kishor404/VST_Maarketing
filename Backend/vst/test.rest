@@ -64,9 +64,9 @@ Content-Type: application/json
 
 ### ========== CARD DETAILS API ==========
 
-GET http://157.173.220.208/utils/getservicebyidbyhead/2
+GET http://157.173.220.208/utils/getuserbyid/234/
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzQ1NzYyOTc1LCJpYXQiOjE3NDU3NjExNzUsImp0aSI6ImRlMGZiODJhMDg0MzRkZWU5ZjI1OTk2NDE0YTg1ODA1IiwidXNlcl9pZCI6MX0.dPm82-v7PpAz_1-cd4SIYTUwyTO5of4R-pv4SgjHsww
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzUyMDc4ODg3LCJpYXQiOjE3NTIwNzcwODcsImp0aSI6ImM3MGNkYWVlZmEzYTQzOTliYmIxYTc0MGNlZGU5MTViIiwidXNlcl9pZCI6MX0.H43s2UYEsDzM8RENlIm39S3jxze-5vnO8z3gLaMFGa0
 
 ### ========== CARD POST API ==========
 
@@ -249,7 +249,7 @@ POST http://157.173.220.208/firebase/send-notification/
 Content-Type: application/json
 
 {
-  "token": "eJuEIbvATJCWhaq9v-HdhA:APA91bGxv_prU8fpOrIXYF-flaCVw-vrc0gokTPoHcAO5k-eI2dxYTASgmaOkeXPFS_WBcJah2xxe5Ln7hhVEnEiUEQR8k1wGNX6INNIMRnG7PmGexcexHc",
+  "token": "eCMe0BOXTMepL7i6sttjB3:APA91bGiJLZZ_NJ7aDAxXDV2FlF_OtkqSLU00FzZdUa2cUioa4EPZEoHr93rWwaNjTRHIa3qVITNgPMJlQlCxkt3KBFa45FLtxHBoLbQgJEb02FuHZQd6_U",
   "title": "Why Not !",
   "body": "Choose Venus Water Purifier From VST Maarketing"
 }
