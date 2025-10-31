@@ -122,3 +122,28 @@ class ChangePasswordView(APIView):
         user.set_password(new_password)
         user.save()
         return Response({"message": "Password changed successfully"}, status=status.HTTP_200_OK)
+    
+class AdminChangePasswordView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request):
+        # Only admins or heads can change others' passwords
+        if request.user.role not in ["admin", "head"]:
+            return Response({"message": "Unauthorized"}, status=status.HTTP_403_FORBIDDEN)
+
+        phone = request.data.get('phone')
+        new_password = request.data.get('new_password')
+
+        if not phone or not new_password:
+            return Response({"message": "Phone and new password are required"}, status=status.HTTP_400_BAD_REQUEST)
+
+        try:
+            user = User.objects.get(phone=phone)
+        except User.DoesNotExist:
+            return Response({"message": "User not found"}, status=status.HTTP_404_NOT_FOUND)
+
+        user.set_password(new_password)
+        user.save()
+
+        return Response({"message": f"Password for {user.phone} changed successfully"}, status=status.HTTP_200_OK)
+

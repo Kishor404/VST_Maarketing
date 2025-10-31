@@ -4,7 +4,7 @@ from .views import (
     SignupView, LoginView, 
     WorkerOnlyView, AdminOnlyView, HeadOnlyView,
     protected_view,
-    ChangePasswordView
+    ChangePasswordView, AdminChangePasswordView
 )
 
 urlpatterns = [
@@ -24,4 +24,6 @@ urlpatterns = [
     path('protected/', protected_view, name='protected-view'),
 
     path('change-password/', ChangePasswordView.as_view(), name='change-password'),
+
+    path('admin-change-password/', AdminChangePasswordView.as_view(), name='admin_change_password'),
 ]
